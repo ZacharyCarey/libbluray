@@ -1,0 +1,1442 @@
+{
+ "bluray": {
+  "disc name": "",
+  "udf title": "",
+  "disc id": "",
+  "main playlist": 13,
+  "longest playlist": 13,
+  "first play supported": true,
+  "top menu supported": true,
+  "provider data": "Powered by Sonic Solutions",
+  "3D content": false,
+  "initial mode": "2D",
+  "titles": 22,
+  "bdinfo titles": 44,
+  "hdmv titles": 44,
+  "bd-j titles": 0,
+  "unsupported titles": 0,
+  "aacs": false,
+  "bdplus": false,
+  "bd-j": false
+ },
+ "titles": [
+  {
+   "title": 1,
+   "playlist": 0,
+   "length": "00:00:42.943",
+   "msecs": 4294,
+   "angles": 1,
+   "blocks": 740256,
+   "filesize": 142129152,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:00:00.000",
+     "length": "00:00:42.943",
+     "start": 0,
+     "duration": 4294,
+     "blocks": 740260,
+     "filesize": 142129920
+    }
+   ]
+  },
+  {
+   "title": 2,
+   "playlist": 1,
+   "length": "00:00:26.260",
+   "msecs": 2625,
+   "angles": 1,
+   "blocks": 103740,
+   "filesize": 19918080,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "480i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:00:42.943",
+     "length": "00:00:00.667",
+     "start": 4294,
+     "duration": 66,
+     "blocks": 413,
+     "filesize": 79296
+    },
+    {
+     "chapter": 2,
+     "start time": "00:00:43.610",
+     "length": "00:00:24.892",
+     "start": 4361,
+     "duration": 2489,
+     "blocks": 103139,
+     "filesize": 19802688
+    },
+    {
+     "chapter": 3,
+     "start time": "00:01:08.502",
+     "length": "00:00:00.701",
+     "start": 6850,
+     "duration": 70,
+     "blocks": 188,
+     "filesize": 36096
+    }
+   ]
+  },
+  {
+   "title": 3,
+   "playlist": 2,
+   "length": "00:00:59.960",
+   "msecs": 5995,
+   "angles": 1,
+   "blocks": 239324,
+   "filesize": 45950208,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "480i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:01:09.202",
+     "length": "00:00:00.667",
+     "start": 6920,
+     "duration": 66,
+     "blocks": 1766,
+     "filesize": 339072
+    },
+    {
+     "chapter": 2,
+     "start time": "00:01:09.870",
+     "length": "00:00:58.592",
+     "start": 6986,
+     "duration": 5859,
+     "blocks": 237370,
+     "filesize": 45575040
+    },
+    {
+     "chapter": 3,
+     "start time": "00:02:08.462",
+     "length": "00:00:00.701",
+     "start": 12846,
+     "duration": 70,
+     "blocks": 188,
+     "filesize": 36096
+    }
+   ]
+  },
+  {
+   "title": 4,
+   "playlist": 3,
+   "length": "00:00:24.608",
+   "msecs": 2460,
+   "angles": 1,
+   "blocks": 416032,
+   "filesize": 79878144,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:02:09.162",
+     "length": "00:00:24.566",
+     "start": 12916,
+     "duration": 2456,
+     "blocks": 412198,
+     "filesize": 79142016
+    },
+    {
+     "chapter": 2,
+     "start time": "00:02:33.729",
+     "length": "00:00:00.042",
+     "start": 15372,
+     "duration": 4,
+     "blocks": 3838,
+     "filesize": 736896
+    }
+   ]
+  },
+  {
+   "title": 5,
+   "playlist": 4,
+   "length": "00:06:25.218",
+   "msecs": 38521,
+   "angles": 1,
+   "blocks": 4776608,
+   "filesize": 917108736,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "720p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:02:33.770",
+     "length": "00:00:00.667",
+     "start": 15377,
+     "duration": 66,
+     "blocks": 8,
+     "filesize": 1536
+    },
+    {
+     "chapter": 2,
+     "start time": "00:02:34.438",
+     "length": "00:03:35.507",
+     "start": 15443,
+     "duration": 21550,
+     "blocks": 1999964,
+     "filesize": 383993088
+    },
+    {
+     "chapter": 3,
+     "start time": "00:06:09.945",
+     "length": "00:02:48.377",
+     "start": 36994,
+     "duration": 16837,
+     "blocks": 2770400,
+     "filesize": 531916800
+    },
+    {
+     "chapter": 4,
+     "start time": "00:08:58.321",
+     "length": "00:00:00.667",
+     "start": 53832,
+     "duration": 66,
+     "blocks": 6240,
+     "filesize": 1198080
+    }
+   ]
+  },
+  {
+   "title": 6,
+   "playlist": 5,
+   "length": "00:03:13.960",
+   "msecs": 19396,
+   "angles": 1,
+   "blocks": 788604,
+   "filesize": 151411968,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "480i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:08:58.988",
+     "length": "00:00:00.667",
+     "start": 53898,
+     "duration": 66,
+     "blocks": 1327,
+     "filesize": 254784
+    },
+    {
+     "chapter": 2,
+     "start time": "00:08:59.656",
+     "length": "00:03:12.592",
+     "start": 53965,
+     "duration": 19259,
+     "blocks": 787089,
+     "filesize": 151121088
+    },
+    {
+     "chapter": 3,
+     "start time": "00:12:12.248",
+     "length": "00:00:00.701",
+     "start": 73224,
+     "duration": 70,
+     "blocks": 188,
+     "filesize": 36096
+    }
+   ]
+  },
+  {
+   "title": 7,
+   "playlist": 6,
+   "length": "00:00:52.019",
+   "msecs": 5201,
+   "angles": 1,
+   "blocks": 209404,
+   "filesize": 40205568,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "480i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:12:12.949",
+     "length": "00:00:00.667",
+     "start": 73294,
+     "duration": 66,
+     "blocks": 450,
+     "filesize": 86400
+    },
+    {
+     "chapter": 2,
+     "start time": "00:12:13.616",
+     "length": "00:00:50.651",
+     "start": 73361,
+     "duration": 5065,
+     "blocks": 208766,
+     "filesize": 40083072
+    },
+    {
+     "chapter": 3,
+     "start time": "00:13:04.267",
+     "length": "00:00:00.701",
+     "start": 78426,
+     "duration": 70,
+     "blocks": 188,
+     "filesize": 36096
+    }
+   ]
+  },
+  {
+   "title": 8,
+   "playlist": 7,
+   "length": "00:03:17.230",
+   "msecs": 19723,
+   "angles": 1,
+   "blocks": 707804,
+   "filesize": 135898368,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "480i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:13:04.967",
+     "length": "00:00:00.667",
+     "start": 78496,
+     "duration": 66,
+     "blocks": 425,
+     "filesize": 81600
+    },
+    {
+     "chapter": 2,
+     "start time": "00:13:05.635",
+     "length": "00:03:15.862",
+     "start": 78563,
+     "duration": 19586,
+     "blocks": 707191,
+     "filesize": 135780672
+    },
+    {
+     "chapter": 3,
+     "start time": "00:16:21.497",
+     "length": "00:00:00.701",
+     "start": 98149,
+     "duration": 70,
+     "blocks": 188,
+     "filesize": 36096
+    }
+   ]
+  },
+  {
+   "title": 9,
+   "playlist": 8,
+   "length": "00:01:11.538",
+   "msecs": 7153,
+   "angles": 1,
+   "blocks": 256956,
+   "filesize": 49335552,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "480i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:16:22.198",
+     "length": "00:00:00.667",
+     "start": 98219,
+     "duration": 66,
+     "blocks": 412,
+     "filesize": 79104
+    },
+    {
+     "chapter": 2,
+     "start time": "00:16:22.865",
+     "length": "00:01:10.170",
+     "start": 98286,
+     "duration": 7017,
+     "blocks": 256356,
+     "filesize": 49220352
+    },
+    {
+     "chapter": 3,
+     "start time": "00:17:33.035",
+     "length": "00:00:00.701",
+     "start": 105303,
+     "duration": 70,
+     "blocks": 188,
+     "filesize": 36096
+    }
+   ]
+  },
+  {
+   "title": 10,
+   "playlist": 9,
+   "length": "00:00:36.036",
+   "msecs": 3603,
+   "angles": 1,
+   "blocks": 125852,
+   "filesize": 24163584,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "480i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:17:33.736",
+     "length": "00:00:00.667",
+     "start": 105373,
+     "duration": 66,
+     "blocks": 1432,
+     "filesize": 274944
+    },
+    {
+     "chapter": 2,
+     "start time": "00:17:34.403",
+     "length": "00:00:34.668",
+     "start": 105440,
+     "duration": 3466,
+     "blocks": 124232,
+     "filesize": 23852544
+    },
+    {
+     "chapter": 3,
+     "start time": "00:18:09.071",
+     "length": "00:00:00.701",
+     "start": 108907,
+     "duration": 70,
+     "blocks": 188,
+     "filesize": 36096
+    }
+   ]
+  },
+  {
+   "title": 11,
+   "playlist": 10,
+   "length": "00:03:28.308",
+   "msecs": 20830,
+   "angles": 1,
+   "blocks": 754876,
+   "filesize": 144936192,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "480i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:18:09.772",
+     "length": "00:00:00.667",
+     "start": 108977,
+     "duration": 66,
+     "blocks": 401,
+     "filesize": 76992
+    },
+    {
+     "chapter": 2,
+     "start time": "00:18:10.439",
+     "length": "00:03:26.940",
+     "start": 109043,
+     "duration": 20694,
+     "blocks": 754287,
+     "filesize": 144823104
+    },
+    {
+     "chapter": 3,
+     "start time": "00:21:37.379",
+     "length": "00:00:00.701",
+     "start": 129737,
+     "duration": 70,
+     "blocks": 188,
+     "filesize": 36096
+    }
+   ]
+  },
+  {
+   "title": 12,
+   "playlist": 11,
+   "length": "00:05:31.097",
+   "msecs": 33109,
+   "angles": 1,
+   "blocks": 1188892,
+   "filesize": 228267264,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "480i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:21:38.080",
+     "length": "00:00:00.667",
+     "start": 129807,
+     "duration": 66,
+     "blocks": 378,
+     "filesize": 72576
+    },
+    {
+     "chapter": 2,
+     "start time": "00:21:38.747",
+     "length": "00:05:29.729",
+     "start": 129874,
+     "duration": 32972,
+     "blocks": 1188326,
+     "filesize": 228158592
+    },
+    {
+     "chapter": 3,
+     "start time": "00:27:08.477",
+     "length": "00:00:00.701",
+     "start": 162847,
+     "duration": 70,
+     "blocks": 188,
+     "filesize": 36096
+    }
+   ]
+  },
+  {
+   "title": 13,
+   "playlist": 12,
+   "length": "00:03:39.920",
+   "msecs": 21991,
+   "angles": 1,
+   "blocks": 795868,
+   "filesize": 152806656,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "480i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:27:09.177",
+     "length": "00:00:00.667",
+     "start": 162917,
+     "duration": 66,
+     "blocks": 401,
+     "filesize": 76992
+    },
+    {
+     "chapter": 2,
+     "start time": "00:27:09.845",
+     "length": "00:03:38.552",
+     "start": 162984,
+     "duration": 21855,
+     "blocks": 795279,
+     "filesize": 152693568
+    },
+    {
+     "chapter": 3,
+     "start time": "00:30:48.396",
+     "length": "00:00:00.701",
+     "start": 184839,
+     "duration": 70,
+     "blocks": 188,
+     "filesize": 36096
+    }
+   ]
+  },
+  {
+   "title": 14,
+   "playlist": 13,
+   "length": "01:16:20.876",
+   "msecs": 458087,
+   "angles": 1,
+   "blocks": 96222080,
+   "filesize": 18474639360,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "multi_chan",
+     "rate": "48"
+    },
+    {
+     "track": 2,
+     "stream": "0x1101",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    },
+    {
+     "track": 3,
+     "stream": "0x1102",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:30:49.097",
+     "length": "00:00:00.667",
+     "start": 184909,
+     "duration": 66,
+     "blocks": 1702,
+     "filesize": 326784
+    },
+    {
+     "chapter": 2,
+     "start time": "00:30:49.764",
+     "length": "00:01:23.016",
+     "start": 184976,
+     "duration": 8301,
+     "blocks": 1733602,
+     "filesize": 332851584
+    },
+    {
+     "chapter": 3,
+     "start time": "00:32:12.781",
+     "length": "00:02:29.750",
+     "start": 193278,
+     "duration": 14974,
+     "blocks": 3159919,
+     "filesize": 606704448
+    },
+    {
+     "chapter": 4,
+     "start time": "00:34:42.530",
+     "length": "00:03:45.826",
+     "start": 208253,
+     "duration": 22582,
+     "blocks": 4747124,
+     "filesize": 911447808
+    },
+    {
+     "chapter": 5,
+     "start time": "00:38:28.356",
+     "length": "00:03:02.182",
+     "start": 230835,
+     "duration": 18218,
+     "blocks": 3848311,
+     "filesize": 738875712
+    },
+    {
+     "chapter": 6,
+     "start time": "00:41:30.538",
+     "length": "00:04:11.451",
+     "start": 249053,
+     "duration": 25145,
+     "blocks": 5288326,
+     "filesize": 1015358592
+    },
+    {
+     "chapter": 7,
+     "start time": "00:45:41.989",
+     "length": "00:02:52.572",
+     "start": 274198,
+     "duration": 17257,
+     "blocks": 3636107,
+     "filesize": 698132544
+    },
+    {
+     "chapter": 8,
+     "start time": "00:48:34.561",
+     "length": "00:03:34.614",
+     "start": 291456,
+     "duration": 21461,
+     "blocks": 4526861,
+     "filesize": 869157312
+    },
+    {
+     "chapter": 9,
+     "start time": "00:52:09.176",
+     "length": "00:02:29.750",
+     "start": 312917,
+     "duration": 14974,
+     "blocks": 3151089,
+     "filesize": 605009088
+    },
+    {
+     "chapter": 10,
+     "start time": "00:54:38.925",
+     "length": "00:03:06.186",
+     "start": 327892,
+     "duration": 18618,
+     "blocks": 3890913,
+     "filesize": 747055296
+    },
+    {
+     "chapter": 11,
+     "start time": "00:57:45.111",
+     "length": "00:03:01.381",
+     "start": 346511,
+     "duration": 18138,
+     "blocks": 3837666,
+     "filesize": 736831872
+    },
+    {
+     "chapter": 12,
+     "start time": "01:00:46.493",
+     "length": "00:05:10.710",
+     "start": 364649,
+     "duration": 31071,
+     "blocks": 6534613,
+     "filesize": 1254645696
+    },
+    {
+     "chapter": 13,
+     "start time": "01:05:57.203",
+     "length": "00:03:50.230",
+     "start": 395720,
+     "duration": 23023,
+     "blocks": 4868209,
+     "filesize": 934696128
+    },
+    {
+     "chapter": 14,
+     "start time": "01:09:47.433",
+     "length": "00:03:54.234",
+     "start": 418743,
+     "duration": 23423,
+     "blocks": 4929954,
+     "filesize": 946551168
+    },
+    {
+     "chapter": 15,
+     "start time": "01:13:41.667",
+     "length": "00:03:16.997",
+     "start": 442166,
+     "duration": 19699,
+     "blocks": 4152480,
+     "filesize": 797276160
+    },
+    {
+     "chapter": 16,
+     "start time": "01:16:58.664",
+     "length": "00:05:44.744",
+     "start": 461866,
+     "duration": 34474,
+     "blocks": 7237724,
+     "filesize": 1389643008
+    },
+    {
+     "chapter": 17,
+     "start time": "01:22:43.408",
+     "length": "00:03:51.031",
+     "start": 496340,
+     "duration": 23103,
+     "blocks": 4877926,
+     "filesize": 936561792
+    },
+    {
+     "chapter": 18,
+     "start time": "01:26:34.439",
+     "length": "00:04:28.268",
+     "start": 519443,
+     "duration": 26826,
+     "blocks": 5651825,
+     "filesize": 1085150400
+    },
+    {
+     "chapter": 19,
+     "start time": "01:31:02.707",
+     "length": "00:04:09.850",
+     "start": 546270,
+     "duration": 24984,
+     "blocks": 5218490,
+     "filesize": 1001950080
+    },
+    {
+     "chapter": 20,
+     "start time": "01:35:12.557",
+     "length": "00:03:51.832",
+     "start": 571255,
+     "duration": 23183,
+     "blocks": 4918354,
+     "filesize": 944323968
+    },
+    {
+     "chapter": 21,
+     "start time": "01:39:04.388",
+     "length": "00:04:59.499",
+     "start": 594438,
+     "duration": 29949,
+     "blocks": 6312920,
+     "filesize": 1212080640
+    },
+    {
+     "chapter": 22,
+     "start time": "01:44:03.887",
+     "length": "00:03:05.385",
+     "start": 624388,
+     "duration": 18538,
+     "blocks": 3692337,
+     "filesize": 708928704
+    },
+    {
+     "chapter": 23,
+     "start time": "01:47:09.273",
+     "length": "00:00:00.701",
+     "start": 642927,
+     "duration": 70,
+     "blocks": 5632,
+     "filesize": 1081344
+    }
+   ]
+  },
+  {
+   "title": 15,
+   "playlist": 14,
+   "length": "00:00:57.958",
+   "msecs": 5795,
+   "angles": 1,
+   "blocks": 1171168,
+   "filesize": 224864256,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "01:47:09.973",
+     "length": "00:00:00.667",
+     "start": 642997,
+     "duration": 66,
+     "blocks": 2306,
+     "filesize": 442752
+    },
+    {
+     "chapter": 2,
+     "start time": "01:47:10.641",
+     "length": "00:00:56.590",
+     "start": 643064,
+     "duration": 5658,
+     "blocks": 1162658,
+     "filesize": 223230336
+    },
+    {
+     "chapter": 3,
+     "start time": "01:48:07.231",
+     "length": "00:00:00.701",
+     "start": 648723,
+     "duration": 70,
+     "blocks": 6208,
+     "filesize": 1191936
+    }
+   ]
+  },
+  {
+   "title": 16,
+   "playlist": 15,
+   "length": "00:01:26.119",
+   "msecs": 8611,
+   "angles": 1,
+   "blocks": 1483680,
+   "filesize": 284866560,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "01:48:07.931",
+     "length": "00:01:26.119",
+     "start": 648793,
+     "duration": 8611,
+     "blocks": 1483684,
+     "filesize": 284867328
+    }
+   ]
+  },
+  {
+   "title": 17,
+   "playlist": 16,
+   "length": "00:00:42.943",
+   "msecs": 4294,
+   "angles": 1,
+   "blocks": 741216,
+   "filesize": 142313472,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "01:49:34.051",
+     "length": "00:00:42.943",
+     "start": 657405,
+     "duration": 4294,
+     "blocks": 741220,
+     "filesize": 142314240
+    }
+   ]
+  },
+  {
+   "title": 18,
+   "playlist": 17,
+   "length": "00:02:56.076",
+   "msecs": 17607,
+   "angles": 1,
+   "blocks": 3029792,
+   "filesize": 581720064,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "01:50:16.994",
+     "length": "00:02:56.076",
+     "start": 661699,
+     "duration": 17607,
+     "blocks": 3029796,
+     "filesize": 581720832
+    }
+   ]
+  },
+  {
+   "title": 19,
+   "playlist": 18,
+   "length": "00:00:42.943",
+   "msecs": 4294,
+   "angles": 1,
+   "blocks": 740864,
+   "filesize": 142245888,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "01:53:13.069",
+     "length": "00:00:42.943",
+     "start": 679306,
+     "duration": 4294,
+     "blocks": 740868,
+     "filesize": 142246656
+    }
+   ]
+  },
+  {
+   "title": 20,
+   "playlist": 19,
+   "length": "00:00:42.943",
+   "msecs": 4294,
+   "angles": 1,
+   "blocks": 740576,
+   "filesize": 142190592,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "01:53:56.012",
+     "length": "00:00:42.943",
+     "start": 683601,
+     "duration": 4294,
+     "blocks": 740580,
+     "filesize": 142191360
+    }
+   ]
+  },
+  {
+   "title": 21,
+   "playlist": 20,
+   "length": "00:00:42.943",
+   "msecs": 4294,
+   "angles": 1,
+   "blocks": 741408,
+   "filesize": 142350336,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "01:54:38.955",
+     "length": "00:00:42.943",
+     "start": 687895,
+     "duration": 4294,
+     "blocks": 741412,
+     "filesize": 142351104
+    }
+   ]
+  },
+  {
+   "title": 22,
+   "playlist": 21,
+   "length": "00:00:42.943",
+   "msecs": 4294,
+   "angles": 1,
+   "blocks": 740768,
+   "filesize": 142227456,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080i",
+     "aspect ratio": "16:9",
+     "framerate": 29.97,
+     "codec": "mpeg2",
+     "codec name": "MPEG-2"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "01:55:21.898",
+     "length": "00:00:42.943",
+     "start": 692189,
+     "duration": 4294,
+     "blocks": 740772,
+     "filesize": 142228224
+    }
+   ]
+  }
+ ]
+}

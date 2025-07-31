@@ -1,0 +1,1935 @@
+{
+ "bluray": {
+  "disc name": "A Minecraft Movie",
+  "udf title": "",
+  "disc id": "",
+  "main playlist": 800,
+  "longest playlist": 800,
+  "first play supported": false,
+  "top menu supported": false,
+  "provider data": "Provider Name",
+  "3D content": false,
+  "initial mode": "2D",
+  "titles": 31,
+  "bdinfo titles": 11,
+  "hdmv titles": 8,
+  "bd-j titles": 3,
+  "unsupported titles": 3,
+  "aacs": false,
+  "bdplus": false,
+  "bd-j": true
+ },
+ "xml": {
+  "filename": "bdmt_eng.xml",
+  "language": "eng",
+  "num sets": 1,
+  "set number": 1
+ },
+ "titles": [
+  {
+   "title": 1,
+   "playlist": 0,
+   "length": "00:00:15.557",
+   "msecs": 1555,
+   "angles": 1,
+   "blocks": 368000,
+   "filesize": 70656000,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "truhd",
+     "codec name": "Dolby TrueHD",
+     "format": "multi_chan",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:00:00.000",
+     "length": "00:00:15.557",
+     "start": 0,
+     "duration": 1555,
+     "blocks": 368000,
+     "filesize": 70656000
+    }
+   ]
+  },
+  {
+   "title": 2,
+   "playlist": 5,
+   "length": "00:00:09.009",
+   "msecs": 900,
+   "angles": 1,
+   "blocks": 22816,
+   "filesize": 4380672,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:00:15.557",
+     "length": "00:00:09.009",
+     "start": 1555,
+     "duration": 900,
+     "blocks": 22816,
+     "filesize": 4380672
+    }
+   ]
+  },
+  {
+   "title": 3,
+   "playlist": 6,
+   "length": "00:00:09.051",
+   "msecs": 905,
+   "angles": 1,
+   "blocks": 21888,
+   "filesize": 4202496,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:00:24.566",
+     "length": "00:00:09.051",
+     "start": 2456,
+     "duration": 905,
+     "blocks": 21888,
+     "filesize": 4202496
+    }
+   ]
+  },
+  {
+   "title": 4,
+   "playlist": 7,
+   "length": "00:00:17.017",
+   "msecs": 1701,
+   "angles": 1,
+   "blocks": 41728,
+   "filesize": 8011776,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:00:33.617",
+     "length": "00:00:16.767",
+     "start": 3361,
+     "duration": 1676,
+     "blocks": 41499,
+     "filesize": 7967808
+    },
+    {
+     "chapter": 2,
+     "start time": "00:00:50.384",
+     "length": "00:00:00.250",
+     "start": 5038,
+     "duration": 25,
+     "blocks": 229,
+     "filesize": 43968
+    }
+   ]
+  },
+  {
+   "title": 5,
+   "playlist": 8,
+   "length": "00:00:23.190",
+   "msecs": 2318,
+   "angles": 1,
+   "blocks": 106048,
+   "filesize": 20361216,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:00:50.634",
+     "length": "00:00:22.940",
+     "start": 5063,
+     "duration": 2293,
+     "blocks": 105827,
+     "filesize": 20318784
+    },
+    {
+     "chapter": 2,
+     "start time": "00:01:13.573",
+     "length": "00:00:00.250",
+     "start": 7357,
+     "duration": 25,
+     "blocks": 221,
+     "filesize": 42432
+    }
+   ]
+  },
+  {
+   "title": 6,
+   "playlist": 9,
+   "length": "00:05:41.341",
+   "msecs": 34134,
+   "angles": 1,
+   "blocks": 1195712,
+   "filesize": 229576704,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:01:13.824",
+     "length": "00:00:10.010",
+     "start": 7382,
+     "duration": 1001,
+     "blocks": 31680,
+     "filesize": 6082560
+    },
+    {
+     "chapter": 2,
+     "start time": "00:01:23.834",
+     "length": "00:00:10.010",
+     "start": 8383,
+     "duration": 1001,
+     "blocks": 32913,
+     "filesize": 6319296
+    },
+    {
+     "chapter": 3,
+     "start time": "00:01:33.844",
+     "length": "00:00:10.010",
+     "start": 9384,
+     "duration": 1001,
+     "blocks": 37402,
+     "filesize": 7181184
+    },
+    {
+     "chapter": 4,
+     "start time": "00:01:43.854",
+     "length": "00:00:10.010",
+     "start": 10385,
+     "duration": 1001,
+     "blocks": 42813,
+     "filesize": 8220096
+    },
+    {
+     "chapter": 5,
+     "start time": "00:01:53.864",
+     "length": "00:00:10.010",
+     "start": 11386,
+     "duration": 1001,
+     "blocks": 36283,
+     "filesize": 6966336
+    },
+    {
+     "chapter": 6,
+     "start time": "00:02:03.874",
+     "length": "00:00:10.010",
+     "start": 12387,
+     "duration": 1001,
+     "blocks": 44238,
+     "filesize": 8493696
+    },
+    {
+     "chapter": 7,
+     "start time": "00:02:13.884",
+     "length": "00:00:10.010",
+     "start": 13388,
+     "duration": 1001,
+     "blocks": 38593,
+     "filesize": 7409856
+    },
+    {
+     "chapter": 8,
+     "start time": "00:02:23.894",
+     "length": "00:00:10.010",
+     "start": 14389,
+     "duration": 1001,
+     "blocks": 34155,
+     "filesize": 6557760
+    },
+    {
+     "chapter": 9,
+     "start time": "00:02:33.904",
+     "length": "00:00:10.010",
+     "start": 15390,
+     "duration": 1001,
+     "blocks": 29463,
+     "filesize": 5656896
+    },
+    {
+     "chapter": 10,
+     "start time": "00:02:43.914",
+     "length": "00:00:10.010",
+     "start": 16391,
+     "duration": 1001,
+     "blocks": 35317,
+     "filesize": 6780864
+    },
+    {
+     "chapter": 11,
+     "start time": "00:02:53.924",
+     "length": "00:00:10.010",
+     "start": 17392,
+     "duration": 1001,
+     "blocks": 27287,
+     "filesize": 5239104
+    },
+    {
+     "chapter": 12,
+     "start time": "00:03:03.934",
+     "length": "00:00:10.010",
+     "start": 18393,
+     "duration": 1001,
+     "blocks": 35350,
+     "filesize": 6787200
+    },
+    {
+     "chapter": 13,
+     "start time": "00:03:13.944",
+     "length": "00:00:10.010",
+     "start": 19394,
+     "duration": 1001,
+     "blocks": 36093,
+     "filesize": 6929856
+    },
+    {
+     "chapter": 14,
+     "start time": "00:03:23.954",
+     "length": "00:00:10.010",
+     "start": 20395,
+     "duration": 1001,
+     "blocks": 25659,
+     "filesize": 4926528
+    },
+    {
+     "chapter": 15,
+     "start time": "00:03:33.964",
+     "length": "00:00:10.010",
+     "start": 21396,
+     "duration": 1001,
+     "blocks": 29709,
+     "filesize": 5704128
+    },
+    {
+     "chapter": 16,
+     "start time": "00:03:43.974",
+     "length": "00:00:10.010",
+     "start": 22397,
+     "duration": 1001,
+     "blocks": 40813,
+     "filesize": 7836096
+    },
+    {
+     "chapter": 17,
+     "start time": "00:03:53.984",
+     "length": "00:00:10.010",
+     "start": 23398,
+     "duration": 1001,
+     "blocks": 39810,
+     "filesize": 7643520
+    },
+    {
+     "chapter": 18,
+     "start time": "00:04:03.994",
+     "length": "00:00:10.010",
+     "start": 24399,
+     "duration": 1001,
+     "blocks": 33994,
+     "filesize": 6526848
+    },
+    {
+     "chapter": 19,
+     "start time": "00:04:14.004",
+     "length": "00:00:10.010",
+     "start": 25400,
+     "duration": 1001,
+     "blocks": 40169,
+     "filesize": 7712448
+    },
+    {
+     "chapter": 20,
+     "start time": "00:04:24.014",
+     "length": "00:00:10.010",
+     "start": 26401,
+     "duration": 1001,
+     "blocks": 28915,
+     "filesize": 5551680
+    },
+    {
+     "chapter": 21,
+     "start time": "00:04:34.024",
+     "length": "00:00:10.010",
+     "start": 27402,
+     "duration": 1001,
+     "blocks": 38198,
+     "filesize": 7334016
+    },
+    {
+     "chapter": 22,
+     "start time": "00:04:44.034",
+     "length": "00:00:10.010",
+     "start": 28403,
+     "duration": 1001,
+     "blocks": 36632,
+     "filesize": 7033344
+    },
+    {
+     "chapter": 23,
+     "start time": "00:04:54.044",
+     "length": "00:00:10.010",
+     "start": 29404,
+     "duration": 1001,
+     "blocks": 35246,
+     "filesize": 6767232
+    },
+    {
+     "chapter": 24,
+     "start time": "00:05:04.054",
+     "length": "00:00:10.010",
+     "start": 30405,
+     "duration": 1001,
+     "blocks": 36980,
+     "filesize": 7100160
+    },
+    {
+     "chapter": 25,
+     "start time": "00:05:14.064",
+     "length": "00:00:10.010",
+     "start": 31406,
+     "duration": 1001,
+     "blocks": 30940,
+     "filesize": 5940480
+    },
+    {
+     "chapter": 26,
+     "start time": "00:05:24.074",
+     "length": "00:00:10.010",
+     "start": 32407,
+     "duration": 1001,
+     "blocks": 38881,
+     "filesize": 7465152
+    },
+    {
+     "chapter": 27,
+     "start time": "00:05:34.084",
+     "length": "00:00:10.010",
+     "start": 33408,
+     "duration": 1001,
+     "blocks": 44416,
+     "filesize": 8527872
+    },
+    {
+     "chapter": 28,
+     "start time": "00:05:44.094",
+     "length": "00:00:10.010",
+     "start": 34409,
+     "duration": 1001,
+     "blocks": 36807,
+     "filesize": 7066944
+    },
+    {
+     "chapter": 29,
+     "start time": "00:05:54.104",
+     "length": "00:00:10.010",
+     "start": 35410,
+     "duration": 1001,
+     "blocks": 34803,
+     "filesize": 6682176
+    },
+    {
+     "chapter": 30,
+     "start time": "00:06:04.114",
+     "length": "00:00:10.010",
+     "start": 36411,
+     "duration": 1001,
+     "blocks": 23443,
+     "filesize": 4501056
+    },
+    {
+     "chapter": 31,
+     "start time": "00:06:14.124",
+     "length": "00:00:10.010",
+     "start": 37412,
+     "duration": 1001,
+     "blocks": 31201,
+     "filesize": 5990592
+    },
+    {
+     "chapter": 32,
+     "start time": "00:06:24.134",
+     "length": "00:00:10.010",
+     "start": 38413,
+     "duration": 1001,
+     "blocks": 30712,
+     "filesize": 5896704
+    },
+    {
+     "chapter": 33,
+     "start time": "00:06:34.144",
+     "length": "00:00:10.010",
+     "start": 39414,
+     "duration": 1001,
+     "blocks": 36728,
+     "filesize": 7051776
+    },
+    {
+     "chapter": 34,
+     "start time": "00:06:44.154",
+     "length": "00:00:10.761",
+     "start": 40415,
+     "duration": 1076,
+     "blocks": 39858,
+     "filesize": 7652736
+    },
+    {
+     "chapter": 35,
+     "start time": "00:06:54.914",
+     "length": "00:00:00.250",
+     "start": 41491,
+     "duration": 25,
+     "blocks": 211,
+     "filesize": 40512
+    }
+   ]
+  },
+  {
+   "title": 7,
+   "playlist": 10,
+   "length": "00:00:31.031",
+   "msecs": 3103,
+   "angles": 1,
+   "blocks": 103072,
+   "filesize": 19789824,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:06:55.165",
+     "length": "00:00:10.010",
+     "start": 41516,
+     "duration": 1001,
+     "blocks": 31919,
+     "filesize": 6128448
+    },
+    {
+     "chapter": 2,
+     "start time": "00:07:05.175",
+     "length": "00:00:10.010",
+     "start": 42517,
+     "duration": 1001,
+     "blocks": 32320,
+     "filesize": 6205440
+    },
+    {
+     "chapter": 3,
+     "start time": "00:07:15.185",
+     "length": "00:00:10.761",
+     "start": 43518,
+     "duration": 1076,
+     "blocks": 38608,
+     "filesize": 7412736
+    },
+    {
+     "chapter": 4,
+     "start time": "00:07:25.945",
+     "length": "00:00:00.250",
+     "start": 44594,
+     "duration": 25,
+     "blocks": 225,
+     "filesize": 43200
+    }
+   ]
+  },
+  {
+   "title": 8,
+   "playlist": 11,
+   "length": "00:00:51.051",
+   "msecs": 5105,
+   "angles": 1,
+   "blocks": 161248,
+   "filesize": 30959616,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:07:26.196",
+     "length": "00:00:10.010",
+     "start": 44619,
+     "duration": 1001,
+     "blocks": 31896,
+     "filesize": 6124032
+    },
+    {
+     "chapter": 2,
+     "start time": "00:07:36.206",
+     "length": "00:00:10.010",
+     "start": 45620,
+     "duration": 1001,
+     "blocks": 27973,
+     "filesize": 5370816
+    },
+    {
+     "chapter": 3,
+     "start time": "00:07:46.216",
+     "length": "00:00:10.010",
+     "start": 46621,
+     "duration": 1001,
+     "blocks": 37518,
+     "filesize": 7203456
+    },
+    {
+     "chapter": 4,
+     "start time": "00:07:56.226",
+     "length": "00:00:10.010",
+     "start": 47622,
+     "duration": 1001,
+     "blocks": 27468,
+     "filesize": 5273856
+    },
+    {
+     "chapter": 5,
+     "start time": "00:08:06.236",
+     "length": "00:00:10.761",
+     "start": 48623,
+     "duration": 1076,
+     "blocks": 36164,
+     "filesize": 6943488
+    },
+    {
+     "chapter": 6,
+     "start time": "00:08:16.996",
+     "length": "00:00:00.250",
+     "start": 49699,
+     "duration": 25,
+     "blocks": 229,
+     "filesize": 43968
+    }
+   ]
+  },
+  {
+   "title": 9,
+   "playlist": 13,
+   "length": "00:00:05.005",
+   "msecs": 500,
+   "angles": 1,
+   "blocks": 9248,
+   "filesize": 1775616,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:08:17.247",
+     "length": "00:00:04.755",
+     "start": 49724,
+     "duration": 475,
+     "blocks": 8005,
+     "filesize": 1536960
+    },
+    {
+     "chapter": 2,
+     "start time": "00:08:22.001",
+     "length": "00:00:00.250",
+     "start": 50200,
+     "duration": 25,
+     "blocks": 1243,
+     "filesize": 238656
+    }
+   ]
+  },
+  {
+   "title": 10,
+   "playlist": 17,
+   "length": "00:00:07.007",
+   "msecs": 700,
+   "angles": 1,
+   "blocks": 21824,
+   "filesize": 4190208,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:08:22.252",
+     "length": "00:00:06.757",
+     "start": 50225,
+     "duration": 675,
+     "blocks": 18982,
+     "filesize": 3644544
+    },
+    {
+     "chapter": 2,
+     "start time": "00:08:29.008",
+     "length": "00:00:00.250",
+     "start": 50900,
+     "duration": 25,
+     "blocks": 2842,
+     "filesize": 545664
+    }
+   ]
+  },
+  {
+   "title": 11,
+   "playlist": 24,
+   "length": "00:00:06.006",
+   "msecs": 600,
+   "angles": 1,
+   "blocks": 22336,
+   "filesize": 4288512,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "h264",
+     "codec name": "H264"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:08:29.259",
+     "length": "00:00:06.006",
+     "start": 50925,
+     "duration": 600,
+     "blocks": 22336,
+     "filesize": 4288512
+    }
+   ]
+  },
+  {
+   "title": 12,
+   "playlist": 27,
+   "length": "00:00:10.010",
+   "msecs": 1000,
+   "angles": 1,
+   "blocks": 30368,
+   "filesize": 5830656,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:08:35.265",
+     "length": "00:00:09.760",
+     "start": 51526,
+     "duration": 975,
+     "blocks": 28447,
+     "filesize": 5461824
+    },
+    {
+     "chapter": 2,
+     "start time": "00:08:45.024",
+     "length": "00:00:00.250",
+     "start": 52502,
+     "duration": 25,
+     "blocks": 1921,
+     "filesize": 368832
+    }
+   ]
+  },
+  {
+   "title": 13,
+   "playlist": 32,
+   "length": "00:00:30.030",
+   "msecs": 3002,
+   "angles": 1,
+   "blocks": 5664,
+   "filesize": 1087488,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:08:45.275",
+     "length": "00:00:30.030",
+     "start": 52527,
+     "duration": 3002,
+     "blocks": 5664,
+     "filesize": 1087488
+    }
+   ]
+  },
+  {
+   "title": 14,
+   "playlist": 49,
+   "length": "00:00:06.006",
+   "msecs": 600,
+   "angles": 1,
+   "blocks": 2400,
+   "filesize": 460800,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:09:15.304",
+     "length": "00:00:06.006",
+     "start": 55530,
+     "duration": 600,
+     "blocks": 2400,
+     "filesize": 460800
+    }
+   ]
+  },
+  {
+   "title": 15,
+   "playlist": 50,
+   "length": "00:00:06.006",
+   "msecs": 600,
+   "angles": 1,
+   "blocks": 1728,
+   "filesize": 331776,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:09:21.310",
+     "length": "00:00:06.006",
+     "start": 56131,
+     "duration": 600,
+     "blocks": 1728,
+     "filesize": 331776
+    }
+   ]
+  },
+  {
+   "title": 16,
+   "playlist": 51,
+   "length": "00:00:06.006",
+   "msecs": 600,
+   "angles": 1,
+   "blocks": 1952,
+   "filesize": 374784,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:09:27.316",
+     "length": "00:00:06.006",
+     "start": 56731,
+     "duration": 600,
+     "blocks": 1952,
+     "filesize": 374784
+    }
+   ]
+  },
+  {
+   "title": 17,
+   "playlist": 75,
+   "length": "00:00:10.010",
+   "msecs": 1000,
+   "angles": 1,
+   "blocks": 30432,
+   "filesize": 5842944,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:09:33.322",
+     "length": "00:00:10.010",
+     "start": 57332,
+     "duration": 1000,
+     "blocks": 30432,
+     "filesize": 5842944
+    }
+   ]
+  },
+  {
+   "title": 18,
+   "playlist": 93,
+   "length": "00:02:42.996",
+   "msecs": 16299,
+   "angles": 1,
+   "blocks": 3668864,
+   "filesize": 704421888,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "lpcm",
+     "codec name": "LPCM",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:09:43.332",
+     "length": "00:02:42.996",
+     "start": 58333,
+     "duration": 16299,
+     "blocks": 3668864,
+     "filesize": 704421888
+    }
+   ]
+  },
+  {
+   "title": 19,
+   "playlist": 153,
+   "length": "00:00:10.010",
+   "msecs": 1000,
+   "angles": 1,
+   "blocks": 1952,
+   "filesize": 374784,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:12:26.329",
+     "length": "00:00:09.760",
+     "start": 74632,
+     "duration": 975,
+     "blocks": 1851,
+     "filesize": 355392
+    },
+    {
+     "chapter": 2,
+     "start time": "00:12:36.088",
+     "length": "00:00:00.250",
+     "start": 75608,
+     "duration": 25,
+     "blocks": 101,
+     "filesize": 19392
+    }
+   ]
+  },
+  {
+   "title": 20,
+   "playlist": 800,
+   "length": "01:40:54.840",
+   "msecs": 605484,
+   "angles": 1,
+   "blocks": 273600896,
+   "filesize": 52531372032,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "truhd",
+     "codec name": "Dolby TrueHD",
+     "format": "multi_chan",
+     "rate": "48"
+    },
+    {
+     "track": 2,
+     "stream": "0x1101",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "multi_chan",
+     "rate": "48"
+    },
+    {
+     "track": 3,
+     "stream": "0x1102",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "multi_chan",
+     "rate": "48"
+    },
+    {
+     "track": 4,
+     "stream": "0x1103",
+     "language": "fra",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "multi_chan",
+     "rate": "48"
+    },
+    {
+     "track": 5,
+     "stream": "0x1104",
+     "language": "spa",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "multi_chan",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+    {
+     "track": 1,
+     "stream": "0x12a0",
+     "language": "eng"
+    },
+    {
+     "track": 2,
+     "stream": "0x12a1",
+     "language": "fra"
+    },
+    {
+     "track": 3,
+     "stream": "0x12a2",
+     "language": "spa"
+    },
+    {
+     "track": 4,
+     "stream": "0x12a3",
+     "language": "fra"
+    },
+    {
+     "track": 5,
+     "stream": "0x12a4",
+     "language": "spa"
+    }
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "00:12:36.339",
+     "length": "00:10:01.976",
+     "start": 75633,
+     "duration": 60197,
+     "blocks": 26749647,
+     "filesize": 5135932224
+    },
+    {
+     "chapter": 2,
+     "start time": "00:22:38.315",
+     "length": "00:08:55.035",
+     "start": 135831,
+     "duration": 53503,
+     "blocks": 24469833,
+     "filesize": 4698207936
+    },
+    {
+     "chapter": 3,
+     "start time": "00:31:33.349",
+     "length": "00:10:19.828",
+     "start": 189334,
+     "duration": 61982,
+     "blocks": 28591657,
+     "filesize": 5489598144
+    },
+    {
+     "chapter": 4,
+     "start time": "00:41:53.177",
+     "length": "00:12:31.626",
+     "start": 251317,
+     "duration": 75162,
+     "blocks": 35121367,
+     "filesize": 6743302464
+    },
+    {
+     "chapter": 5,
+     "start time": "00:54:24.803",
+     "length": "00:09:43.458",
+     "start": 326480,
+     "duration": 58345,
+     "blocks": 27452919,
+     "filesize": 5270960448
+    },
+    {
+     "chapter": 6,
+     "start time": "01:04:08.261",
+     "length": "00:08:26.006",
+     "start": 384826,
+     "duration": 50600,
+     "blocks": 24511585,
+     "filesize": 4706224320
+    },
+    {
+     "chapter": 7,
+     "start time": "01:12:34.266",
+     "length": "00:09:31.571",
+     "start": 435426,
+     "duration": 57157,
+     "blocks": 25922190,
+     "filesize": 4977060480
+    },
+    {
+     "chapter": 8,
+     "start time": "01:22:05.837",
+     "length": "00:10:08.191",
+     "start": 492583,
+     "duration": 60819,
+     "blocks": 28096935,
+     "filesize": 5394611520
+    },
+    {
+     "chapter": 9,
+     "start time": "01:32:14.028",
+     "length": "00:14:07.930",
+     "start": 553402,
+     "duration": 84793,
+     "blocks": 40613886,
+     "filesize": 7797866112
+    },
+    {
+     "chapter": 10,
+     "start time": "01:46:21.959",
+     "length": "00:07:08.970",
+     "start": 638195,
+     "duration": 42897,
+     "blocks": 12067129,
+     "filesize": 2316888768
+    },
+    {
+     "chapter": 11,
+     "start time": "01:53:30.929",
+     "length": "00:00:00.250",
+     "start": 681092,
+     "duration": 25,
+     "blocks": 3748,
+     "filesize": 719616
+    }
+   ]
+  },
+  {
+   "title": 21,
+   "playlist": 806,
+   "length": "00:00:10.010",
+   "msecs": 1000,
+   "angles": 1,
+   "blocks": 1952,
+   "filesize": 374784,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "01:53:31.179",
+     "length": "00:00:10.010",
+     "start": 681117,
+     "duration": 1000,
+     "blocks": 1952,
+     "filesize": 374784
+    }
+   ]
+  },
+  {
+   "title": 22,
+   "playlist": 807,
+   "length": "00:14:18.983",
+   "msecs": 85898,
+   "angles": 1,
+   "blocks": 10802784,
+   "filesize": 2074134528,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "h264",
+     "codec name": "H264"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+    {
+     "track": 1,
+     "stream": "0x1200",
+     "language": "eng"
+    },
+    {
+     "track": 2,
+     "stream": "0x1201",
+     "language": "fra"
+    },
+    {
+     "track": 3,
+     "stream": "0x1202",
+     "language": "spa"
+    }
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "01:53:41.189",
+     "length": "00:14:18.733",
+     "start": 682118,
+     "duration": 85873,
+     "blocks": 10799816,
+     "filesize": 2073564672
+    },
+    {
+     "chapter": 2,
+     "start time": "02:07:59.922",
+     "length": "00:00:00.250",
+     "start": 767992,
+     "duration": 25,
+     "blocks": 2968,
+     "filesize": 569856
+    }
+   ]
+  },
+  {
+   "title": 23,
+   "playlist": 808,
+   "length": "00:13:17.255",
+   "msecs": 79725,
+   "angles": 1,
+   "blocks": 10030784,
+   "filesize": 1925910528,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "h264",
+     "codec name": "H264"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+    {
+     "track": 1,
+     "stream": "0x1200",
+     "language": "eng"
+    },
+    {
+     "track": 2,
+     "stream": "0x1201",
+     "language": "fra"
+    },
+    {
+     "track": 3,
+     "stream": "0x1202",
+     "language": "spa"
+    }
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "02:08:00.172",
+     "length": "00:13:17.005",
+     "start": 768017,
+     "duration": 79700,
+     "blocks": 10027769,
+     "filesize": 1925331648
+    },
+    {
+     "chapter": 2,
+     "start time": "02:21:17.177",
+     "length": "00:00:00.250",
+     "start": 847717,
+     "duration": 25,
+     "blocks": 3015,
+     "filesize": 578880
+    }
+   ]
+  },
+  {
+   "title": 24,
+   "playlist": 809,
+   "length": "00:05:12.979",
+   "msecs": 31297,
+   "angles": 1,
+   "blocks": 3928352,
+   "filesize": 754243584,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "h264",
+     "codec name": "H264"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+    {
+     "track": 1,
+     "stream": "0x1200",
+     "language": "eng"
+    },
+    {
+     "track": 2,
+     "stream": "0x1201",
+     "language": "fra"
+    },
+    {
+     "track": 3,
+     "stream": "0x1202",
+     "language": "spa"
+    }
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "02:21:17.427",
+     "length": "00:05:12.729",
+     "start": 847742,
+     "duration": 31272,
+     "blocks": 3925512,
+     "filesize": 753698304
+    },
+    {
+     "chapter": 2,
+     "start time": "02:26:30.156",
+     "length": "00:00:00.250",
+     "start": 879015,
+     "duration": 25,
+     "blocks": 2840,
+     "filesize": 545280
+    }
+   ]
+  },
+  {
+   "title": 25,
+   "playlist": 810,
+   "length": "00:09:05.003",
+   "msecs": 54500,
+   "angles": 1,
+   "blocks": 6852640,
+   "filesize": 1315706880,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "h264",
+     "codec name": "H264"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+    {
+     "track": 1,
+     "stream": "0x1200",
+     "language": "eng"
+    },
+    {
+     "track": 2,
+     "stream": "0x1201",
+     "language": "fra"
+    },
+    {
+     "track": 3,
+     "stream": "0x1202",
+     "language": "spa"
+    }
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "02:26:30.406",
+     "length": "00:09:04.753",
+     "start": 879040,
+     "duration": 54475,
+     "blocks": 6849639,
+     "filesize": 1315130688
+    },
+    {
+     "chapter": 2,
+     "start time": "02:35:35.159",
+     "length": "00:00:00.250",
+     "start": 933515,
+     "duration": 25,
+     "blocks": 3001,
+     "filesize": 576192
+    }
+   ]
+  },
+  {
+   "title": 26,
+   "playlist": 811,
+   "length": "00:13:56.377",
+   "msecs": 83637,
+   "angles": 1,
+   "blocks": 10508064,
+   "filesize": 2017548288,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "1080p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "h264",
+     "codec name": "H264"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "ac3",
+     "codec name": "Dolby Digital",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+    {
+     "track": 1,
+     "stream": "0x1200",
+     "language": "eng"
+    },
+    {
+     "track": 2,
+     "stream": "0x1201",
+     "language": "fra"
+    },
+    {
+     "track": 3,
+     "stream": "0x1202",
+     "language": "spa"
+    }
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "02:35:35.409",
+     "length": "00:13:56.127",
+     "start": 933540,
+     "duration": 83612,
+     "blocks": 10505212,
+     "filesize": 2017000704
+    },
+    {
+     "chapter": 2,
+     "start time": "02:49:31.536",
+     "length": "00:00:00.250",
+     "start": 1017153,
+     "duration": 25,
+     "blocks": 2852,
+     "filesize": 547584
+    }
+   ]
+  },
+  {
+   "title": 27,
+   "playlist": 812,
+   "length": "00:02:42.996",
+   "msecs": 16299,
+   "angles": 1,
+   "blocks": 3595584,
+   "filesize": 690352128,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "lpcm",
+     "codec name": "LPCM",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "02:49:31.786",
+     "length": "00:02:42.996",
+     "start": 1017178,
+     "duration": 16299,
+     "blocks": 3595584,
+     "filesize": 690352128
+    }
+   ]
+  },
+  {
+   "title": 28,
+   "playlist": 813,
+   "length": "00:00:10.010",
+   "msecs": 1000,
+   "angles": 1,
+   "blocks": 31904,
+   "filesize": 6125568,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "02:52:14.782",
+     "length": "00:00:10.010",
+     "start": 1033478,
+     "duration": 1000,
+     "blocks": 31904,
+     "filesize": 6125568
+    }
+   ]
+  },
+  {
+   "title": 29,
+   "playlist": 814,
+   "length": "00:00:10.010",
+   "msecs": 1000,
+   "angles": 1,
+   "blocks": 25312,
+   "filesize": 4859904,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "02:52:24.792",
+     "length": "00:00:10.010",
+     "start": 1034479,
+     "duration": 1000,
+     "blocks": 25312,
+     "filesize": 4859904
+    }
+   ]
+  },
+  {
+   "title": 30,
+   "playlist": 815,
+   "length": "00:00:30.030",
+   "msecs": 3002,
+   "angles": 1,
+   "blocks": 87640,
+   "filesize": 16826880,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "02:52:34.802",
+     "length": "00:00:10.010",
+     "start": 1035480,
+     "duration": 1000,
+     "blocks": 30432,
+     "filesize": 5842944
+    },
+    {
+     "chapter": 2,
+     "start time": "02:52:44.812",
+     "length": "00:00:10.010",
+     "start": 1036481,
+     "duration": 1000,
+     "blocks": 31900,
+     "filesize": 6124800
+    },
+    {
+     "chapter": 3,
+     "start time": "02:52:54.822",
+     "length": "00:00:09.760",
+     "start": 1037482,
+     "duration": 975,
+     "blocks": 23790,
+     "filesize": 4567680
+    },
+    {
+     "chapter": 4,
+     "start time": "02:53:04.582",
+     "length": "00:00:00.250",
+     "start": 1038458,
+     "duration": 25,
+     "blocks": 1518,
+     "filesize": 291456
+    }
+   ]
+  },
+  {
+   "title": 31,
+   "playlist": 816,
+   "length": "00:02:42.996",
+   "msecs": 16299,
+   "angles": 1,
+   "blocks": 3592448,
+   "filesize": 689750016,
+   "video": [
+    {
+     "track": 1,
+     "stream": "0x1011",
+     "format": "2160p",
+     "aspect ratio": "16:9",
+     "framerate": 23.97,
+     "codec": "hevc",
+     "codec name": "HEVC"
+    }
+   ],
+   "audio": [
+    {
+     "track": 1,
+     "stream": "0x1100",
+     "language": "eng",
+     "codec": "lpcm",
+     "codec name": "LPCM",
+     "format": "stereo",
+     "rate": "48"
+    }
+   ],
+   "subtitles": [
+   ],
+   "chapters": [
+    {
+     "chapter": 1,
+     "start time": "02:53:04.832",
+     "length": "00:02:42.996",
+     "start": 1038483,
+     "duration": 16299,
+     "blocks": 3592448,
+     "filesize": 689750016
+    }
+   ]
+  }
+ ]
+}
