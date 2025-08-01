@@ -61,7 +61,7 @@ namespace libbluray
         public byte frame_rate;                       /**< \ref bd_video_rate_e */
         public byte content_exist_3D;                 /**< 1 if 3D content exists on the disc */
         public byte initial_output_mode_preference;   /**< 0 - 2D, 1 - 3D */
-        public byte[] provider_data = new byte[32];                /**< Content provider data */
+        public string provider_data = "";                /**< Content provider data */
 
         /* AACS info  (valid only if disc uses AACS) */
         public byte aacs_detected;     /**< 1 if disc is using AACS encoding */
@@ -488,20 +488,20 @@ namespace libbluray
 
         /* current disc */
         BD_DISC? disc;
-        Variable<BLURAY_DISC_INFO> disc_info;
+        Variable<BLURAY_DISC_INFO> disc_info = new();
         Ref<BLURAY_TITLE> titles;  /* titles from disc index */
         Ref<META_ROOT> meta;
         Ref<NAV_TITLE_LIST> title_list;
 
         /* current playlist */
-        Ref<NAV_TITLE> title;
+        NAV_TITLE? title;
         UInt32 title_idx;
         UInt64 s_pos;
 
         /* streams */
-        Variable<BD_STREAM> st0;       /* main path */
-        Variable<BD_PRELOAD> st_ig;     /* preloaded IG stream sub path */
-        Variable<BD_PRELOAD> st_textst; /* preloaded TextST sub path */
+        Variable<BD_STREAM> st0 = new();       /* main path */
+        Variable<BD_PRELOAD> st_ig = new();     /* preloaded IG stream sub path */
+        Variable<BD_PRELOAD> st_textst = new(); /* preloaded TextST sub path */
 
         /* buffer for bd_read(): current aligned unit of main stream (st0) */
         byte[] int_buf = new byte[6144];
@@ -509,7 +509,7 @@ namespace libbluray
         /* seamless angle change request */
         int seamless_angle_change;
         UInt32 angle_change_pkt;
-        Variable<UInt32> angle_change_time;
+        Variable<UInt32> angle_change_time = new();
         UInt32 request_angle;
 
         /* mark tracking */
@@ -617,7 +617,7 @@ namespace libbluray
              * the current PlayItem, measured in units of a 45 kHz clock.
              */
 
-            if (!bd.Value.title || !bd.Value.st0.Value.clip) {
+            if (bd.Value.title == null || !bd.Value.st0.Value.clip) {
                 return;
             }
             if (time < bd.Value.st0.Value.clip.Value.in_time) {
@@ -637,7 +637,7 @@ namespace libbluray
             /* update PSR_TIME from stream. Not real presentation time (except when seeking), but near enough. */
             Ref<NAV_CLIP> clip = bd.Value.st0.Value.clip;
 
-            if (bd.Value.title && clip) {
+            if (bd.Value.title != null && clip) {
 
                 Variable<UInt32> clip_pkt = new(), clip_time = new();
                 Navigation.nav_clip_packet_search(bd.Value.st0.Value.clip, SPN(bd.Value.st0.Value.clip_pos), clip_pkt.Ref, clip_time.Ref);
@@ -706,7 +706,7 @@ namespace libbluray
 
         static void _update_clip_psrs(Ref<BLURAY> bd, Ref<NAV_CLIP> clip)
         {
-            Ref<MPLS_STN> stn = clip.Value.title.Value.pl.Value.play_item[clip.Value._ref].stn.Ref;
+            Ref<MPLS_STN> stn = clip.Value.title.pl.Value.play_item[clip.Value._ref].stn.Ref;
             Variable<UInt32> audio_lang = new(0);
             UInt32 psr_val;
 
@@ -753,15 +753,15 @@ namespace libbluray
         {
             Ref<NAV_CLIP> clip = bd.Value.st0.Value.clip;
 
-            Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_PLAYLIST, uint.Parse(bd.Value.title.Value.name));
-            Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_ANGLE_NUMBER, bd.Value.title.Value.angle + 1u);
+            Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_PLAYLIST, uint.Parse(Path.GetFileNameWithoutExtension(bd.Value.title.name)));
+            Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_ANGLE_NUMBER, bd.Value.title.angle + 1u);
             Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_CHAPTER, 0xffff);
 
             if (clip && bd.Value.title_type == BD_TITLE_TYPE.title_undef) {
                 /* Initialize selected audio and subtitle stream PSRs when not using menus.
                  * Selection is based on language setting PSRs and clip STN.
                  */
-                Ref<MPLS_STN> stn = clip.Value.title.Value.pl.Value.play_item[clip.Value._ref].stn.Ref;
+                Ref<MPLS_STN> stn = clip.Value.title.pl.Value.play_item[clip.Value._ref].stn.Ref;
                 Variable<UInt32> audio_lang = new(0);
 
                 /* make sure clip is up-to-date before STREAM events are triggered */
@@ -799,7 +799,7 @@ namespace libbluray
 
         static void _update_chapter_psr(Ref<BLURAY> bd)
         {
-            if (!_is_interactive_title(bd) && bd.Value.title.Value.chap_list.count > 0) {
+            if (!_is_interactive_title(bd) && bd.Value.title.chap_list.count > 0) {
                 UInt32 current_chapter = bd_get_current_chapter(bd);
                 Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_CHAPTER, current_chapter + 1);
             }
@@ -813,7 +813,7 @@ namespace libbluray
         {
             uint main_clip_idx = bd.Value.st0.Value.clip ? bd.Value.st0.Value.clip.Value._ref : 0;
             uint pg_stream = Register.bd_psr_read(bd.Value.regs, bd_psr_idx.PSR_PG_STREAM);
-            Ref<MPLS_STN> stn = bd.Value.title.Value.pl.Value.play_item[main_clip_idx].stn.Ref;
+            Ref<MPLS_STN> stn = bd.Value.title.pl.Value.play_item[main_clip_idx].stn.Ref;
 
 #if false
     /* Enable decoder unconditionally (required for forced subtitles).
@@ -860,7 +860,7 @@ namespace libbluray
             /* reset PG decoder and controller */
             GraphicsController.gc_run(bd.Value.graphics_controller, gc_ctrl_e.GC_CTRL_PG_RESET, 0, Ref<GC_NAV_CMDS>.Null);
 
-            if (bd.Value.decode_pg == 0 || bd.Value.title) {
+            if (bd.Value.decode_pg == 0 || bd.Value.title == null) {
                 return false;
             }
 
@@ -995,7 +995,7 @@ namespace libbluray
                     st.Value.int_buf_off = 6144;
 
                     if (st == bd.Value.st0.Ref) {
-                        Ref<MPLS_PL> pl = st.Value.clip.Value.title.Value.pl;
+                        Ref<MPLS_PL> pl = st.Value.clip.Value.title.pl;
                         Ref<MPLS_STN> stn = pl.Value.play_item[st.Value.clip.Value._ref].stn.Ref;
 
                         st.Value.uo_mask = BD_UO_MASK.uo_mask_combine(pl.Value.app_info.Value.uo_mask.Value,
@@ -1413,7 +1413,7 @@ namespace libbluray
                 bd.Value.disc_info.Value.initial_dynamic_range_type = (byte)index.Value.app_info.Value.initial_dynamic_range_type;
                 bd.Value.disc_info.Value.content_exist_3D = (byte)index.Value.app_info.Value.content_exist_flag;
                 bd.Value.disc_info.Value.initial_output_mode_preference = (byte)index.Value.app_info.Value.initial_output_mode_preference;
-                Array.Copy(index.Value.app_info.Value.user_data, bd.Value.disc_info.Value.provider_data, bd.Value.disc_info.Value.provider_data.Length);
+                bd.Value.disc_info.Value.provider_data = index.Value.app_info.Value.user_data;
 
                 /* allocate array for title info */
                 Ref<BLURAY_TITLE> titles = Ref<BLURAY_TITLE>.Allocate(index.Value.num_titles + 2);
@@ -1672,7 +1672,7 @@ namespace libbluray
 
         static int _bd_set_virtual_package(Ref<BLURAY> bd, string vp_path, int psr_init_backup)
         {
-            if (bd.Value.title)
+            if (bd.Value.title != null)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"bd_set_virtual_package() failed: playlist is playing");
                 return -1;
@@ -1760,7 +1760,7 @@ namespace libbluray
         public static void bd_bdj_osd_cb(Ref<BLURAY> bd, Ref<uint> img, int w, int h,
                            int x0, int y0, int x1, int y1)
         {
-            Variable<BD_ARGB_OVERLAY> aov;
+            Variable<BD_ARGB_OVERLAY> aov = new();
 
             if (bd.Value.argb_overlay_proc == null)
             {
@@ -2068,9 +2068,9 @@ namespace libbluray
 
             bd.Value.next_mark = -1;
             bd.Value.next_mark_pos = ulong.MaxValue;
-            for (ii = 0; ii < bd.Value.title.Value.mark_list.count; ii++)
+            for (ii = 0; ii < bd.Value.title.mark_list.count; ii++)
             {
-                UInt64 pos = (UInt64)bd.Value.title.Value.mark_list.mark[ii].title_pkt * 192L;
+                UInt64 pos = (UInt64)bd.Value.title.mark_list.mark[ii].title_pkt * 192L;
                 if (pos > bd.Value.s_pos)
                 {
                     bd.Value.next_mark = (int)ii;
@@ -2094,9 +2094,9 @@ namespace libbluray
 
                 /* update next mark */
                 bd.Value.next_mark++;
-                if ((uint)bd.Value.next_mark < bd.Value.title.Value.mark_list.count)
+                if ((uint)bd.Value.next_mark < bd.Value.title.mark_list.count)
                 {
-                    bd.Value.next_mark_pos = (UInt64)bd.Value.title.Value.mark_list.mark[bd.Value.next_mark].title_pkt * 192L;
+                    bd.Value.next_mark_pos = (UInt64)bd.Value.title.mark_list.mark[bd.Value.next_mark].title_pkt * 192L;
                 }
                 else
                 {
@@ -2157,7 +2157,7 @@ namespace libbluray
             {
                 Navigation.nav_set_angle(bd.Value.title, bd.Value.request_angle);
                 bd.Value.seamless_angle_change = 0;
-                Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_ANGLE_NUMBER, (uint)(bd.Value.title.Value.angle + 1));
+                Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_ANGLE_NUMBER, (uint)(bd.Value.title.angle + 1));
 
                 /* force re-opening .m2ts file in _seek_internal() */
                 _close_m2ts(bd.Value.st0.Ref);
@@ -2179,8 +2179,8 @@ namespace libbluray
 
             bd.Value.mutex.bd_mutex_lock();
 
-            if (bd.Value.title &&
-                tick < bd.Value.title.Value.duration)
+            if (bd.Value.title != null &&
+                tick < bd.Value.title.duration)
             {
 
                 _change_angle(bd);
@@ -2213,7 +2213,7 @@ namespace libbluray
 
             bd.Value.mutex.bd_mutex_lock();
 
-            if (bd.Value.title)
+            if (bd.Value.title != null)
             {
                 clip = Navigation.nav_packet_search(bd.Value.title, SPN(bd.Value.s_pos), clip_pkt.Ref, out_pkt.Ref, out_time.Ref);
                 if (clip)
@@ -2234,8 +2234,8 @@ namespace libbluray
 
             bd.Value.mutex.bd_mutex_lock();
 
-            if (bd.Value.title &&
-                chapter < bd.Value.title.Value.chap_list.count)
+            if (bd.Value.title != null &&
+                chapter < bd.Value.title.chap_list.count)
             {
 
                 _change_angle(bd);
@@ -2263,8 +2263,8 @@ namespace libbluray
 
             bd.Value.mutex.bd_mutex_lock();
 
-            if (bd.Value.title &&
-                chapter < bd.Value.title.Value.chap_list.count)
+            if (bd.Value.title != null &&
+                chapter < bd.Value.title.chap_list.count)
             {
 
                 // Find the closest access unit to the requested position
@@ -2283,7 +2283,7 @@ namespace libbluray
 
             bd.Value.mutex.bd_mutex_lock();
 
-            if (bd.Value.title)
+            if (bd.Value.title != null)
             {
                 ret = Navigation.nav_chapter_get_current(bd.Value.title, SPN(bd.Value.s_pos));
             }
@@ -2300,13 +2300,13 @@ namespace libbluray
 
             bd.Value.mutex.bd_mutex_lock();
 
-            if (bd.Value.title &&
-                clip_ref < bd.Value.title.Value.clip_list.count)
+            if (bd.Value.title != null &&
+                clip_ref < bd.Value.title.clip_list.count)
             {
 
                 _change_angle(bd);
 
-                clip = bd.Value.title.Value.clip_list.clip.AtIndex(clip_ref);
+                clip = bd.Value.title.clip_list.clip.AtIndex(clip_ref);
                 clip_pkt = clip.Value.start_pkt;
                 out_pkt = clip.Value.title_pkt;
 
@@ -2330,8 +2330,8 @@ namespace libbluray
 
             bd.Value.mutex.bd_mutex_lock();
 
-            if (bd.Value.title &&
-                mark < bd.Value.title.Value.mark_list.count)
+            if (bd.Value.title != null &&
+                mark < bd.Value.title.mark_list.count)
             {
 
                 _change_angle(bd);
@@ -2359,8 +2359,8 @@ namespace libbluray
 
             bd.Value.mutex.bd_mutex_lock();
 
-            if (bd.Value.title &&
-                pos < (UInt64)bd.Value.title.Value.packets * 192)
+            if (bd.Value.title != null &&
+                pos < (UInt64)bd.Value.title.packets * 192)
             {
 
                 pkt.Value = SPN(pos);
@@ -2389,9 +2389,9 @@ namespace libbluray
 
             bd.Value.mutex.bd_mutex_lock();
 
-            if (bd.Value.title)
+            if (bd.Value.title != null)
             {
-                ret.Value = (UInt64)bd.Value.title.Value.packets * 192;
+                ret.Value = (UInt64)bd.Value.title.packets * 192;
             }
 
             bd.Value.mutex.bd_mutex_unlock();
@@ -2425,7 +2425,7 @@ namespace libbluray
         {
             Variable<UInt32> clip_pkt = new(), out_pkt = new();
 
-            if (!bd.Value.title || !bd.Value.st0.Value.clip)
+            if (bd.Value.title == null || !bd.Value.st0.Value.clip)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"_clip_seek_time(): no playlist playing");
                 return -1;
@@ -2704,7 +2704,7 @@ namespace libbluray
                 return 0;
             }
 
-            if (bd.Value.decode_pg == 0 || !bd.Value.title)
+            if (bd.Value.decode_pg == 0 || bd.Value.title == null)
             {
                 return 0;
             }
@@ -2720,18 +2720,18 @@ namespace libbluray
                 return 0;
             }
 
-            if ((uint)textst_subpath.Value >= bd.Value.title.Value.sub_path_count)
+            if ((uint)textst_subpath.Value >= bd.Value.title.sub_path_count)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"_preload_textst_subpath(): invalid subpath id");
                 return -1;
             }
-            if (textst_subclip.Value >= bd.Value.title.Value.sub_path[textst_subpath.Value].clip_list.count)
+            if (textst_subclip.Value >= bd.Value.title.sub_path[textst_subpath.Value].clip_list.count)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"_preload_textst_subpath(): invalid subclip id");
                 return -1;
             }
 
-            if (bd.Value.st_textst.Value.clip == bd.Value.title.Value.sub_path[textst_subpath.Value].clip_list.clip.AtIndex(textst_subclip.Value))
+            if (bd.Value.st_textst.Value.clip == bd.Value.title.sub_path[textst_subpath.Value].clip_list.clip.AtIndex(textst_subclip.Value))
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY, "_preload_textst_subpath(): subpath already loaded");
                 return 1;
@@ -2739,7 +2739,7 @@ namespace libbluray
 
             GraphicsController.gc_run(bd.Value.graphics_controller, gc_ctrl_e.GC_CTRL_PG_RESET, 0, Ref<GC_NAV_CMDS>.Null);
 
-            bd.Value.st_textst.Value.clip = bd.Value.title.Value.sub_path[textst_subpath.Value].clip_list.clip.AtIndex(textst_subclip.Value);
+            bd.Value.st_textst.Value.clip = bd.Value.title.sub_path[textst_subpath.Value].clip_list.clip.AtIndex(textst_subclip.Value);
             if (!bd.Value.st_textst.Value.clip.Value.cl)
             {
                 /* required for fonts */
@@ -2784,7 +2784,7 @@ namespace libbluray
         {
             uint main_clip_idx = bd.Value.st0.Value.clip ? bd.Value.st0.Value.clip.Value._ref : 0;
             uint ig_stream = Register.bd_psr_read(bd.Value.regs, bd_psr_idx.PSR_IG_STREAM_ID);
-            Ref<MPLS_STN> stn = bd.Value.title.Value.pl.Value.play_item[main_clip_idx].stn.Ref;
+            Ref<MPLS_STN> stn = bd.Value.title.pl.Value.play_item[main_clip_idx].stn.Ref;
 
             if (ig_stream > 0 && ig_stream <= stn.Value.num_ig)
             {
@@ -2821,21 +2821,21 @@ namespace libbluray
                 return 0;
             }
 
-            if (ig_subclip.Value >= bd.Value.title.Value.sub_path[ig_subpath.Value].clip_list.count)
+            if (ig_subclip.Value >= bd.Value.title.sub_path[ig_subpath.Value].clip_list.count)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"_preload_ig_subpath(): invalid subclip id");
                 return -1;
             }
 
-            if (bd.Value.st_ig.Value.clip == bd.Value.title.Value.sub_path[ig_subpath.Value].clip_list.clip.AtIndex(ig_subclip.Value))
+            if (bd.Value.st_ig.Value.clip == bd.Value.title.sub_path[ig_subpath.Value].clip_list.clip.AtIndex(ig_subclip.Value))
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, "_preload_ig_subpath(): subpath already loaded");
                 //return 1;
             }
 
-            bd.Value.st_ig.Value.clip = bd.Value.title.Value.sub_path[ig_subpath.Value].clip_list.clip.AtIndex(ig_subclip.Value);
+            bd.Value.st_ig.Value.clip = bd.Value.title.sub_path[ig_subpath.Value].clip_list.clip.AtIndex(ig_subclip.Value);
 
-            if (bd.Value.title.Value.sub_path[ig_subpath.Value].clip_list.count > 1)
+            if (bd.Value.title.sub_path[ig_subpath.Value].clip_list.count > 1)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"_preload_ig_subpath(): multi-clip sub paths not supported");
             }
@@ -2854,7 +2854,7 @@ namespace libbluray
             _close_preload(ref bd.Value.st_ig.Value);
             _close_preload(ref bd.Value.st_textst.Value);
 
-            if (bd.Value.title.Value.sub_path_count <= 0)
+            if (bd.Value.title.sub_path_count <= 0)
             {
                 return 0;
             }
@@ -2870,7 +2870,7 @@ namespace libbluray
 
             bd.Value.st0.Value.ig_pid = 0;
 
-            if (!bd.Value.title || !bd.Value.graphics_controller)
+            if (bd.Value.title == null || !bd.Value.graphics_controller)
             {
                 return 0;
             }
@@ -2906,9 +2906,9 @@ namespace libbluray
             }
 
             /* stopping playback in middle of playlist ? */
-            if (bd.Value.title && bd.Value.st0.Value.clip)
+            if (bd.Value.title != null && bd.Value.st0.Value.clip)
             {
-                if (bd.Value.st0.Value.clip.Value._ref < bd.Value.title.Value.clip_list.count - 1) {
+                if (bd.Value.st0.Value.clip.Value._ref < bd.Value.title.clip_list.count - 1) {
                     /* not last clip of playlist */
                     Logging.bd_debug(DebugMaskEnum.DBG_BLURAY, $"close playlist (not last clip)");
                     _queue_event(bd, bd_event_e.BD_EVENT_PLAYLIST_STOP, 0);
@@ -3019,7 +3019,7 @@ namespace libbluray
                 /* remember played playlists when using menus */
                 if (bd.Value.title_type != BD_TITLE_TYPE.title_undef)
                 {
-                    _add_known_playlist(bd.Value.disc, bd.Value.title.Value.name);
+                    _add_known_playlist(bd.Value.disc, bd.Value.title.name);
                 }
 
                 /* inform application about current streams (redundant) */
@@ -3146,16 +3146,16 @@ namespace libbluray
                 return false;
             }
 
-            orig_angle = bd.Value.title.Value.angle;
+            orig_angle = bd.Value.title.angle;
 
             Navigation.nav_set_angle(bd.Value.title, angle);
 
-            if (orig_angle == bd.Value.title.Value.angle)
+            if (orig_angle == bd.Value.title.angle)
             {
                 return true;
             }
 
-            Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_ANGLE_NUMBER, (uint)(bd.Value.title.Value.angle + 1));
+            Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_ANGLE_NUMBER, (uint)(bd.Value.title.angle + 1));
 
             if (!_open_m2ts(bd, bd.Value.st0.Ref))
             {
@@ -3180,9 +3180,9 @@ namespace libbluray
             int angle = 0;
 
             bd.Value.mutex.bd_mutex_lock();
-            if (bd.Value.title)
+            if (bd.Value.title != null)
             {
-                angle = bd.Value.title.Value.angle;
+                angle = bd.Value.title.angle;
             }
             bd.Value.mutex.bd_mutex_unlock();
 
@@ -3303,7 +3303,7 @@ namespace libbluray
             return true;
         }
 
-        static Ref<BLURAY_TITLE_INFO> _fill_title_info(Ref<NAV_TITLE> title, UInt32 title_idx, UInt32 playlist)
+        static Ref<BLURAY_TITLE_INFO> _fill_title_info(NAV_TITLE? title, UInt32 title_idx, UInt32 playlist)
         {
             Ref<BLURAY_TITLE_INFO> title_info;
             uint ii;
@@ -3315,9 +3315,9 @@ namespace libbluray
             }
             title_info.Value.idx = title_idx;
             title_info.Value.playlist = playlist;
-            title_info.Value.duration = (UInt64)title.Value.duration * 2;
-            title_info.Value.angle_count = title.Value.angle_count;
-            title_info.Value.chapter_count = title.Value.chap_list.count;
+            title_info.Value.duration = (UInt64)title.duration * 2;
+            title_info.Value.angle_count = title.angle_count;
+            title_info.Value.chapter_count = title.chap_list.count;
             if (title_info.Value.chapter_count != 0)
             {
                 title_info.Value.chapters = Ref<BLURAY_TITLE_CHAPTER>.Allocate(title_info.Value.chapter_count);
@@ -3328,13 +3328,13 @@ namespace libbluray
                 for (ii = 0; ii < title_info.Value.chapter_count; ii++)
                 {
                     title_info.Value.chapters[ii].idx = ii;
-                    title_info.Value.chapters[ii].start = (UInt64)title.Value.chap_list.mark[ii].title_time * 2;
-                    title_info.Value.chapters[ii].duration = (UInt64)title.Value.chap_list.mark[ii].duration * 2;
-                    title_info.Value.chapters[ii].offset = (UInt64)title.Value.chap_list.mark[ii].title_pkt * 192L;
-                    title_info.Value.chapters[ii].clip_ref = title.Value.chap_list.mark[ii].clip_ref;
+                    title_info.Value.chapters[ii].start = (UInt64)title.chap_list.mark[ii].title_time * 2;
+                    title_info.Value.chapters[ii].duration = (UInt64)title.chap_list.mark[ii].duration * 2;
+                    title_info.Value.chapters[ii].offset = (UInt64)title.chap_list.mark[ii].title_pkt * 192L;
+                    title_info.Value.chapters[ii].clip_ref = title.chap_list.mark[ii].clip_ref;
                 }
             }
-            title_info.Value.mark_count = title.Value.mark_list.count;
+            title_info.Value.mark_count = title.mark_list.count;
             if (title_info.Value.mark_count != 0)
             {
                 title_info.Value.marks = Ref<BLURAY_TITLE_MARK>.Allocate(title_info.Value.mark_count);
@@ -3345,14 +3345,14 @@ namespace libbluray
                 for (ii = 0; ii < title_info.Value.mark_count; ii++)
                 {
                     title_info.Value.marks[ii].idx = ii;
-                    title_info.Value.marks[ii].type = title.Value.mark_list.mark[ii].mark_type;
-                    title_info.Value.marks[ii].start = (UInt64)title.Value.mark_list.mark[ii].title_time * 2;
-                    title_info.Value.marks[ii].duration = (UInt64)title.Value.mark_list.mark[ii].duration * 2;
-                    title_info.Value.marks[ii].offset = (UInt64)title.Value.mark_list.mark[ii].title_pkt * 192L;
-                    title_info.Value.marks[ii].clip_ref = title.Value.mark_list.mark[ii].clip_ref;
+                    title_info.Value.marks[ii].type = title.mark_list.mark[ii].mark_type;
+                    title_info.Value.marks[ii].start = (UInt64)title.mark_list.mark[ii].title_time * 2;
+                    title_info.Value.marks[ii].duration = (UInt64)title.mark_list.mark[ii].duration * 2;
+                    title_info.Value.marks[ii].offset = (UInt64)title.mark_list.mark[ii].title_pkt * 192L;
+                    title_info.Value.marks[ii].clip_ref = title.mark_list.mark[ii].clip_ref;
                 }
             }
-            title_info.Value.clip_count = title.Value.clip_list.count;
+            title_info.Value.clip_count = title.clip_list.count;
             if (title_info.Value.clip_count != 0)
             {
                 title_info.Value.clips = Ref<BLURAY_CLIP_INFO>.Allocate(title_info.Value.clip_count);
@@ -3363,8 +3363,8 @@ namespace libbluray
                 for (ii = 0; ii < title_info.Value.clip_count; ii++)
                 {
                     Ref<BLURAY_CLIP_INFO> ci = title_info.Value.clips.AtIndex(ii);
-                    Ref<MPLS_PI> pi = title.Value.pl.Value.play_item.AtIndex(ii);
-                    Ref<NAV_CLIP> nc = title.Value.clip_list.clip.AtIndex(ii);
+                    Ref<MPLS_PI> pi = title.pl.Value.play_item.AtIndex(ii);
+                    Ref<NAV_CLIP> nc = title.clip_list.clip.AtIndex(ii);
 
                     ci.Value.clip_id = pi.Value.clip.Value.clip_id;
                     ci.Value.pkt_count = nc.Value.end_pkt - nc.Value.start_pkt;
@@ -3392,7 +3392,7 @@ namespace libbluray
                 }
             }
 
-            title_info.Value.mvc_base_view_r_flag = title.Value.pl.Value.app_info.Value.mvc_base_view_r_flag;
+            title_info.Value.mvc_base_view_r_flag = title.pl.Value.app_info.Value.mvc_base_view_r_flag;
 
             return title_info;
 
@@ -3404,7 +3404,7 @@ namespace libbluray
 
         static Ref<BLURAY_TITLE_INFO> _get_mpls_info(Ref<BLURAY> bd, UInt32 title_idx, UInt32 playlist, uint angle)
         {
-            Ref<NAV_TITLE> title;
+            NAV_TITLE? title;
             Ref<BLURAY_TITLE_INFO> title_info;
             string mpls_name;
 
@@ -3422,7 +3422,7 @@ namespace libbluray
 
             /* current title ? => no need to load mpls file */
             bd.Value.mutex.bd_mutex_lock();
-            if (bd.Value.title && bd.Value.title.Value.angle == angle && bd.Value.title.Value.name == mpls_name)
+            if (bd.Value.title != null && bd.Value.title.angle == angle && bd.Value.title.name == mpls_name)
             {
                 title_info = _fill_title_info(bd.Value.title, title_idx, playlist);
                 bd.Value.mutex.bd_mutex_unlock();
@@ -4364,7 +4364,7 @@ namespace libbluray
                     bd.Value.end_of_playlist |= 2;
                 }
 
-                if (!bd.Value.title)
+                if (bd.Value.title == null)
                 {
                     /* BD-J title running but no playlist playing */
                     _queue_event(bd, bd_event_e.BD_EVENT_IDLE, 0);
@@ -4438,7 +4438,7 @@ namespace libbluray
 
         static int _set_rate(Ref<BLURAY> bd, UInt32 rate)
         {
-            if (!bd.Value.title)
+            if (bd.Value.title == null)
             {
                 return -1;
             }
@@ -4705,9 +4705,9 @@ namespace libbluray
 
         public static Ref<CLPI_CL> bd_get_clpi(Ref<BLURAY> bd, uint clip_ref)
         {
-            if (bd.Value.title && clip_ref < bd.Value.title.Value.clip_list.count)
+            if (bd.Value.title != null && clip_ref < bd.Value.title.clip_list.count)
             {
-                Ref<NAV_CLIP> clip = bd.Value.title.Value.clip_list.clip.AtIndex(clip_ref);
+                Ref<NAV_CLIP> clip = bd.Value.title.clip_list.clip.AtIndex(clip_ref);
                 return ClpiParse.clpi_copy(clip.Value.cl);
             }
             return Ref<CLPI_CL>.Null;

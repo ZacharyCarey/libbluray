@@ -30,7 +30,7 @@ namespace UnitTests.Json
 
     public class BlurayInfo
     {
-        [JsonPropertyName("disc_name"), JsonInclude]
+        [JsonPropertyName("disc name"), JsonInclude]
         public string? DiscName { get; set; }
 
         [JsonPropertyName("udf title"), JsonInclude]
@@ -181,7 +181,7 @@ namespace UnitTests.Json
         public string? Format { get; set; }
 
         [JsonPropertyName("rate"), JsonInclude]
-        public int? Rate { get; set; }
+        public string? Rate { get; set; }
     }
 
     public class SubtitleInfo

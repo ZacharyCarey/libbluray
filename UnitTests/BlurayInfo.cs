@@ -42,7 +42,7 @@ namespace UnitTests.BlurayInfo
         int g_ix = 0;
 
         public bluray_info Info;
-        public Ref<META_DL> bd_meta = Ref<META_DL>.Null;
+        public META_DL? bd_meta = null;
         public List<bluray_title> Titles = new();
 
         public BlurayInfo(string root)
@@ -58,11 +58,14 @@ namespace UnitTests.BlurayInfo
             p_bluray_xchap = false;
             p_bluray_json = true;
 
+            // --duplicates
+            d_duplicates = true;
+
             // initialize
             device_filename = root;
             Ref<BLURAY> bd = Ref<BLURAY>.Null;
             bd = BLURAY.bd_open(device_filename, null);
-            Assert.IsNotNull(bd, "Failed to open Bluray library.");
+            Assert.IsTrue(bd, "Failed to open Bluray library.");
 
             // Blu-ray
             bluray_info bluray_info;
@@ -172,11 +175,10 @@ namespace UnitTests.BlurayInfo
                 //printf(" },\n");
 
                 // Fetch metadata from optional XML file (generally bdmt_eng.xml)
-                bd_meta = BLURAY.bd_get_meta(bd);
-
-                if (bd_meta != null)
+                var meta = BLURAY.bd_get_meta(bd);
+                if (meta != null)
                 {
-
+                    bd_meta = meta.Value;
                     //printf(" \"xml\": {\n");
                     //printf("  \"filename\": \"%s\",\n", bd_meta.filename);
                     //printf("  \"language\": \"%s\",\n", bd_meta.language_code);
@@ -191,17 +193,6 @@ namespace UnitTests.BlurayInfo
             Ref<BLURAY_STREAM_INFO> bd_stream = Ref<BLURAY_STREAM_INFO>.Null;
             Ref<BLURAY_TITLE_CHAPTER> bd_chapter = Ref<BLURAY_TITLE_CHAPTER>.Null;
 
-
-            bluray_title bluray_title = new();
-            bluray_video bluray_video = new();
-            bluray_audio bluray_audio = new();
-            bluray_pgs bluray_pgs = new();
-            bluray_chapter bluray_chapter = new();
-            bluray_chapter.duration = 0;
-            bluray_chapter.length = "00:00:00.000";
-            bluray_chapter.size = 0;
-            bluray_chapter.size_mbs = 0;
-            bluray_chapter.blocks = 0;
 
             //if (p_bluray_json)
             //    printf(" \"titles\": [\n");
@@ -230,6 +221,7 @@ namespace UnitTests.BlurayInfo
 
                     for (ix = 0; ix < num_playlists; ix++) {
 
+                        bluray_title bluray_title = new();
                         retval = bluray_title_init(bd, out bluray_title, ix, angle_ix, false);
 
                         // Skip if there was a problem getting it
@@ -258,7 +250,7 @@ namespace UnitTests.BlurayInfo
             // Display the titles in bluray_info / bluray_json
             for (ix = 0; ix < num_playlists; ix++)
             {
-
+                bluray_title bluray_title = new();
                 retval = bluray_title_init(bd, out bluray_title, arr_playlists[ix], angle_ix, true);
 
                 //if (debug)
@@ -323,6 +315,7 @@ namespace UnitTests.BlurayInfo
 
                 if (p_bluray_json)
                 {
+                    bluray_title.json_ix = json_ix;
                     Titles.Add(bluray_title);
                     //printf("  {\n");
                     //printf("   \"title\": %u,\n", json_ix);
@@ -355,6 +348,7 @@ namespace UnitTests.BlurayInfo
                         if (bd_stream == null)
                             continue;
 
+                        bluray_video bluray_video = new();
                         bluray_video_codec(out bluray_video.codec, (bd_stream_type_e)bd_stream.Value.coding_type);
                         bluray_video_codec_name(out bluray_video.codec_name, (bd_stream_type_e)bd_stream.Value.coding_type);
                         bluray_video_format(out bluray_video.format, (bd_video_format_e)bd_stream.Value.format);
@@ -411,6 +405,7 @@ namespace UnitTests.BlurayInfo
                         if (bd_stream == null)
                             continue;
 
+                        bluray_audio bluray_audio = new();
                         bluray_audio_lang(out bluray_audio.lang, bd_stream.Value.lang);
                         bluray_audio_codec(out bluray_audio.codec, (bd_stream_type_e)bd_stream.Value.coding_type);
                         bluray_audio_codec_name(out bluray_audio.codec_name, (bd_stream_type_e)bd_stream.Value.coding_type);
@@ -467,6 +462,7 @@ namespace UnitTests.BlurayInfo
                         if (bd_stream == null)
                             continue;
 
+                        bluray_pgs bluray_pgs = new();
                         bluray_pgs_lang(out bluray_pgs.lang, bd_stream.Value.lang);
 
                         //if (p_bluray_info && d_subtitles)
@@ -514,6 +510,13 @@ namespace UnitTests.BlurayInfo
 
                         if (bd_chapter == null)
                             continue;
+
+                        bluray_chapter bluray_chapter = new();
+                        bluray_chapter.duration = 0;
+                        bluray_chapter.length = "00:00:00.000";
+                        bluray_chapter.size = 0;
+                        bluray_chapter.size_mbs = 0;
+                        bluray_chapter.blocks = 0;
 
                         bluray_chapter.start = chapter_start;
                         bluray_chapter.duration = bd_chapter.Value.duration;

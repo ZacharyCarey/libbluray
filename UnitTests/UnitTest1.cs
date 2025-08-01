@@ -80,7 +80,7 @@ namespace UnitTests
                     Assert.AreEqual(audioTuple.First.Codec, audioTuple.Second.codec);
                     Assert.AreEqual(audioTuple.First.CodecName, audioTuple.Second.codec_name);
                     Assert.AreEqual(audioTuple.First.Format, audioTuple.Second.format);
-                    Assert.AreEqual(audioTuple.First.Rate.ToString(), audioTuple.Second.rate);
+                    Assert.AreEqual(audioTuple.First.Rate, audioTuple.Second.rate);
                 }
 
                 // Subtitles
@@ -88,7 +88,7 @@ namespace UnitTests
                 foreach(var subTuple in titleTuple.First.Subtitles.Zip(titleTuple.Second.SubtitleStreams))
                 {
                     Assert.AreEqual(subTuple.First.Track, subTuple.Second.pg_stream_number);
-                    Assert.AreEqual(subTuple.First.Stream, $"0x{subTuple.Second.pid:X}");
+                    Assert.AreEqual(subTuple.First.Stream, $"0x{subTuple.Second.pid:x}");
                     Assert.AreEqual(subTuple.First.Language, subTuple.Second.lang);
                 }
 

@@ -520,7 +520,7 @@ namespace libbluray.disc
 
             if (disc.dec != null)
             {
-                BD_FILE_H st = DEC_STREAM.dec_open_stream(disc.dec, fp, uint.Parse(file));
+                BD_FILE_H st = DEC_STREAM.dec_open_stream(disc.dec, fp, uint.Parse(Path.GetFileNameWithoutExtension(file)));
                 if (st != null)
                 {
                     return st;
@@ -703,123 +703,64 @@ namespace libbluray.disc
          *
          */
 
-        internal static object disc_cache_get(this BD_DISC disc, string key)
+        internal static object? disc_cache_get(this BD_DISC disc, string key)
         {
-            object data = null;
+            object? data = null;
 
-            /*disc.cache_mutex.bd_mutex_lock();
+            disc.cache_mutex.bd_mutex_lock();
             if (disc.cache != null)
             {
-                UInt64 i;
-                for (i = 0; disc.cache[i].data != null; i++)
+                if (!disc.cache.TryGetValue(key, out data))
                 {
-                    if (disc.cache[i].name == key)
-                    {
-                        data = disc.cache[i].data;
-                        break;
-                    }
+                    data = null;
                 }
             }
             disc.cache_mutex.bd_mutex_unlock();
-            */
+            
             return data;
         }
-        internal static void disc_cache_put(this BD_DISC disc, string key, object data)
+        internal static void disc_cache_put(this BD_DISC disc, string key, object? data)
         {
             /*if (key.Length >= sizeof(p->cache[0].name)) {
                 BD_DEBUG(DBG_FILE | DBG_CRIT, "disc_cache_put: key %s too large\n", name);
                 return;
             }*/
-            data = null;
             if (data == null)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_FILE | DebugMaskEnum.DBG_CRIT, $"disc_cache_put: NULL for key {key} ignored");
                 return;
             }
-            /*
+            
             disc.cache_mutex.bd_mutex_lock();
 
             if (disc.cache == null)
             {
-                disc.cache_size = 128;
-                disc.cache = new Cache[disc.cache_size];
+                disc.cache = new Dictionary<string, object?>();
             }
 
-            if (disc.cache != null && disc.cache[disc.cache_size - 2].data != null)
+            if (disc.cache != null)
             {
-                var tmp = new Cache[disc.cache_size * 2];
-                Array.Copy(disc.cache, tmp, disc.cache.Length);
-                if (tmp != null) ;
+                if (disc.cache.ContainsKey(key))
                 {
-                    disc.cache = tmp;
-                    disc.cache_size *= 2;
+                    Logging.bd_debug(DebugMaskEnum.DBG_FILE | DebugMaskEnum.DBG_CRIT, $"disc_cache_put(): duplicate key {key}");
                 }
-            }
 
-            if (disc.cache != null && disc.cache[disc.cache_size - 2].data == null)
-            {
-                UInt64 i;
-                for (i = 0; disc.cache[i].data != null; i++)
-                {
-                    if (disc.cache[i].name == key)
-                    {
-                        Logging.bd_debug(DebugMaskEnum.DBG_FILE | DebugMaskEnum.DBG_CRIT, $"disc_cache_put(): duplicate key {key}");
-                        break;
-                    }
-                }
-                disc.cache[i].name = key;
-                disc.cache[i].data = data;
-                if (disc.cache[i].data != null)
-                {
-                    Logging.bd_debug(DebugMaskEnum.DBG_FILE, $"disc_cache_put: added {key} (pointer here)");
-                }
-                else
-                {
-                    Logging.bd_debug(DebugMaskEnum.DBG_FILE | DebugMaskEnum.DBG_CRIT, $"disc_cache_put: error adding {key} (pointer goes here): Invalid object type");
-                }
+                disc.cache[key] = data;
+                Logging.bd_debug(DebugMaskEnum.DBG_FILE, $"disc_cache_put: added {key} (pointer here)");
             }
             else
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_FILE | DebugMaskEnum.DBG_CRIT, $"disc_cache_put: error adding {key} (pointer goes here): Out of memory");
             }
 
-            disc.cache_mutex.bd_mutex_unlock();*/
+            disc.cache_mutex.bd_mutex_unlock();
         }
 
         /* NULL key == drop all */
         internal static void disc_cache_clean(this BD_DISC disc, string key)
         {
             disc.cache_mutex.bd_mutex_lock();
-
-            if (disc.cache != null)
-            {
-                UInt64 i;
-                if (key == null)
-                {
-                    for (i = 0; disc.cache[i].data != null; i++)
-                    {
-                        //refcnt_dec(p->cache[i].data);
-                    }
-                    disc.cache = null;
-                    disc.cache_size = 0;
-                }
-                else
-                {
-                    for (i = 0; disc.cache[i].data != null; i++)
-                    {
-                        if (disc.cache[i].name == key)
-                        {
-                            Logging.bd_debug(DebugMaskEnum.DBG_FILE, $"disc_cache_clean: dropped {key} (pointer goes here)");
-                            break;
-                        }
-                    }
-                    for (; disc.cache[i].data != null; i++)
-                    {
-                        disc.cache[i] = disc.cache[i + 1];
-                    }
-                }
-            }
-
+            disc.cache.Clear();
             disc.cache_mutex.bd_mutex_unlock();
         }
         private static BD_FILE_H _bdrom_open_path(BD_DISC disc, string rel_path)
@@ -993,21 +934,20 @@ namespace libbluray.disc
 
         private static void _set_paths(BD_DISC p, string device_path)
         {
-            /*if (device_path != null)
+            if (device_path != null)
             {
-                string disc_root = mount_get_mountpoint(device_path);
+                string disc_root = device_path;//mount_get_mountpoint(device_path);
 
-                // make sure path ends to slash 
-                if (disc_root == null || (disc_root[0] != '\0' && disc_root[disc_root.Length - 1] == Path.DirectorySeparatorChar))
+                /* make sure path ends to slash */
+                if (disc_root == null || Path.EndsInDirectorySeparator(disc_root))
                 {
                     p.disc_root = disc_root;
                 }
                 else
                 {
-                    p.disc_root = $"{disc_root}{Path.DirectorySeparatorChar}";
+                    p.disc_root = Path.TrimEndingDirectorySeparator(disc_root) + Path.DirectorySeparatorChar;
                 }
-            }*/
-            throw new NotImplementedException();
+            }
         }
     }
 
@@ -1033,13 +973,6 @@ namespace libbluray.disc
 
         /* disc cache */
         internal BD_MUTEX cache_mutex = new();
-        internal UInt64 cache_size;
-        internal Cache[] cache = null;
-
-        internal class Cache
-        {
-            internal string name = "";
-            internal object data = null;
-        }
+        internal Dictionary<string, object?> cache = new();
     }
 }

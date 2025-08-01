@@ -12,18 +12,24 @@ namespace libbluray.decoders
         public UInt16 video_width;
         public UInt16 video_height;
         public byte frame_rate;
+
+        public BD_PG_VIDEO_DESCRIPTOR() { }
     }
 
     public struct BD_PG_COMPOSITION_DESCRIPTOR
     {
         public UInt16 number;
         public byte state;
+
+        public BD_PG_COMPOSITION_DESCRIPTOR() { }
     }
 
     public struct BD_PG_SEQUENCE_DESCRIPTOR
     {
         public byte first_in_seq;
         public byte last_in_seq;
+
+        public BD_PG_SEQUENCE_DESCRIPTOR() { }
     }
 
     public struct BD_PG_WINDOW
@@ -33,6 +39,8 @@ namespace libbluray.decoders
         public UInt16 y;
         public UInt16 width;
         public UInt16 height;
+
+        public BD_PG_WINDOW() { }
     }
 
     public struct BD_PG_COMPOSITION_OBJECT
@@ -49,6 +57,8 @@ namespace libbluray.decoders
         public UInt16 crop_y;
         public UInt16 crop_w;
         public UInt16 crop_h;
+
+        public BD_PG_COMPOSITION_OBJECT() { }
     }
 
     public struct BD_PG_PALETTE
@@ -73,21 +83,25 @@ namespace libbluray.decoders
         public UInt16 width;
         public UInt16 height;
 
-        public Ref<BD_PG_RLE_ELEM> img;
+        public Ref<BD_PG_RLE_ELEM> img = new();
+
+        public BD_PG_OBJECT() { }
     }
 
     public struct BD_PG_COMPOSITION
     {
         public Int64 pts;
 
-        public Variable<BD_PG_VIDEO_DESCRIPTOR> video_descriptor;
-        public Variable<BD_PG_COMPOSITION_DESCRIPTOR> composition_descriptor;
+        public Variable<BD_PG_VIDEO_DESCRIPTOR> video_descriptor = new();
+        public Variable<BD_PG_COMPOSITION_DESCRIPTOR> composition_descriptor = new();
 
         public byte palette_update_flag;
         public byte palette_id_ref;
 
         public uint num_composition_objects;
-        public Ref<BD_PG_COMPOSITION_OBJECT> composition_object;
+        public Ref<BD_PG_COMPOSITION_OBJECT> composition_object = new();
+
+        public BD_PG_COMPOSITION() { }
     }
 
     public struct BD_PG_WINDOWS
@@ -95,6 +109,8 @@ namespace libbluray.decoders
         public Int64 pts;
 
         public uint num_windows;
-        public Ref<BD_PG_WINDOW> window;
+        public Ref<BD_PG_WINDOW> window = new();
+
+        public BD_PG_WINDOWS() { }
     }
 }

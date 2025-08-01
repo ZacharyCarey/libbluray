@@ -11,7 +11,10 @@ namespace libbluray.util
     {
         public T Value;
 
-        public DataRef() { }
+        public DataRef() 
+        {
+            this.Value = new T();
+        }
         public DataRef(T value)
         {
             this.Value = value;
@@ -48,6 +51,13 @@ namespace libbluray.util
 
         public static Ref<T> Null => new Ref<T>();
 
+        public Ref()
+        {
+            this.Handle = null;
+            this.Index = 0;
+            this.MallocLength = 0;
+        }
+
         internal Ref(DataRef<T> value)
         {
             this.Handle = value;
@@ -64,7 +74,7 @@ namespace libbluray.util
 
         public static Ref<T> Allocate()
         {
-            Ref<T> result = new Ref<T>(new DataRef<T>());
+            Ref<T> result = new Ref<T>(new DataRef<T>(new T()));
             result.MallocLength = 1;
             return result;
         }
@@ -79,6 +89,10 @@ namespace libbluray.util
             if (num == 0) return new Ref<T>();
             Ref<T> result = new Ref<T>(new T[num]);
             result.MallocLength = num;
+            for (ulong i = 0; i < num; i++)
+            {
+                result[i] = new T();
+            }
             return result;
         }
 
@@ -214,22 +228,27 @@ namespace libbluray.util
         public static Ref<T> operator -(Ref<T> ptr, long idx) => ptr.AtIndex(idx);
         public static Ref<T> operator -(Ref<T> ptr, ulong idx) => ptr.AtIndex(idx);
 
-        public static implicit operator bool(Ref<T>? ptr) => ptr != null;
-
-        public static bool operator ==(Ref<T> left, Ref<T>? right)
+        private static bool CheckEqual(Ref<T> left, Ref<T>? right)
         {
             if (right != null)
             {
                 return (left.Handle == right.Value.Handle)
                         && (left.Index == right.Value.Index);
-                        //&& (left.MallocLength == right.Value.MallocLength);
-            } else {
+                //&& (left.MallocLength == right.Value.MallocLength);
+            }
+            else
+            {
                 // Check nullptr
                 return (left.Handle == null && left.Index == 0);
             }
         }
 
-        public static bool operator !=(Ref<T> left, Ref<T>? right) => !(left == right);
+
+        public static implicit operator bool(Ref<T> ptr) => !CheckEqual(ptr, null);
+
+        public static bool operator ==(Ref<T> left, Ref<T>? right) => CheckEqual(left, right);
+
+        public static bool operator !=(Ref<T> left, Ref<T>? right) => !CheckEqual(left, right);
 
         public static bool operator >(Ref<T> left, Ref<T> right)
         {

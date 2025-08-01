@@ -11,7 +11,9 @@ namespace libbluray.decoders
     {
         public UInt16 pid;
         public UInt32 pes_length;
-        public Ref<PES_BUFFER> buf;
+        public Ref<PES_BUFFER> buf = new();
+
+        public M2TS_DEMUX() { }
     }
 
     public static class M2tsDemux

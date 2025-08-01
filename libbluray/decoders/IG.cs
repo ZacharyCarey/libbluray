@@ -43,7 +43,9 @@ namespace libbluray.decoders
 
         /* navigation commands */
         public UInt16 num_nav_cmds;
-        public Ref<MOBJ_CMD> nav_cmds;
+        public Ref<MOBJ_CMD> nav_cmds = new();
+
+        public BD_IG_BUTTON() { }
     }
 
     public struct BD_IG_BOG
@@ -51,7 +53,9 @@ namespace libbluray.decoders
         public UInt16 default_valid_button_id_ref;
 
         public uint num_buttons;
-        public Ref<BD_IG_BUTTON> button;
+        public Ref<BD_IG_BUTTON> button = new();
+
+        public BD_IG_BOG() { }
     }
 
     public struct BD_IG_EFFECT
@@ -60,16 +64,20 @@ namespace libbluray.decoders
         public byte palette_id_ref;
 
         public uint num_composition_objects;
-        public Ref<BD_PG_COMPOSITION_OBJECT> composition_object;
+        public Ref<BD_PG_COMPOSITION_OBJECT> composition_object = new();
+
+        public BD_IG_EFFECT() { }
     }
 
     public struct BD_IG_EFFECT_SEQUENCE
     {
         public byte num_windows;
-        public Ref<BD_PG_WINDOW> window;
+        public Ref<BD_PG_WINDOW> window = new();
 
         public byte num_effects;
-        public Ref<BD_IG_EFFECT> effect;
+        public Ref<BD_IG_EFFECT> effect = new();
+
+        public BD_IG_EFFECT_SEQUENCE() { }
     }
 
     public struct BD_IG_PAGE
@@ -77,10 +85,10 @@ namespace libbluray.decoders
         public byte id;
         public byte version;
 
-        public Variable<BD_UO_MASK> uo_mask_table;
+        public Variable<BD_UO_MASK> uo_mask_table = new();
 
-        public Variable<BD_IG_EFFECT_SEQUENCE> in_effects;
-        public Variable<BD_IG_EFFECT_SEQUENCE> out_effects;
+        public Variable<BD_IG_EFFECT_SEQUENCE> in_effects = new();
+        public Variable<BD_IG_EFFECT_SEQUENCE> out_effects = new();
 
         public byte animation_frame_rate_code;
         public UInt16 default_selected_button_id_ref;
@@ -89,7 +97,9 @@ namespace libbluray.decoders
 
         /* button overlap groups */
         public uint num_bogs;
-        public Ref<BD_IG_BOG> bog;
+        public Ref<BD_IG_BOG> bog = new();
+
+        public BD_IG_PAGE() { }
     }
 
     public struct BD_IG_INTERACTIVE_COMPOSITION
@@ -102,15 +112,19 @@ namespace libbluray.decoders
         public UInt32 user_timeout_duration;
 
         public uint num_pages;
-        public Ref<BD_IG_PAGE> page;
+        public Ref<BD_IG_PAGE> page = new();
+
+        public BD_IG_INTERACTIVE_COMPOSITION() { }
     }
 
     public struct BD_IG_INTERACTIVE
     {
         public Int64 pts;
 
-        public Variable<BD_PG_VIDEO_DESCRIPTOR> video_descriptor;
-        public Variable<BD_PG_COMPOSITION_DESCRIPTOR> composition_descriptor;
-        public Variable<BD_IG_INTERACTIVE_COMPOSITION> interactive_composition;
+        public Variable<BD_PG_VIDEO_DESCRIPTOR> video_descriptor = new();
+        public Variable<BD_PG_COMPOSITION_DESCRIPTOR> composition_descriptor = new();
+        public Variable<BD_IG_INTERACTIVE_COMPOSITION> interactive_composition = new();
+
+        public BD_IG_INTERACTIVE() { }
     }
 }

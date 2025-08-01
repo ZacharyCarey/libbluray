@@ -50,6 +50,8 @@ namespace libbluray.bdnav
         public bool reserved1;
         public bool pip_pg_change;
 
+        public BD_UO_MASK() { }
+
         internal UInt64 AsInt {
             get => ((menu_call ? 1ul : 0ul) << 33)
                 | ((title_search ? 1ul : 0ul) << 32)

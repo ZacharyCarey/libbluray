@@ -37,12 +37,16 @@ namespace libbluray.decoders
         public byte Cr;     /**< Cr component (16...240) */
         public byte Cb;     /**< Cb component (16...240) */
         public byte T;      /**< Transparency ( 0...255). 0 - transparent, 255 - opaque. */
+
+        public BD_PG_PALETTE_ENTRY() { }
     }
 
     public struct BD_PG_RLE_ELEM
     {
         public UInt16 len;   /**< RLE run length */
         public UInt16 color; /**< palette index */
+
+        public BD_PG_RLE_ELEM() { }
     }
 
     public struct BD_OVERLAY
@@ -60,8 +64,10 @@ namespace libbluray.decoders
         public UInt16 w;     /**< region width */
         public UInt16 h;     /**< region height */
 
-        public Ref<BD_PG_PALETTE_ENTRY> palette; /**< overlay palette (256 entries) */
-        public Ref<BD_PG_RLE_ELEM> img;     /**< RLE-compressed overlay image */
+        public Ref<BD_PG_PALETTE_ENTRY> palette = new(); /**< overlay palette (256 entries) */
+        public Ref<BD_PG_RLE_ELEM> img = new();     /**< RLE-compressed overlay image */
+
+        public BD_OVERLAY() { }
     }
 
     public enum bd_argb_overlay_cmd_e
@@ -94,7 +100,9 @@ namespace libbluray.decoders
         public UInt16 h;     /**< region height */
 
         public UInt16 stride;       /**< ARGB buffer stride */
-        public Ref<UInt32> argb; /**< ARGB image data, 'h' lines, line stride 'stride' pixels */
+        public Ref<UInt32> argb = new(); /**< ARGB image data, 'h' lines, line stride 'stride' pixels */
+
+        public BD_ARGB_OVERLAY() { }
     }
 
     public struct BD_ARGB_BUFFER
@@ -136,6 +144,11 @@ namespace libbluray.decoders
          */
         public Rect[] dirty = new Rect[2]; /**< [0] - PG plane, [1] - IG plane */
 
-        public BD_ARGB_BUFFER() { }
+        public BD_ARGB_BUFFER() {
+            for (int i = 0; i < dirty.Length; i++)
+            {
+                dirty[i] = new Rect();
+            }
+        }
     }
 }

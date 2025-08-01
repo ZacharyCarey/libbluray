@@ -15,7 +15,7 @@ namespace libbluray.decoders
 {
     public struct GRAPHICS_CONTROLLER
     {
-        public Ref<BD_REGISTERS> regs;
+        public Ref<BD_REGISTERS> regs = new();
 
         public BD_MUTEX mutex = new();
 
@@ -34,13 +34,13 @@ namespace libbluray.decoders
         public uint valid_mouse_position;
         public uint auto_action_triggered;
         public BOG_DATA[] bog_data = new BOG_DATA[IgDecode.MAX_NUM_BOGS];
-        public Ref<BOG_DATA> saved_bog_data;
-        public BD_UO_MASK page_uo_mask;
+        public Ref<BOG_DATA> saved_bog_data = new();
+        public BD_UO_MASK page_uo_mask = new();
 
         /* page effects */
         public uint effect_idx;
-        public Ref<BD_IG_EFFECT_SEQUENCE> in_effects;
-        public Ref<BD_IG_EFFECT_SEQUENCE> out_effects;
+        public Ref<BD_IG_EFFECT_SEQUENCE> in_effects = new();
+        public Ref<BD_IG_EFFECT_SEQUENCE> out_effects = new();
         public Int64 next_effect_time; /* 90 kHz */
 
         /* timers */
@@ -52,21 +52,26 @@ namespace libbluray.decoders
         public uint button_animation_running;
 
         /* data */
-        public Ref<PG_DISPLAY_SET> pgs;
-        public Ref<PG_DISPLAY_SET> igs;
-        public Ref<PG_DISPLAY_SET> tgs;  /* TextST */
+        public Ref<PG_DISPLAY_SET> pgs = new();
+        public Ref<PG_DISPLAY_SET> igs = new();
+        public Ref<PG_DISPLAY_SET> tgs = new();  /* TextST */
 
         /* */
-        public Ref<GRAPHICS_PROCESSOR> pgp;
-        public Ref<GRAPHICS_PROCESSOR> igp;
-        public Ref<GRAPHICS_PROCESSOR> tgp;  /* TextST */
+        public Ref<GRAPHICS_PROCESSOR> pgp = new();
+        public Ref<GRAPHICS_PROCESSOR> igp = new();
+        public Ref<GRAPHICS_PROCESSOR> tgp = new();  /* TextST */
 
         /* */
-        public Ref<TEXTST_RENDER> textst_render;
+        public Ref<TEXTST_RENDER> textst_render = new();
         public int next_dialog_idx;
         public int textst_user_style;
 
-        public GRAPHICS_CONTROLLER() { }
+        public GRAPHICS_CONTROLLER() { 
+            for (int i = 0; i > bog_data.Length; i++)
+            {
+                bog_data[i] = new();
+            }        
+        }
     }
 
     public enum gc_ctrl_e
@@ -100,7 +105,7 @@ namespace libbluray.decoders
     {
         /* HDMV navigation command sequence */
         public int num_nav_cmds;
-        public Ref<MOBJ_CMD> nav_cmds;
+        public Ref<MOBJ_CMD> nav_cmds = new();
 
         /* Sound idx */
         public int sound_id_ref;
@@ -111,7 +116,9 @@ namespace libbluray.decoders
         /* */
         public UInt32 wakeup_time;
 
-        public BD_UO_MASK page_uo_mask;
+        public BD_UO_MASK page_uo_mask = new();
+
+        public GC_NAV_CMDS() { }
     }
 
     public struct BOG_DATA
@@ -121,6 +128,8 @@ namespace libbluray.decoders
         public int visible_object_id; /* id of currently visible object */
         public int animate_indx;    /* currently showing object index of animated button, < 0 for static buttons */
         public int effect_running;  /* single-loop animation not yet complete */
+
+        public BOG_DATA() { }
     }
 
     public enum ButtonState

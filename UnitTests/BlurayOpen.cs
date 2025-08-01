@@ -174,7 +174,7 @@ namespace UnitTests.BlurayInfo
             bluray_info.bdj = ((bd_disc_info.Value.bdj_detected != 0) ? true : false);
             bluray_info.content_exist_3D = ((bd_disc_info.Value.content_exist_3D != 0) ? true : false);
             bluray_info.provider_data = "";
-            bluray_info.provider_data = Encoding.ASCII.GetString(bd_disc_info.Value.provider_data);
+            bluray_info.provider_data = bd_disc_info.Value.provider_data;
             bluray_info.initial_output_mode_preference = "";
             bluray_info.initial_output_mode_preference = ((bd_disc_info.Value.initial_output_mode_preference != 0) ? "3D" : "2D");
 

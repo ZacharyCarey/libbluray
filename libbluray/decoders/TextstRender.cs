@@ -12,11 +12,13 @@ namespace libbluray.decoders
 {
     public struct TEXTST_BITMAP
     {
-        public Ref<byte> mem;
+        public Ref<byte> mem = new();
         public UInt16 width;
         public UInt16 height;
         public UInt16 stride;
         public byte argb;    /* Output buffer is ARGB (support for anti-aliasing) */
+
+        public TEXTST_BITMAP() { }
     }
 
     public struct FONT_DATA

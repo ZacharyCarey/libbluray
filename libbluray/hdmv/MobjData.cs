@@ -25,13 +25,17 @@ namespace libbluray.hdmv
         public byte reserved3;//  : 3;
 
         public uint DebugInt => ((uint)sub_grp << 29) | ((uint)op_cnt << 26) | ((uint)grp << 24) | ((uint)branch_opt << 20) | ((uint)reserved1 << 18) | ((uint)imm_op2 << 17) | ((uint)imm_op1 << 16) | ((uint)cmp_opt << 12) | ((uint)reserved2 << 8) | ((uint)set_opt << 3) | ((uint)reserved3);
+
+        public HDMV_INSN() { }
     }
 
     public struct MOBJ_CMD
     {
-        public Variable<HDMV_INSN> insn;
+        public Variable<HDMV_INSN> insn = new();
         public UInt32 dst;
         public UInt32 src;
+
+        public MOBJ_CMD() { }
     }
 
     public struct MOBJ_OBJECT
@@ -41,13 +45,17 @@ namespace libbluray.hdmv
         public byte title_search_mask     /*: 1*/;
 
         public UInt16 num_cmds;
-        public Ref<MOBJ_CMD> cmds;
+        public Ref<MOBJ_CMD> cmds = new();
+
+        public MOBJ_OBJECT() { }
     }
 
     public struct MOBJ_OBJECTS
     {
-        public Variable<UInt32> mobj_version;
+        public Variable<UInt32> mobj_version = new();
         public UInt16 num_objects;
-        public Ref<MOBJ_OBJECT> objects;
+        public Ref<MOBJ_OBJECT> objects = new();
+
+        public MOBJ_OBJECTS() { }
     }
 }

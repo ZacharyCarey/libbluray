@@ -287,8 +287,19 @@ namespace libbluray.file
         {
             try
             {
-                string[] entries = Directory.GetFileSystemEntries(dirname);
-                return new DefaultDirectory(entries);
+                List<string> names = new();
+                foreach(var entry in Directory.GetDirectories(dirname))
+                {
+                    names.Add(Path.GetFileName(Path.TrimEndingDirectorySeparator(entry)));
+                }
+
+                foreach(var entry in Directory.GetFiles(dirname))
+                {
+                    names.Add(Path.GetFileName(entry));
+                }
+
+                //string[] entries = Directory.GetFileSystemEntries(dirname);
+                return new DefaultDirectory(names.ToArray());
             }
             catch(Exception)
             {

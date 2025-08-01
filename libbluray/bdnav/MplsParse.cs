@@ -26,12 +26,12 @@ namespace libbluray.bdnav
         public string lang = "";
         // Secondary audio specific fields
         public byte sa_num_primary_audio_ref;
-        public Ref<byte> sa_primary_audio_ref;
+        public Ref<byte> sa_primary_audio_ref = new();
         // Secondary video specific fields
         public byte sv_num_secondary_audio_ref;
         public byte sv_num_pip_pg_ref;
-        public Ref<byte> sv_secondary_audio_ref;
-        public Ref<byte> sv_pip_pg_ref;
+        public Ref<byte> sv_secondary_audio_ref = new();
+        public Ref<byte> sv_pip_pg_ref = new();
 
         public MPLS_STREAM() { }
     }
@@ -46,8 +46,8 @@ namespace libbluray.bdnav
         public byte num_secondary_video;
         public byte num_pip_pg;
         public byte num_dv;
-        public Ref<MPLS_STREAM> video;
-        public Ref<MPLS_STREAM> audio;
+        public Ref<MPLS_STREAM> video = new();
+        public Ref<MPLS_STREAM> audio = new();
 
         /// <summary>
         /// Presentation graphics
@@ -57,10 +57,12 @@ namespace libbluray.bdnav
         /// <summary>
         /// Interactive graphics
         /// </summary>
-        public Ref<MPLS_STREAM> ig;
-        public Ref<MPLS_STREAM> secondary_audio;
-        public Ref<MPLS_STREAM> secondary_video;
-        public Ref<MPLS_STREAM> dv;
+        public Ref<MPLS_STREAM> ig = new();
+        public Ref<MPLS_STREAM> secondary_audio = new();
+        public Ref<MPLS_STREAM> secondary_video = new();
+        public Ref<MPLS_STREAM> dv = new();
+
+        public MPLS_STN() { }
     }
 
     public struct MPLS_CLIP
@@ -78,15 +80,17 @@ namespace libbluray.bdnav
         public byte connection_condition;
         public UInt32 in_time;
         public UInt32 out_time;
-        public Variable<BD_UO_MASK> uo_mask;
+        public Variable<BD_UO_MASK> uo_mask = new();
         public byte random_access_flag;
         public byte still_mode;
         public UInt16 still_time;
         public byte angle_count;
         public byte is_different_audio;
         public byte is_seamless_angle;
-        public Ref<MPLS_CLIP> clip;
-        public Variable<MPLS_STN> stn;
+        public Ref<MPLS_CLIP> clip = new();
+        public Variable<MPLS_STN> stn = new();
+
+        public MPLS_PI() { }
     }
 
     public struct MPLS_PLM
@@ -96,18 +100,22 @@ namespace libbluray.bdnav
         public UInt32 time;
         public UInt16 entry_es_pid;
         public UInt32 duration;
+
+        public MPLS_PLM() { }
     }
 
     public struct MPLS_AI
     {
         public byte playback_type;
         public UInt16 playback_count;
-        public Variable<BD_UO_MASK> uo_mask;
+        public Variable<BD_UO_MASK> uo_mask = new();
         public byte random_access_flag;
         public byte audio_mix_flag;
         public byte lossless_bypass_flag;
         public byte mvc_base_view_r_flag;
         public byte sdr_conversion_notification_flag;
+
+        public MPLS_AI() { }
     }
 
     public struct MPLS_SUB_PI
@@ -119,7 +127,9 @@ namespace libbluray.bdnav
         public UInt16 sync_play_item_id;
         public UInt32 sync_pts;
         public byte clip_count;
-        public Ref<MPLS_CLIP> clip;
+        public Ref<MPLS_CLIP> clip = new();
+
+        public MPLS_SUB_PI() { }
     }
 
     public enum mpls_sub_path_type
@@ -139,7 +149,9 @@ namespace libbluray.bdnav
         public byte type;       /* enum mpls_sub_path_type */
         public byte is_repeat;
         public byte sub_playitem_count;
-        public Ref<MPLS_SUB_PI> sub_play_item;
+        public Ref<MPLS_SUB_PI> sub_play_item = new();
+
+        public MPLS_SUB() { }
     }
 
     public enum mpls_pip_scaling
@@ -157,6 +169,8 @@ namespace libbluray.bdnav
         public UInt16 xpos;
         public UInt16 ypos;
         public byte scale_factor;  /* mpls_pip_scaling. Note: PSR14 may override this ! */
+
+        public MPLS_PIP_DATA() { }
     }
 
     public enum mpls_pip_timeline
@@ -176,7 +190,9 @@ namespace libbluray.bdnav
         public byte trick_play_flag;      /* show synchronous PiP when playing trick speed */
 
         public UInt16 data_count;
-        public Ref<MPLS_PIP_DATA> data;
+        public Ref<MPLS_PIP_DATA> data = new();
+
+        public MPLS_PIP_METADATA() { }
     }
 
     // /* They are stored as GBR, we would like to show them as RGB */
@@ -205,29 +221,31 @@ namespace libbluray.bdnav
     public struct MPLS_PL
     {
         public UInt32 type_indicator;   /* 'MPLS' */
-        public Variable<UInt32> type_indicator2;  /* version */
+        public Variable<UInt32> type_indicator2 = new();  /* version */
         public UInt32 list_pos;
         public UInt32 mark_pos;
         public UInt32 ext_pos;
-        public Variable<MPLS_AI> app_info;
+        public Variable<MPLS_AI> app_info = new();
         public UInt16 list_count;
         public UInt16 sub_count;
         public UInt16 mark_count;
-        public Ref<MPLS_PI> play_item;
-        public Ref<MPLS_SUB> sub_path;
-        public Ref<MPLS_PLM> play_mark;
+        public Ref<MPLS_PI> play_item = new();
+        public Ref<MPLS_SUB> sub_path = new();
+        public Ref<MPLS_PLM> play_mark = new();
 
         // extension data (profile 5, version 2.4)
         public UInt16 ext_sub_count;
-        public Ref<MPLS_SUB> ext_sub_path;  // sub path entries extension
+        public Ref<MPLS_SUB> ext_sub_path = new();  // sub path entries extension
 
         // extension data (Picture-In-Picture metadata)
         public UInt16 ext_pip_data_count;
-        public Ref<MPLS_PIP_METADATA> ext_pip_data;  // pip metadata extension
+        public Ref<MPLS_PIP_METADATA> ext_pip_data = new();  // pip metadata extension
 
         // extension data (Static Metadata)
         public byte ext_static_metadata_count;
-        public Ref<MPLS_STATIC_METADATA> ext_static_metadata;
+        public Ref<MPLS_STATIC_METADATA> ext_static_metadata = new();
+
+        public MPLS_PL() { }
     }
 
     public static class MplsParse

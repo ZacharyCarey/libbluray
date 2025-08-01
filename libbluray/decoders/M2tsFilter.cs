@@ -13,13 +13,15 @@ namespace libbluray.decoders
 {
     public struct M2TS_FILTER
     {
-        public Ref<UInt16> wipe_pid;
-        public Ref<UInt16> pass_pid;
+        public Ref<UInt16> wipe_pid = new();
+        public Ref<UInt16> pass_pid = new();
 
         public Int64 in_pts;
         public Int64 out_pts;
         public UInt32 pat_packets; /* how many packets to search for PAT (seeked pat_packets packets before the actual seek point) */
         public byte pat_seen;
+
+        public M2TS_FILTER() { }
     }
 
     public static class M2tsFilter

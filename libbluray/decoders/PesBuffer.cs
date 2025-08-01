@@ -9,14 +9,16 @@ namespace libbluray.decoders
 {
     public struct PES_BUFFER
     {
-        public Ref<byte> buf;
+        public Ref<byte> buf = new();
         public UInt32 len;  // payload length
         public uint size; // allocated size
 
         public Int64 pts;
         public Int64 dts;
 
-        public Ref<PES_BUFFER> next;
+        public Ref<PES_BUFFER> next = new();
+
+        public PES_BUFFER() { }
     }
 
     public static class PesBuffer

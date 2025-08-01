@@ -42,32 +42,34 @@ namespace libbluray.hdmv
         public hdmv_event_e _event;
         public UInt32 _param;
         public UInt32 _param2;
+
+        public HDMV_EVENT() { }
     }
 
     public struct HDMV_VM
     {
-        public BD_MUTEX mutex;
+        public BD_MUTEX mutex = new();
 
         /* state */
         public UInt32 pc;            /* program counter */
-        public Ref<BD_REGISTERS> regs;          /* player registers */
-        public Ref<MOBJ_OBJECT> _object;    /* currently running object code */
+        public Ref<BD_REGISTERS> regs = new();          /* player registers */
+        public Ref<MOBJ_OBJECT> _object = new();    /* currently running object code */
 
         public HDMV_EVENT[] _event = new HDMV_EVENT[5];      /* pending events to return */
 
-        public NV_TIMER nv_timer;      /* navigation timer */
+        public NV_TIMER nv_timer = new();      /* navigation timer */
         public UInt64 rand;          /* RAND state */
 
         /* movie objects */
-        public Ref<MOBJ_OBJECTS> movie_objects; /* disc movie objects */
-        public Ref<MOBJ_OBJECT> ig_object;     /* current object from IG stream */
+        public Ref<MOBJ_OBJECTS> movie_objects = new(); /* disc movie objects */
+        public Ref<MOBJ_OBJECT> ig_object = new();     /* current object from IG stream */
 
         /* object currently playing playlist */
-        public Ref<MOBJ_OBJECT> playing_object;
+        public Ref<MOBJ_OBJECT> playing_object = new();
         public UInt32 playing_pc;
 
         /* suspended object */
-        public Ref<MOBJ_OBJECT> suspended_object;
+        public Ref<MOBJ_OBJECT> suspended_object = new();
         public UInt32 suspended_pc;
 
         /* Available titles. Used to validate CALL_TITLE/JUMP_TITLE. */
@@ -75,13 +77,20 @@ namespace libbluray.hdmv
         public byte have_first_play;
         public UInt16 num_titles;
 
-        public HDMV_VM() { }
+        public HDMV_VM() {
+            for (int i = 0; i > _event.Length; i++)
+            {
+                _event[i] = new();
+            }
+        }
     }
 
     public struct NV_TIMER
     {
-        public DateTime time;
+        public DateTime time = new();
         public UInt32 mobj_id;
+
+        public NV_TIMER() { }
     }
 
     internal static class HdmvVm

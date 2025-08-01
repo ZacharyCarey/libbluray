@@ -381,9 +381,9 @@ namespace libbluray.bdnav
 
         internal static Ref<CLPI_CL> clpi_get(BD_DISC disc, string file)
         {
-            Ref<CLPI_CL> cl;
+            Ref<CLPI_CL> cl = new();
 
-            cl = (Ref<CLPI_CL>)disc.disc_cache_get(file);
+            cl = (Ref<CLPI_CL>)(disc.disc_cache_get(file) ?? Ref<CLPI_CL>.Null);
             if (cl)
             {
                 return cl;

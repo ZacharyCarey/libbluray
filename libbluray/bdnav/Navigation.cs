@@ -10,23 +10,25 @@ using System.Threading.Tasks;
 
 namespace libbluray.bdnav
 {
-    public struct NAV_TITLE
+    public class NAV_TITLE
     {
-        public BD_DISC? disc;
+        public BD_DISC? disc = null;
         public string name;
         public byte angle_count;
         public byte angle;
-        public NAV_CLIP_LIST clip_list;
-        public NAV_MARK_LIST chap_list;
-        public NAV_MARK_LIST mark_list;
+        public NAV_CLIP_LIST clip_list = new();
+        public NAV_MARK_LIST chap_list = new();
+        public NAV_MARK_LIST mark_list = new();
 
         public uint sub_path_count;
-        public Ref<NAV_SUB_PATH> sub_path;
+        public Ref<NAV_SUB_PATH> sub_path = new();
 
         public UInt32 packets;
         public UInt32 duration;
 
-        public Ref<MPLS_PL> pl;
+        public Ref<MPLS_PL> pl = new();
+
+        public NAV_TITLE() { }
     }
 
     public struct NAV_MARK
@@ -41,12 +43,16 @@ namespace libbluray.bdnav
         public UInt32 title_pkt;
         public UInt32 title_time;
         public UInt32 duration;
+
+        public NAV_MARK() { }
     }
 
     public struct NAV_MARK_LIST
     {
         public uint count;
-        public Ref<NAV_MARK> mark;
+        public Ref<NAV_MARK> mark = new();
+
+        public NAV_MARK_LIST() { }
     }
 
     public struct NAV_CLIP
@@ -68,26 +74,32 @@ namespace libbluray.bdnav
         public UInt32 title_pkt;
         public UInt32 title_time;
 
-        public Ref<NAV_TITLE> title;
+        public NAV_TITLE? title = null;
 
         public UInt32 stc_spn;  /* start packet of clip STC sequence */
 
         public byte still_mode;
         public ushort still_time;
 
-        public Ref<CLPI_CL> cl;
+        public Ref<CLPI_CL> cl = new();
+
+        public NAV_CLIP() { }
     }
 
     public struct NAV_CLIP_LIST
     {
         public uint count;
-        public Ref<NAV_CLIP> clip;
+        public Ref<NAV_CLIP> clip = new();
+
+        public NAV_CLIP_LIST() { }
     }
 
     public struct NAV_SUB_PATH
     {
         public byte type;
-        public NAV_CLIP_LIST clip_list;
+        public NAV_CLIP_LIST clip_list = new();
+
+        public NAV_SUB_PATH() { }
     }
 
     public struct NAV_TITLE_INFO
@@ -96,14 +108,18 @@ namespace libbluray.bdnav
         public UInt32 mpls_id;
         public UInt32 duration;
         public uint _ref;
+
+        public NAV_TITLE_INFO() { }
     }
 
     public struct NAV_TITLE_LIST
     {
         public uint count;
-        public Ref<NAV_TITLE_INFO> title_info;
+        public Ref<NAV_TITLE_INFO> title_info = new();
 
         public uint main_title_idx;
+
+        public NAV_TITLE_LIST() { }
     }
 
     public static class Navigation
@@ -600,7 +616,7 @@ _pl_duration(Ref<MPLS_PL> pl)
 
                     title_list.Value.title_info[ii].name = ent.d_name;
                     title_list.Value.title_info[ii]._ref = ii;
-                    title_list.Value.title_info[ii].mpls_id = uint.Parse(ent.d_name);
+                    title_list.Value.title_info[ii].mpls_id = uint.Parse(Path.GetFileNameWithoutExtension(ent.d_name));
                     title_list.Value.title_info[ii].duration = _pl_duration(pl_list[ii]);
                     ii++;
                 }
@@ -656,9 +672,9 @@ _pl_duration(Ref<MPLS_PL> pl)
         }
 
         static void
-        _fill_mark(Ref<NAV_TITLE> title, Ref<NAV_MARK> mark, int entry)
+        _fill_mark(NAV_TITLE? title, Ref<NAV_MARK> mark, int entry)
         {
-            Ref<MPLS_PL> pl = title.Value.pl;
+            Ref<MPLS_PL> pl = title.pl;
             Ref<MPLS_PLM> plm;
             Ref<MPLS_PI> pi;
             Ref<NAV_CLIP> clip;
@@ -667,11 +683,11 @@ _pl_duration(Ref<MPLS_PL> pl)
 
             mark.Value.mark_type = plm.Value.mark_type;
             mark.Value.clip_ref = plm.Value.play_item_ref;
-            clip = title.Value.clip_list.clip.AtIndex(mark.Value.clip_ref);
-            if (clip.Value.cl != null && mark.Value.clip_ref < title.Value.pl.Value.list_count)
+            clip = title.clip_list.clip.AtIndex(mark.Value.clip_ref);
+            if (clip.Value.cl != null && mark.Value.clip_ref < title.pl.Value.list_count)
             {
                 mark.Value.clip_pkt = ClpiParse.clpi_lookup_spn(clip.Value.cl, plm.Value.time, 1,
-                    title.Value.pl.Value.play_item[mark.Value.clip_ref].clip[title.Value.angle].stc_id);
+                    title.pl.Value.play_item[mark.Value.clip_ref].clip[title.angle].stc_id);
             }
             else
             {
@@ -681,33 +697,33 @@ _pl_duration(Ref<MPLS_PL> pl)
             mark.Value.clip_time = plm.Value.time;
 
             // Calculate start of mark relative to beginning of playlist
-            if (plm.Value.play_item_ref < title.Value.clip_list.count)
+            if (plm.Value.play_item_ref < title.clip_list.count)
             {
-                clip = title.Value.clip_list.clip.AtIndex(plm.Value.play_item_ref);
+                clip = title.clip_list.clip.AtIndex(plm.Value.play_item_ref);
                 pi = pl.Value.play_item.AtIndex(plm.Value.play_item_ref);
                 mark.Value.title_time = clip.Value.title_time + plm.Value.time - pi.Value.in_time;
             }
         }
 
         static void
-        _extrapolate_title(Ref<NAV_TITLE> title)
+        _extrapolate_title(NAV_TITLE? title)
         {
             UInt32 duration = 0;
             UInt32 pkt = 0;
             uint ii, jj;
-            Ref<MPLS_PL> pl = title.Value.pl;
+            Ref<MPLS_PL> pl = title.pl;
             Ref<MPLS_PI> pi;
             Ref<MPLS_PLM> plm;
             Ref<NAV_MARK> mark = Ref<NAV_MARK>.Null, prev = Ref<NAV_MARK>.Null;
             Ref<NAV_CLIP> clip;
 
-            for (ii = 0; ii < title.Value.clip_list.count; ii++)
+            for (ii = 0; ii < title.clip_list.count; ii++)
             {
-                clip = title.Value.clip_list.clip.AtIndex(ii);
+                clip = title.clip_list.clip.AtIndex(ii);
                 pi = pl.Value.play_item.AtIndex(ii);
-                if (pi.Value.angle_count > title.Value.angle_count)
+                if (pi.Value.angle_count > title.angle_count)
                 {
-                    title.Value.angle_count = pi.Value.angle_count;
+                    title.angle_count = pi.Value.angle_count;
                 }
 
                 clip.Value.title_time = duration;
@@ -716,8 +732,8 @@ _pl_duration(Ref<MPLS_PL> pl)
                 duration += clip.Value.duration;
                 pkt += clip.Value.end_pkt - clip.Value.start_pkt;
             }
-            title.Value.duration = duration;
-            title.Value.packets = pkt;
+            title.duration = duration;
+            title.packets = pkt;
 
             for (ii = 0, jj = 0; ii < pl.Value.mark_count; ii++)
             {
@@ -725,7 +741,7 @@ _pl_duration(Ref<MPLS_PL> pl)
                 if (plm.Value.mark_type == MplsParse.BD_MARK_ENTRY)
                 {
 
-                    mark = title.Value.chap_list.mark.AtIndex(jj);
+                    mark = title.chap_list.mark.AtIndex(jj);
                     _fill_mark(title, mark, (int)ii);
                     mark.Value.number = (int)jj;
 
@@ -744,18 +760,18 @@ _pl_duration(Ref<MPLS_PL> pl)
                     prev = mark;
                     jj++;
                 }
-                mark = title.Value.mark_list.mark.AtIndex(ii);
+                mark = title.mark_list.mark.AtIndex(ii);
                 _fill_mark(title, mark, (int)ii);
                 mark.Value.number = (int)ii;
             }
-            title.Value.chap_list.count = jj;
+            title.chap_list.count = jj;
             if (prev != null && prev.Value.duration == 0)
             {
-                prev.Value.duration = title.Value.duration - prev.Value.title_time;
+                prev.Value.duration = title.duration - prev.Value.title_time;
             }
         }
 
-        static void _fill_clip(Ref<NAV_TITLE> title,
+        static void _fill_clip(NAV_TITLE? title,
                                Ref<MPLS_CLIP> mpls_clip,
                                byte connection_condition, UInt32 in_time, UInt32 out_time,
                                uint pi_angle_count, uint still_mode, uint still_time,
@@ -770,13 +786,13 @@ _pl_duration(Ref<MPLS_PL> pl)
             clip.Value.still_mode = (byte)still_mode;
             clip.Value.still_time = (byte)still_time;
 
-            if (title.Value.angle >= pi_angle_count)
+            if (title.angle >= pi_angle_count)
             {
                 clip.Value.angle = 0;
             }
             else
             {
-                clip.Value.angle = title.Value.angle;
+                clip.Value.angle = title.angle;
             }
 
             clip.Value.name = mpls_clip[clip.Value.angle].clip_id[0..5];
@@ -789,7 +805,7 @@ _pl_duration(Ref<MPLS_PL> pl)
             ClpiParse.clpi_unref(ref clip.Value.cl);
 
             file = $"{mpls_clip[clip.Value.angle].clip_id}.clpi";
-            clip.Value.cl = ClpiParse.clpi_get(title.Value.disc, file);
+            clip.Value.cl = ClpiParse.clpi_get(title.disc, file);
             file = null;
 
             if (clip.Value.cl == null)
@@ -832,93 +848,93 @@ _pl_duration(Ref<MPLS_PL> pl)
         }
 
         static
-        void _nav_title_close(Ref<NAV_TITLE> title)
+        void _nav_title_close(NAV_TITLE? title)
         {
             uint ii, ss;
 
-            if (title.Value.sub_path)
+            if (title.sub_path)
             {
-                for (ss = 0; ss < title.Value.sub_path_count; ss++)
+                for (ss = 0; ss < title.sub_path_count; ss++)
                 {
-                    if (title.Value.sub_path[ss].clip_list.clip)
+                    if (title.sub_path[ss].clip_list.clip)
                     {
-                        for (ii = 0; ii < title.Value.sub_path[ss].clip_list.count; ii++)
+                        for (ii = 0; ii < title.sub_path[ss].clip_list.count; ii++)
                         {
-                            ClpiParse.clpi_unref(ref title.Value.sub_path[ss].clip_list.clip[ii].cl);
+                            ClpiParse.clpi_unref(ref title.sub_path[ss].clip_list.clip[ii].cl);
                         }
-                        title.Value.sub_path[ss].clip_list.clip.Free();
+                        title.sub_path[ss].clip_list.clip.Free();
                     }
                 }
-                title.Value.sub_path.Free();
+                title.sub_path.Free();
             }
 
-            if (title.Value.clip_list.clip)
+            if (title.clip_list.clip)
             {
-                for (ii = 0; ii < title.Value.clip_list.count; ii++)
+                for (ii = 0; ii < title.clip_list.count; ii++)
                 {
-                    ClpiParse.clpi_unref(ref title.Value.clip_list.clip[ii].cl);
+                    ClpiParse.clpi_unref(ref title.clip_list.clip[ii].cl);
                 }
-                title.Value.clip_list.clip.Free();
+                title.clip_list.clip.Free();
             }
 
-            MplsParse.mpls_free(ref title.Value.pl);
-            title.Value.chap_list.mark.Free();
-            title.Value.mark_list.mark.Free();
-            title.Free();
+            MplsParse.mpls_free(ref title.pl);
+            title.chap_list.mark.Free();
+            title.mark_list.mark.Free();
+            title = null;
         }
 
-        internal static void nav_title_close(ref Ref<NAV_TITLE> title)
+        internal static void nav_title_close(ref NAV_TITLE? title)
         {
-            if (title)
+            if (title != null)
             {
                 _nav_title_close(title);
-                title = Ref<NAV_TITLE>.Null;
+                title = null;
             }
         }
 
-        internal static Ref<NAV_TITLE> nav_title_open(BD_DISC disc, string playlist, uint angle)
+        internal static NAV_TITLE? nav_title_open(BD_DISC disc, string playlist, uint angle)
         {
-            Ref<NAV_TITLE> title = Ref<NAV_TITLE>.Null;
+            NAV_TITLE? title = null;
             uint ii, ss;
             Variable<UInt32> pos = new(0);
             Variable<UInt32> time = new(0);
 
-            title = Ref<NAV_TITLE>.Allocate();
+            title = new NAV_TITLE();
             if (title == null)
             {
-                return Ref<NAV_TITLE>.Null;
+                return null;
             }
-            title.Value.disc = disc;
-            title.Value.name = playlist[..10];
-            title.Value.angle_count = 0;
-            title.Value.angle = (byte)angle;
-            title.Value.pl = MplsParse.mpls_get(disc, playlist);
-            if (title.Value.pl == null)
+            title.disc = disc;
+            title.name = playlist[..10];
+            title.angle_count = 0;
+            title.angle = (byte)angle;
+            title.pl = MplsParse.mpls_get(disc, playlist);
+            if (title.pl == null)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_NAV, $"Fail: Playlist parse {playlist}");
-                title.Free();
-                return Ref<NAV_TITLE>.Null;
+                title = null;
+                return null;
             }
 
             // Find length in packets and end_pkt for each clip
-            if (title.Value.pl.Value.list_count != 0)
+            if (title.pl.Value.list_count != 0)
             {
-                title.Value.clip_list.count = title.Value.pl.Value.list_count;
-                title.Value.clip_list.clip = Ref<NAV_CLIP>.Allocate(title.Value.pl.Value.list_count);
-                if (!title.Value.clip_list.clip)
+                title.clip_list.count = title.pl.Value.list_count;
+                title.clip_list.clip = Ref<NAV_CLIP>.Allocate(title.pl.Value.list_count);
+                if (!title.clip_list.clip)
                 {
                     _nav_title_close(title);
-                    return Ref<NAV_TITLE>.Null;
+                    return null;
                 }
-                title.Value.packets = 0;
-                for (ii = 0; ii < title.Value.pl.Value.list_count; ii++)
+                title.packets = 0;
+                for (ii = 0; ii < title.pl.Value.list_count; ii++)
                 {
                     Ref<MPLS_PI> pi;
                     Ref<NAV_CLIP> clip;
 
-                    pi = title.Value.pl.Value.play_item.AtIndex(ii);
+                    pi = title.pl.Value.play_item.AtIndex(ii);
 
-                    clip = title.Value.clip_list.clip.AtIndex(ii);
+                    clip = title.clip_list.clip.AtIndex(ii);
 
                     _fill_clip(title, pi.Value.clip, pi.Value.connection_condition, pi.Value.in_time, pi.Value.out_time, pi.Value.angle_count,
                                pi.Value.still_mode, pi.Value.still_time, clip, ii, pos.Ref, time.Ref);
@@ -927,22 +943,22 @@ _pl_duration(Ref<MPLS_PL> pl)
 
             // sub paths
             // Find length in packets and end_pkt for each clip
-            if (title.Value.pl.Value.sub_count > 0)
+            if (title.pl.Value.sub_count > 0)
             {
-                title.Value.sub_path_count = title.Value.pl.Value.sub_count;
-                title.Value.sub_path = Ref<NAV_SUB_PATH>.Allocate(title.Value.sub_path_count);
-                if (!title.Value.sub_path)
+                title.sub_path_count = title.pl.Value.sub_count;
+                title.sub_path = Ref<NAV_SUB_PATH>.Allocate(title.sub_path_count);
+                if (!title.sub_path)
                 {
                     _nav_title_close(title);
-                    return Ref<NAV_TITLE>.Null;
+                    return null;
                 }
 
-                for (ss = 0; ss < title.Value.sub_path_count; ss++)
+                for (ss = 0; ss < title.sub_path_count; ss++)
                 {
-                    Ref<NAV_SUB_PATH> sub_path = title.Value.sub_path.AtIndex(ss);
+                    Ref<NAV_SUB_PATH> sub_path = title.sub_path.AtIndex(ss);
 
-                    sub_path.Value.type = title.Value.pl.Value.sub_path[ss].type;
-                    sub_path.Value.clip_list.count = title.Value.pl.Value.sub_path[ss].sub_playitem_count;
+                    sub_path.Value.type = title.pl.Value.sub_path[ss].type;
+                    sub_path.Value.clip_list.count = title.pl.Value.sub_path[ss].sub_playitem_count;
                     if (sub_path.Value.clip_list.count == 0)
                         continue;
 
@@ -950,13 +966,13 @@ _pl_duration(Ref<MPLS_PL> pl)
                     if (!sub_path.Value.clip_list.clip)
                     {
                         _nav_title_close(title);
-                        return Ref<NAV_TITLE>.Null;
+                        return null;
                     }
 
                     pos.Value = time.Value = 0;
                     for (ii = 0; ii < sub_path.Value.clip_list.count; ii++)
                     {
-                        Ref<MPLS_SUB_PI> pi = title.Value.pl.Value.sub_path[ss].sub_play_item.AtIndex(ii);
+                        Ref<MPLS_SUB_PI> pi = title.pl.Value.sub_path[ss].sub_play_item.AtIndex(ii);
                         Ref<NAV_CLIP> clip = sub_path.Value.clip_list.clip.AtIndex(ii);
 
                         _fill_clip(title, pi.Value.clip, pi.Value.connection_condition, pi.Value.in_time, pi.Value.out_time, 0,
@@ -965,22 +981,22 @@ _pl_duration(Ref<MPLS_PL> pl)
                 }
             }
 
-            title.Value.chap_list.count = _pl_chapter_count(title.Value.pl);
-            if (title.Value.chap_list.count != 0)
+            title.chap_list.count = _pl_chapter_count(title.pl);
+            if (title.chap_list.count != 0)
             {
-                title.Value.chap_list.mark = Ref<NAV_MARK>.Allocate(title.Value.chap_list.count);
+                title.chap_list.mark = Ref<NAV_MARK>.Allocate(title.chap_list.count);
             }
-            title.Value.mark_list.count = title.Value.pl.Value.mark_count;
-            if (title.Value.mark_list.count != 0)
+            title.mark_list.count = title.pl.Value.mark_count;
+            if (title.mark_list.count != 0)
             {
-                title.Value.mark_list.mark = Ref<NAV_MARK>.Allocate(title.Value.pl.Value.mark_count);
+                title.mark_list.mark = Ref<NAV_MARK>.Allocate(title.pl.Value.mark_count);
             }
 
             _extrapolate_title(title);
 
-            if (title.Value.angle >= title.Value.angle_count)
+            if (title.angle >= title.angle_count)
             {
-                title.Value.angle = 0;
+                title.angle = 0;
             }
 
             return title;
@@ -988,25 +1004,25 @@ _pl_duration(Ref<MPLS_PL> pl)
 
         // Search for random access point closest to the requested packet
         // Packets are 192 byte TS packets
-        internal static Ref<NAV_CLIP> nav_chapter_search(Ref<NAV_TITLE> title, uint chapter,
+        internal static Ref<NAV_CLIP> nav_chapter_search(NAV_TITLE? title, uint chapter,
                                            Ref<UInt32> clip_pkt, Ref<UInt32> out_pkt)
         {
             Ref<NAV_CLIP> clip;
 
-            if (chapter > title.Value.chap_list.count)
+            if (chapter > title.chap_list.count)
             {
-                clip = title.Value.clip_list.clip.AtIndex(0);
+                clip = title.clip_list.clip.AtIndex(0);
                 clip_pkt.Value = clip.Value.start_pkt;
                 out_pkt.Value = clip.Value.title_pkt;
                 return clip;
             }
-            clip = title.Value.clip_list.clip.AtIndex(title.Value.chap_list.mark[chapter].clip_ref);
-            clip_pkt.Value = title.Value.chap_list.mark[chapter].clip_pkt;
+            clip = title.clip_list.clip.AtIndex(title.chap_list.mark[chapter].clip_ref);
+            clip_pkt.Value = title.chap_list.mark[chapter].clip_pkt;
             out_pkt.Value = clip.Value.title_pkt + clip_pkt.Value - clip.Value.start_pkt;
             return clip;
         }
 
-        internal static UInt32 nav_chapter_get_current(Ref<NAV_TITLE> title, UInt32 title_pkt)
+        internal static UInt32 nav_chapter_get_current(NAV_TITLE? title, UInt32 title_pkt)
         {
             Ref<NAV_MARK> mark;
             UInt32 ii;
@@ -1015,16 +1031,16 @@ _pl_duration(Ref<MPLS_PL> pl)
             {
                 return 0;
             }
-            for (ii = 0; ii < title.Value.chap_list.count; ii++)
+            for (ii = 0; ii < title.chap_list.count; ii++)
             {
-                mark = title.Value.chap_list.mark.AtIndex(ii);
+                mark = title.chap_list.mark.AtIndex(ii);
                 if (mark.Value.title_pkt <= title_pkt)
                 {
-                    if (ii == title.Value.chap_list.count - 1)
+                    if (ii == title.chap_list.count - 1)
                     {
                         return ii;
                     }
-                    mark = title.Value.chap_list.mark.AtIndex(ii + 1);
+                    mark = title.chap_list.mark.AtIndex(ii + 1);
                     if (mark.Value.title_pkt > title_pkt)
                     {
                         return ii;
@@ -1036,20 +1052,20 @@ _pl_duration(Ref<MPLS_PL> pl)
 
         // Search for random access point closest to the requested packet
         // Packets are 192 byte TS packets
-        internal static Ref<NAV_CLIP> nav_mark_search(Ref<NAV_TITLE> title, uint mark,
+        internal static Ref<NAV_CLIP> nav_mark_search(NAV_TITLE? title, uint mark,
                                         Ref<UInt32> clip_pkt, Ref<UInt32> out_pkt)
         {
             Ref<NAV_CLIP> clip;
 
-            if (mark > title.Value.mark_list.count)
+            if (mark > title.mark_list.count)
             {
-                clip = title.Value.clip_list.clip.AtIndex(0);
+                clip = title.clip_list.clip.AtIndex(0);
                 clip_pkt.Value = clip.Value.start_pkt;
                 out_pkt.Value = clip.Value.title_pkt;
                 return clip;
             }
-            clip = title.Value.clip_list.clip.AtIndex(title.Value.mark_list.mark[mark].clip_ref);
-            clip_pkt.Value = title.Value.mark_list.mark[mark].clip_pkt;
+            clip = title.clip_list.clip.AtIndex(title.mark_list.mark[mark].clip_ref);
+            clip_pkt.Value = title.mark_list.mark[mark].clip_pkt;
             out_pkt.Value = clip.Value.title_pkt + clip_pkt.Value - clip.Value.start_pkt;
             return clip;
         }
@@ -1082,7 +1098,7 @@ _pl_duration(Ref<MPLS_PL> pl)
         // Packets are 192 byte TS packets
         // pkt is relative to the beginning of the title
         // out_pkt and out_time is relative to the the clip which the packet falls in
-        internal static Ref<NAV_CLIP> nav_packet_search(Ref<NAV_TITLE> title, UInt32 pkt,
+        internal static Ref<NAV_CLIP> nav_packet_search(NAV_TITLE? title, UInt32 pkt,
                                           Ref<UInt32> clip_pkt, Ref<UInt32> out_pkt, Ref<UInt32> out_time)
         {
             Ref<NAV_CLIP> clip;
@@ -1091,23 +1107,23 @@ _pl_duration(Ref<MPLS_PL> pl)
 
             out_time.Value = 0;
             pos = 0;
-            for (ii = 0; ii < title.Value.pl.Value.list_count; ii++)
+            for (ii = 0; ii < title.pl.Value.list_count; ii++)
             {
-                clip = title.Value.clip_list.clip.AtIndex(ii);
+                clip = title.clip_list.clip.AtIndex(ii);
                 len = clip.Value.end_pkt - clip.Value.start_pkt;
                 if (pkt < pos + len)
                     break;
                 pos += len;
             }
-            if (ii == title.Value.pl.Value.list_count)
+            if (ii == title.pl.Value.list_count)
             {
-                clip = title.Value.clip_list.clip.AtIndex(ii - 1);
+                clip = title.clip_list.clip.AtIndex(ii - 1);
                 out_time.Value = clip.Value.duration + clip.Value.in_time;
                 clip_pkt.Value = clip.Value.end_pkt;
             }
             else
             {
-                clip = title.Value.clip_list.clip.AtIndex(ii);
+                clip = title.clip_list.clip.AtIndex(ii);
                 nav_clip_packet_search(clip, pkt - pos + clip.Value.start_pkt, clip_pkt, out_time);
             }
             if (out_time.Value < clip.Value.in_time)
@@ -1150,7 +1166,7 @@ _pl_duration(Ref<MPLS_PL> pl)
 
         // Search for random access point closest to the requested time
         // Time is in 45khz ticks
-        internal static Ref<NAV_CLIP> nav_time_search(Ref<NAV_TITLE> title, UInt32 tick,
+        internal static Ref<NAV_CLIP> nav_time_search(NAV_TITLE? title, UInt32 tick,
                                         Ref<UInt32> clip_pkt, Ref<UInt32> out_pkt)
         {
             UInt32 pos, len;
@@ -1158,34 +1174,34 @@ _pl_duration(Ref<MPLS_PL> pl)
             Ref<NAV_CLIP> clip;
             uint ii;
 
-            if (!title.Value.pl)
+            if (!title.pl)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_NAV | DebugMaskEnum.DBG_CRIT, $"Time search failed (title not opened)");
                 return Ref<NAV_CLIP>.Null;
             }
-            if (title.Value.pl.Value.list_count < 1)
+            if (title.pl.Value.list_count < 1)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_NAV | DebugMaskEnum.DBG_CRIT, $"Time search failed (empty playlist)");
                 return Ref<NAV_CLIP>.Null;
             }
 
             pos = 0;
-            for (ii = 0; ii < title.Value.pl.Value.list_count; ii++)
+            for (ii = 0; ii < title.pl.Value.list_count; ii++)
             {
-                pi = title.Value.pl.Value.play_item.AtIndex(ii);
+                pi = title.pl.Value.play_item.AtIndex(ii);
                 len = pi.Value.out_time - pi.Value.in_time;
                 if (tick < pos + len)
                     break;
                 pos += len;
             }
-            if (ii == title.Value.pl.Value.list_count)
+            if (ii == title.pl.Value.list_count)
             {
-                clip = title.Value.clip_list.clip.AtIndex(ii - 1);
+                clip = title.clip_list.clip.AtIndex(ii - 1);
                 clip_pkt.Value = clip.Value.end_pkt;
             }
             else
             {
-                clip = title.Value.clip_list.clip.AtIndex(ii);
+                clip = title.clip_list.clip.AtIndex(ii);
                 nav_clip_time_search(clip, tick - pos + pi.Value.in_time, clip_pkt, out_pkt);
             }
             out_pkt.Value = clip.Value.title_pkt + clip_pkt.Value - clip.Value.start_pkt;
@@ -1205,7 +1221,7 @@ _pl_duration(Ref<MPLS_PL> pl)
                 if (clip.Value.cl != null)
                 {
                     clip_pkt.Value = ClpiParse.clpi_lookup_spn(clip.Value.cl, tick, 1,
-                       clip.Value.title.Value.pl.Value.play_item[clip.Value._ref].clip[clip.Value.angle].stc_id);
+                       clip.Value.title.pl.Value.play_item[clip.Value._ref].clip[clip.Value.angle].stc_id);
                     if (clip_pkt.Value < clip.Value.start_pkt)
                     {
                         clip_pkt.Value = clip.Value.start_pkt;
@@ -1231,20 +1247,20 @@ _pl_duration(Ref<MPLS_PL> pl)
          * Pointer to NAV_CLIP struct
          * NULL - End of clip list
          */
-        internal static Ref<NAV_CLIP> nav_next_clip(Ref<NAV_TITLE> title, Ref<NAV_CLIP> clip)
+        internal static Ref<NAV_CLIP> nav_next_clip(NAV_TITLE? title, Ref<NAV_CLIP> clip)
         {
             if (clip == null)
             {
-                return title.Value.clip_list.clip.AtIndex(0);
+                return title.clip_list.clip.AtIndex(0);
             }
-            if (clip.Value._ref >= title.Value.clip_list.count - 1)
+            if (clip.Value._ref >= title.clip_list.count - 1)
             {
                 return Ref<NAV_CLIP>.Null;
             }
-            return title.Value.clip_list.clip.AtIndex(clip.Value._ref + 1);
+            return title.clip_list.clip.AtIndex(clip.Value._ref + 1);
         }
 
-        internal static void nav_set_angle(Ref<NAV_TITLE> title, uint angle)
+        internal static void nav_set_angle(NAV_TITLE? title, uint angle)
         {
             int ii;
             Variable<UInt32> pos = new(0);
@@ -1259,22 +1275,22 @@ _pl_duration(Ref<MPLS_PL> pl)
                 // invalid angle
                 return;
             }
-            if (angle == title.Value.angle)
+            if (angle == title.angle)
             {
                 // no change
                 return;
             }
 
-            title.Value.angle = (byte)angle;
+            title.angle = (byte)angle;
             // Find length in packets and end_pkt for each clip
-            title.Value.packets = 0;
-            for (ii = 0; ii < title.Value.pl.Value.list_count; ii++)
+            title.packets = 0;
+            for (ii = 0; ii < title.pl.Value.list_count; ii++)
             {
                 Ref<MPLS_PI> pi;
                 Ref<NAV_CLIP> cl;
 
-                pi = title.Value.pl.Value.play_item.AtIndex(ii);
-                cl = title.Value.clip_list.clip.AtIndex(ii);
+                pi = title.pl.Value.play_item.AtIndex(ii);
+                cl = title.clip_list.clip.AtIndex(ii);
 
                 _fill_clip(title, pi.Value.clip, pi.Value.connection_condition, pi.Value.in_time, pi.Value.out_time, pi.Value.angle_count,
                            pi.Value.still_mode, pi.Value.still_time, cl, (uint)ii, pos.Ref, time.Ref);

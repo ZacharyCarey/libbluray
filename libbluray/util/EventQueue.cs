@@ -15,7 +15,12 @@ namespace libbluray.util
         uint _out; // next event
         T[] ev = new T[MAX_EVENTS + 1];
 
-        public BD_EVENT_QUEUE() { }
+        public BD_EVENT_QUEUE() {
+            for (int i = 0; i < ev.Length; i++)
+            {
+                ev[i] = new T();
+            }
+        }
 
         public static void event_queue_destroy(ref Ref<BD_EVENT_QUEUE<T>> pp)
         {

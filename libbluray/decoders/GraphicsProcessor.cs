@@ -12,8 +12,10 @@ namespace libbluray.decoders
     public struct GRAPHICS_PROCESSOR
     {
         public UInt16 pid;
-        public Ref<M2TS_DEMUX> demux;
-        public Ref<PES_BUFFER> queue;
+        public Ref<M2TS_DEMUX> demux = new();
+        public Ref<PES_BUFFER> queue = new();
+
+        public GRAPHICS_PROCESSOR() { }
     }
 
     public struct PG_DISPLAY_SET
@@ -28,17 +30,19 @@ namespace libbluray.decoders
         public uint num_dialog;    /* number of decoded dialog segments */
         public uint total_dialog;  /* total dialog segments in stream */
 
-        public Ref<BD_PG_PALETTE> palette;
-        public Ref<BD_PG_OBJECT> _object;
-        public Ref<BD_PG_WINDOW> window;
-        public Ref<BD_TEXTST_DIALOG_PRESENTATION> dialog;
+        public Ref<BD_PG_PALETTE> palette = new();
+        public Ref<BD_PG_OBJECT> _object = new();
+        public Ref<BD_PG_WINDOW> window = new();
+        public Ref<BD_TEXTST_DIALOG_PRESENTATION> dialog = new();
 
         /* only one of the following segments can be present */
-        public Ref<BD_IG_INTERACTIVE> ics;
-        public Ref<BD_PG_COMPOSITION> pcs;
-        public Ref<BD_TEXTST_DIALOG_STYLE> style;
+        public Ref<BD_IG_INTERACTIVE> ics = new();
+        public Ref<BD_PG_COMPOSITION> pcs = new();
+        public Ref<BD_TEXTST_DIALOG_STYLE> style = new();
 
         public byte decoding; /* internal flag: PCS/ICS decoded, but no end of presentation seen yet */
+
+        public PG_DISPLAY_SET() { }
     }
 
     public enum pgs_segment_type_e

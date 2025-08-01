@@ -32,6 +32,8 @@ namespace libbluray.bdnav
         /// Thumbnail height
         /// </summary>
         public UInt32 yres;
+
+        public META_THUMBNAIL() { }
     }
 
     /// <summary>
@@ -44,6 +46,8 @@ namespace libbluray.bdnav
         /// </summary>
         public UInt32 title_number;
         public string title_name;
+
+        public META_TITLE() { }
     }
 
     /// <summary>
@@ -90,7 +94,7 @@ namespace libbluray.bdnav
         /// <summary>
         /// Title data
         /// </summary>
-        public Ref<META_TITLE> toc_entries;
+        public Ref<META_TITLE> toc_entries = new();
 
         /// <summary>
         /// Number of thumbnails
@@ -100,7 +104,9 @@ namespace libbluray.bdnav
         /// <summary>
         /// Thumbnail data
         /// </summary>
-        public Ref<META_THUMBNAIL> thumbnails;
+        public Ref<META_THUMBNAIL> thumbnails = new();
+
+        public META_DL() { }
     }
 
     public struct META_TN
@@ -114,15 +120,19 @@ namespace libbluray.bdnav
         public UInt32 playlist;
         public UInt32 num_chapter;
         public string[] chapter_name;
+
+        public META_TN() { }
     }
 
     public struct META_ROOT
     {
         public byte dl_count;
-        public Ref<META_DL> dl_entries;
+        public Ref<META_DL> dl_entries = new();
 
         public uint tn_count;
-        public Ref<META_TN> tn_entries;
+        public Ref<META_TN> tn_entries = new();
+
+        public META_ROOT() { }
 
     }
 
@@ -137,28 +147,28 @@ namespace libbluray.bdnav
             {
                 if (cur_node is XmlElement element)
                 {
-                    if (element.ParentNode?.Name == "title")
+                    if (element.ParentNode?.LocalName == "title")
                     {
-                        if (element.Name == "name")
+                        if (element.LocalName == "name")
                         {
-                            disclib.Value.di_name = element.Value ?? "";
+                            disclib.Value.di_name = element.InnerText ?? "";
                         }
-                        if (element.Name == "alternative")
+                        if (element.LocalName == "alternative")
                         {
-                            disclib.Value.di_alternative = element.Value ?? "";
+                            disclib.Value.di_alternative = element.InnerText ?? "";
                         }
-                        if (element.Name == "numSets")
+                        if (element.LocalName == "numSets")
                         {
-                            disclib.Value.di_num_sets = byte.Parse(element.Value ?? "0");
+                            disclib.Value.di_num_sets = byte.Parse(element.InnerText ?? "0");
                         }
-                        if (element.Name == "setNumber")
+                        if (element.LocalName == "setNumber")
                         {
-                            disclib.Value.di_set_number = byte.Parse(element.Value ?? "0");
+                            disclib.Value.di_set_number = byte.Parse(element.InnerText ?? "0");
                         }
                     }
-                    else if (element.ParentNode?.Name == "tableOfContents")
+                    else if (element.ParentNode?.LocalName == "tableOfContents")
                     {
-                        if (element.Name == "titleName" && element.HasAttribute("titleNumber"))
+                        if (element.LocalName == "titleName" && element.HasAttribute("titleNumber"))
                         {
                             Ref<META_TITLE> new_entries = disclib.Value.toc_entries.Reallocate(disclib.Value.toc_count + 1);
                             if (new_entries)
@@ -167,13 +177,13 @@ namespace libbluray.bdnav
                                 disclib.Value.toc_count++;
                                 disclib.Value.toc_entries = new_entries;
                                 disclib.Value.toc_entries[i].title_number = uint.Parse(element.GetAttribute("titleNumber"));
-                                disclib.Value.toc_entries[i].title_name = element.Value ?? "";
+                                disclib.Value.toc_entries[i].title_name = element.InnerText ?? "";
                             }
                         }
                     }
-                    else if (element.ParentNode?.Name == "description")
+                    else if (element.ParentNode?.LocalName == "description")
                     {
-                        if (element.Name == "thumbnail" && element.HasAttribute("href"))
+                        if (element.LocalName == "thumbnail" && element.HasAttribute("href"))
                         {
                             Ref<META_THUMBNAIL> new_thumbnails = disclib.Value.thumbnails.Reallocate(disclib.Value.thumb_count + 1u);
                             if (new_thumbnails)

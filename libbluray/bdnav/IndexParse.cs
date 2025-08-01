@@ -87,7 +87,7 @@ namespace libbluray.bdnav
         /// </summary>
         public uint frame_rate;
 
-        public byte[] user_data = new byte[32];
+        public string user_data = "";
 
         public INDX_APP_INFO() { }
     }
@@ -100,39 +100,47 @@ namespace libbluray.bdnav
         /// 6 bytes
         /// </summary>
         public string name;
+
+        public INDX_BDJ_OBJ() { }
     }
 
     public struct INDX_HDMV_OBJ
     {
         public indx_hdmv_playback_type playback_type;
         public ushort id_ref;
+
+        public INDX_HDMV_OBJ() { }
     }
 
     public struct INDX_PLAY_ITEM
     {
         public indx_object_type object_type;
-        public Variable<INDX_BDJ_OBJ> bdj;
-        public Variable<INDX_HDMV_OBJ> hdmv;
+        public Variable<INDX_BDJ_OBJ> bdj = new();
+        public Variable<INDX_HDMV_OBJ> hdmv = new();
+
+        public INDX_PLAY_ITEM() { }
     }
 
     public struct INDX_TITLE
     {
         public indx_object_type object_type;
         public byte access_type;
-        public Variable<INDX_BDJ_OBJ> bdj;
-        public Variable<INDX_HDMV_OBJ> hdmv;
+        public Variable<INDX_BDJ_OBJ> bdj = new();
+        public Variable<INDX_HDMV_OBJ> hdmv = new();
+
+        public INDX_TITLE() { }
     }
 
     public struct INDX_ROOT
     {
-        public Variable<INDX_APP_INFO> app_info;
-        public Variable<INDX_PLAY_ITEM> first_play;
-        public Variable<INDX_PLAY_ITEM> top_menu;
+        public Variable<INDX_APP_INFO> app_info = new();
+        public Variable<INDX_PLAY_ITEM> first_play = new();
+        public Variable<INDX_PLAY_ITEM> top_menu = new();
 
         public ushort num_titles;
-        public Ref<INDX_TITLE> titles;
+        public Ref<INDX_TITLE> titles = new();
 
-        public Variable<UInt32> indx_version;
+        public Variable<UInt32> indx_version = new();
 
         // UHD extension
         public byte disc_type;
@@ -140,6 +148,8 @@ namespace libbluray.bdnav
         public byte hdrplus_flag;
         public byte dv_flag;
         public byte hdr_flags;
+
+        public INDX_ROOT() { }
     }
 
     internal static class IndexParse
@@ -291,7 +301,7 @@ namespace libbluray.bdnav
             app_info.Value.video_format = bs.Value.bs_read<uint>(4);
             app_info.Value.frame_rate = bs.Value.bs_read<uint>(4);
 
-            bs.Value.bs_read_bytes(app_info.Value.user_data, 32);
+            app_info.Value.user_data = bs.Value.bs_read_string(32);
 
             return true;
         }

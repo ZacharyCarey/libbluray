@@ -10,11 +10,13 @@ namespace libbluray.util
 {
     internal struct BITBUFFER
     {
-        public Ref<byte> p_start;
-        public Ref<byte> p;
-        public Ref<byte> p_end;
+        public Ref<byte> p_start = new();
+        public Ref<byte> p = new();
+        public Ref<byte> p_end = new();
 
         public int i_left; // Number of available bits
+
+        public BITBUFFER() { }
 
         public void bb_init(Ref<byte> p_data, UInt64 i_data)
         {
@@ -133,9 +135,9 @@ namespace libbluray.util
     {
         public const Int64 BF_BUF_SIZE = 1024 * 32;
 
-        public BD_FILE_H fp;
+        public BD_FILE_H fp = null;
         public byte[] buf = new byte[BF_BUF_SIZE];
-        public BITBUFFER bb;
+        public BITBUFFER bb = new();
         public Int64 pos; // File offset of buffer start buf[0]
         public Int64 end; // size of file
         public UInt64 size; // bytes in buf
