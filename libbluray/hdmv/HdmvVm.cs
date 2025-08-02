@@ -1,30 +1,73 @@
 ﻿using libbluray.disc;
 using libbluray.util;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace libbluray.hdmv
 {
+    /// <summary>
+    /// events from hdmv_run()
+    /// </summary>
     public enum hdmv_event_e
     {
-        HDMV_EVENT_NONE = 0,       /* no events */
-        HDMV_EVENT_END,            /* end of program (movie object) */
-        HDMV_EVENT_IG_END,         /* end of program (interactive) */
+        /// <summary>
+        /// no events
+        /// </summary>
+        HDMV_EVENT_NONE = 0,
+
+        /// <summary>
+        /// end of program (movie object)
+        /// </summary>
+        HDMV_EVENT_END,
+
+        /// <summary>
+        /// end of program (interactive)
+        /// </summary>
+        HDMV_EVENT_IG_END,
 
         /*
          * playback control
          */
 
-        HDMV_EVENT_TITLE,          /* play title (from disc index) */
-        HDMV_EVENT_PLAY_PL,        /* select playlist */
-        HDMV_EVENT_PLAY_PL_PM,     /* select playlist (and mark) */
-        HDMV_EVENT_PLAY_PL_PI,     /* select playlist (and playitem) */
-        HDMV_EVENT_PLAY_PI,        /* seek to playitem */
-        HDMV_EVENT_PLAY_PM,        /* seek to playmark */
-        HDMV_EVENT_PLAY_STOP,      /* stop playing playlist */
+        /// <summary>
+        /// play title (from disc index)
+        /// </summary>
+        HDMV_EVENT_TITLE,
+
+        /// <summary>
+        /// select playlist
+        /// </summary>
+        HDMV_EVENT_PLAY_PL,
+
+        /// <summary>
+        /// select playlist (and mark)
+        /// </summary>
+        HDMV_EVENT_PLAY_PL_PM,
+
+        /// <summary>
+        /// select playlist (and playitem)
+        /// </summary>
+        HDMV_EVENT_PLAY_PL_PI,
+
+        /// <summary>
+        /// seek to playitem
+        /// </summary>
+        HDMV_EVENT_PLAY_PI,
+
+        /// <summary>
+        /// seek to playmark
+        /// </summary>
+        HDMV_EVENT_PLAY_PM,
+
+        /// <summary>
+        /// stop playing playlist
+        /// </summary>
+        HDMV_EVENT_PLAY_STOP,      
 
         HDMV_EVENT_STILL,          /* param: boolean */
 
@@ -97,6 +140,10 @@ namespace libbluray.hdmv
     {
         public const int HDMV_MENU_CALL_MASK = 0x01;
         public const int HDMV_TITLE_SEARCH_MASK = 0x02;
+
+        /// <summary>
+        /// VM state size
+        /// </summary>
         public const int HDMV_STATE_SIZE = 10;
 
         /*
@@ -1455,6 +1502,15 @@ namespace libbluray.hdmv
             return mask;
         }
 
+        /// <summary>
+        /// Resume HDMV execution
+        /// 
+        /// Continue execution of movie object after playlist playback.
+        /// Do not restore backup PSRs.
+        /// This function is called when playlist playback ends.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         internal static int hdmv_vm_resume(Ref<HDMV_VM> p)
         {
             int result;
@@ -1472,6 +1528,20 @@ namespace libbluray.hdmv
             return result;
         }
 
+        /// <summary>
+        /// Suspend playlist playback
+        /// 
+        /// This function assumes playlist is currently playing and
+        /// movie object execution is suspended at PLAY_PL instruction.
+        /// 
+        /// If resume_intention_flag of current movie object is 1:
+        /// Copy playback position PSRs to backup registers
+        /// (suspend playlist playback at current position)
+        /// If resume_intention_flag of current movie object is 0:
+        /// Discard current movie object
+        /// </summary>
+        /// <param name="p">HDMV_VM object</param>
+        /// <returns>0 on success, -1 if error</returns>
         internal static int hdmv_vm_suspend_pl(Ref<HDMV_VM> p)
         {
             int result = -1;

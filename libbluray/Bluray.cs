@@ -5,86 +5,259 @@ using libbluray.disc;
 using libbluray.file;
 using libbluray.hdmv;
 using libbluray.util;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Numerics;
+using System.Reflection;
+using System.Runtime;
+using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace libbluray
 {
+    /// <summary>
+    /// HDMV / BD-J title information
+    /// </summary>
     public struct BLURAY_TITLE
     {
-        public string name;         /**< optional title name in preferred language */
-        public byte interactive;  /**< 1 if title is interactive (title length and playback position should not be shown in UI) */
-        public byte accessible;   /**< 1 if it is allowed to jump into this title */
-        public byte hidden;       /**< 1 if title number should not be shown during playback */
+        /// <summary>
+        /// optional title name in preferred language
+        /// </summary>
+        public string name;
 
-        public byte bdj;          /**< 0 - HDMV title. 1 - BD-J title */
-        public UInt32 id_ref;       /**< Movie Object number / bdjo file number */
+        /// <summary>
+        /// 1 if title is interactive (title length and playback position should not be shown in UI)
+        /// </summary>
+        public byte interactive;
+
+        /// <summary>
+        /// 1 if it is allowed to jump into this title
+        /// </summary>
+        public byte accessible;
+
+        /// <summary>
+        /// 1 if title number should not be shown during playback
+        /// </summary>
+        public byte hidden;
+
+        /// <summary>
+        /// 0 - HDMV title. 1 - BD-J title
+        /// </summary>
+        public byte bdj;
+
+        /// <summary>
+        ///  Movie Object number / bdjo file number
+        /// </summary>
+        public UInt32 id_ref;       
     }
 
+    /// <summary>
+    /// BluRay disc information
+    /// </summary>
     public struct BLURAY_DISC_INFO
     {
-        public byte bluray_detected;   /**< 1 if BluRay disc was detected */
+        /// <summary>
+        /// 1 if BluRay disc was detected
+        /// </summary>
+        public byte bluray_detected;
 
         /* Disc ID */
-        public string disc_name;      /**< optional disc name in preferred language */
-        public string udf_volume_id;  /**< optional UDF volume identifier */
-        public byte[] disc_id = new byte[20];    /**< Disc ID */
+        /// <summary>
+        /// optional disc name in preferred language
+        /// </summary>
+        public string disc_name;
+
+        /// <summary>
+        /// optional UDF volume identifier
+        /// </summary>
+        public string udf_volume_id;
+
+        /// <summary>
+        /// Disc ID
+        /// </summary>
+        public byte[] disc_id = new byte[20];
 
         /** HDMV / BD-J titles */
-        public byte no_menu_support;            /**< 1 if this disc can't be played using on-disc menus */
-        public byte first_play_supported;       /**< 1 if First Play title is present on the disc and can be played */
-        public byte top_menu_supported;         /**< 1 if Top Menu title is present on the disc and can be played */
+        /// <summary>
+        /// 1 if this disc can't be played using on-disc menus
+        /// </summary>
+        public byte no_menu_support;            
 
-        public UInt32 num_titles;     /**< number of titles on the disc, not including "First Play" and "Top Menu" */
-        public Ref<BLURAY_TITLE> titles;  /**< index is title number 1 ... N */
-        public Ref<BLURAY_TITLE> first_play;     /**< titles[N+1].   null if not present on the disc. */
-        public Ref<BLURAY_TITLE> top_menu;       /**< titles[0]. null if not present on the disc. */
+        /// <summary>
+        /// 1 if First Play title is present on the disc and can be played
+        /// </summary>
+        public byte first_play_supported;
 
-        public UInt32 num_hdmv_titles;            /**< number of HDMV titles */
-        public UInt32 num_bdj_titles;             /**< number of BD-J titles */
-        public UInt32 num_unsupported_titles;     /**< number of unsupported titles */
+        /// <summary>
+        /// 1 if Top Menu title is present on the disc and can be played 
+        /// </summary>
+        public byte top_menu_supported;
+
+        /// <summary>
+        /// number of titles on the disc, not including "First Play" and "Top Menu"
+        /// </summary>
+        public UInt32 num_titles;
+
+        /// <summary>
+        /// index is title number 1 ... N
+        /// </summary>
+        public Ref<BLURAY_TITLE> titles;
+
+        /// <summary>
+        /// titles[N+1].   null if not present on the disc.
+        /// </summary>
+        public Ref<BLURAY_TITLE> first_play;
+
+        /// <summary>
+        /// titles[0]. null if not present on the disc.
+        /// </summary>
+        public Ref<BLURAY_TITLE> top_menu;
+
+        /// <summary>
+        /// number of HDMV titles
+        /// </summary>
+        public UInt32 num_hdmv_titles;
+
+        /// <summary>
+        ///  number of BD-J titles
+        /// </summary>
+        public UInt32 num_bdj_titles;
+
+        /// <summary>
+        /// number of unsupported titles
+        /// </summary>
+        public UInt32 num_unsupported_titles;
 
         /** BD-J info (valid only if disc uses BD-J) */
-        public byte bdj_detected;     /**< 1 if disc uses BD-J */
-        public byte bdj_supported;    /**< (deprecated) */
-        public byte libjvm_detected;  /**< 1 if usable Java VM was found */
-        public byte bdj_handled;      /**< 1 if usable Java VM + libbluray.jar was found */
+        /// <summary>
+        /// 1 if disc uses BD-J
+        /// </summary>
+        public byte bdj_detected;
 
-        public string bdj_org_id = "";        /**< (BD-J) disc organization ID */
-        public string bdj_disc_id = "";      /**< (BD-J) disc ID */
+        /// <summary>
+        /// (deprecated)
+        /// </summary>
+        public byte bdj_supported;
+
+        /// <summary>
+        /// 1 if usable Java VM was found
+        /// </summary>
+        public byte libjvm_detected;
+
+        /// <summary>
+        /// 1 if usable Java VM + libbluray.jar was found 
+        /// </summary>
+        public byte bdj_handled;
+
+        /// <summary>
+        /// (BD-J) disc organization ID
+        /// </summary>
+        public string bdj_org_id = "";
+
+        /// <summary>
+        /// (BD-J) disc ID
+        /// </summary>
+        public string bdj_disc_id = "";
 
         /* disc application info */
-        public byte video_format;                     /**< \ref bd_video_format_e */
-        public byte frame_rate;                       /**< \ref bd_video_rate_e */
-        public byte content_exist_3D;                 /**< 1 if 3D content exists on the disc */
-        public byte initial_output_mode_preference;   /**< 0 - 2D, 1 - 3D */
-        public string provider_data = "";                /**< Content provider data */
+        /// <summary>
+        /// bd_video_format_e
+        /// </summary>
+        public byte video_format;
+
+        /// <summary>
+        /// bd_video_rate_e
+        /// </summary>
+        public byte frame_rate;
+
+        /// <summary>
+        /// 1 if 3D content exists on the disc
+        /// </summary>
+        public byte content_exist_3D;
+
+        /// <summary>
+        /// 0 - 2D, 1 - 3D
+        /// </summary>
+        public byte initial_output_mode_preference;
+
+        /// <summary>
+        /// Content provider data
+        /// </summary>
+        public string provider_data = "";
 
         /* AACS info  (valid only if disc uses AACS) */
-        public byte aacs_detected;     /**< 1 if disc is using AACS encoding */
-        public byte libaacs_detected;  /**< 1 if usable AACS decoding library was found */
-        public byte aacs_handled;      /**< 1 if disc is using supported AACS encoding */
+        /// <summary>
+        /// 1 if disc is using AACS encoding
+        /// </summary>
+        public byte aacs_detected;
 
-        public int aacs_error_code;   /**< AACS error code (BD_AACS_*) */
-        public int aacs_mkbv;         /**< AACS MKB version */
+        /// <summary>
+        /// 1 if usable AACS decoding library was found
+        /// </summary>
+        public byte libaacs_detected;
+
+        /// <summary>
+        /// 1 if disc is using supported AACS encoding
+        /// </summary>
+        public byte aacs_handled;
+
+        /// <summary>
+        /// AACS error code (BD_AACS_*) 
+        /// </summary>
+        public int aacs_error_code;
+
+        /// <summary>
+        /// AACS MKB version
+        /// </summary>
+        public int aacs_mkbv;
 
         /* BD+ info  (valid only if disc uses BD+) */
-        public byte bdplus_detected;     /**< 1 if disc is using BD+ encoding */
-        public byte libbdplus_detected;  /**< 1 if usable BD+ decoding library was found */
-        public byte bdplus_handled;      /**< 1 if disc is using supporred BD+ encoding */
+        /// <summary>
+        /// 1 if disc is using BD+ encoding
+        /// </summary>
+        public byte bdplus_detected;
 
-        public byte bdplus_gen;          /**< BD+ content code generation */
-        public UInt32 bdplus_date;         /**< BD+ content code relese date ((year<<16)|(month<<8)|day) */
+        /// <summary>
+        /// 1 if usable BD+ decoding library was found 
+        /// </summary>
+        public byte libbdplus_detected;
+
+        /// <summary>
+        /// 1 if disc is using supporred BD+ encoding
+        /// </summary>
+        public byte bdplus_handled;
+
+        /// <summary>
+        /// BD+ content code generation
+        /// </summary>
+        public byte bdplus_gen;
+
+        /// <summary>
+        /// BD+ content code relese date ((year<<16)|(month<<8)|day)
+        /// </summary>
+        public UInt32 bdplus_date;
 
         /* disc application info (libbluray > 1.2.0) */
-        public byte initial_dynamic_range_type; /**< bd_dynamic_range_type_e */
+        /// <summary>
+        /// bd_dynamic_range_type_e
+        /// </summary>
+        public byte initial_dynamic_range_type; 
 
         public BLURAY_DISC_INFO() { }
     }
 
+    /// <summary>
+    /// Stream video coding type
+    /// </summary>
     public enum bd_stream_type_e
     {
         BLURAY_STREAM_TYPE_VIDEO_MPEG1 = 0x01,
@@ -108,53 +281,136 @@ namespace libbluray
         BLURAY_STREAM_TYPE_AUDIO_DTSHD_SECONDARY = 0xa2
     }
 
+    /// <summary>
+    /// Stream video format
+    /// </summary>
     public enum bd_video_format_e
     {
-        BLURAY_VIDEO_FORMAT_480I = 1,  /**< ITU-R BT.601-5 */
-        BLURAY_VIDEO_FORMAT_576I = 2,  /**< ITU-R BT.601-4 */
-        BLURAY_VIDEO_FORMAT_480P = 3,  /**< SMPTE 293M */
-        BLURAY_VIDEO_FORMAT_1080I = 4,  /**< SMPTE 274M */
-        BLURAY_VIDEO_FORMAT_720P = 5,  /**< SMPTE 296M */
-        BLURAY_VIDEO_FORMAT_1080P = 6,  /**< SMPTE 274M */
-        BLURAY_VIDEO_FORMAT_576P = 7,  /**< ITU-R BT.1358 */
-        BLURAY_VIDEO_FORMAT_2160P = 8,  /**< BT.2020 */
+        /// <summary>
+        ///  ITU-R BT.601-5
+        /// </summary>
+        BLURAY_VIDEO_FORMAT_480I = 1,
+
+        /// <summary>
+        /// ITU-R BT.601-4
+        /// </summary>
+        BLURAY_VIDEO_FORMAT_576I = 2,
+
+        /// <summary>
+        /// SMPTE 293M
+        /// </summary>
+        BLURAY_VIDEO_FORMAT_480P = 3,
+
+        /// <summary>
+        /// SMPTE 274M
+        /// </summary>
+        BLURAY_VIDEO_FORMAT_1080I = 4,
+
+        /// <summary>
+        /// SMPTE 296M
+        /// </summary>
+        BLURAY_VIDEO_FORMAT_720P = 5,
+
+        /// <summary>
+        /// SMPTE 274M
+        /// </summary>
+        BLURAY_VIDEO_FORMAT_1080P = 6,
+
+        /// <summary>
+        /// ITU-R BT.1358
+        /// </summary>
+        BLURAY_VIDEO_FORMAT_576P = 7,
+
+        /// <summary>
+        /// BT.2020
+        /// </summary>
+        BLURAY_VIDEO_FORMAT_2160P = 8,  
     }
 
+    /// <summary>
+    /// Stream video frame rate
+    /// </summary>
     public enum bd_video_rate_e
     {
-        BLURAY_VIDEO_RATE_24000_1001 = 1,  /**< 23.976 Hz */
-        BLURAY_VIDEO_RATE_24 = 2,  /**< 24 Hz */
-        BLURAY_VIDEO_RATE_25 = 3,  /**< 25 Hz */
-        BLURAY_VIDEO_RATE_30000_1001 = 4,  /**< 29.97 Hz */
-        BLURAY_VIDEO_RATE_50 = 6,  /**< 50 Hz */
-        BLURAY_VIDEO_RATE_60000_1001 = 7   /**< 59.94 Hz */
+        /// <summary>
+        /// 23.976 Hz
+        /// </summary>
+        BLURAY_VIDEO_RATE_24000_1001 = 1,
+
+        /// <summary>
+        /// 24 Hz
+        /// </summary>
+        BLURAY_VIDEO_RATE_24 = 2,
+
+        /// <summary>
+        /// 25 Hz
+        /// </summary>
+        BLURAY_VIDEO_RATE_25 = 3,
+
+        /// <summary>
+        /// 29.97 Hz
+        /// </summary>
+        BLURAY_VIDEO_RATE_30000_1001 = 4,
+
+        /// <summary>
+        /// 50 Hz
+        /// </summary>
+        BLURAY_VIDEO_RATE_50 = 6,
+
+        /// <summary>
+        /// 59.94 Hz
+        /// </summary>
+        BLURAY_VIDEO_RATE_60000_1001 = 7   
     }
 
+    /// <summary>
+    /// Stream video aspect ratio
+    /// </summary>
     public enum bd_video_aspect_e
     {
         BLURAY_ASPECT_RATIO_4_3 = 2,
         BLURAY_ASPECT_RATIO_16_9 = 3
     }
 
+    /// <summary>
+    /// Stream audio format
+    /// </summary>
     public enum bd_audio_format_e
     {
         BLURAY_AUDIO_FORMAT_MONO = 1,
         BLURAY_AUDIO_FORMAT_STEREO = 3,
         BLURAY_AUDIO_FORMAT_MULTI_CHAN = 6,
-        BLURAY_AUDIO_FORMAT_COMBO = 12  // Stereo ac3/dts, 
+
+        /// <summary>
+        /// Stereo ac3/dts,
+        /// </summary>
+        BLURAY_AUDIO_FORMAT_COMBO = 12   
     }
 
+    /// <summary>
+    /// Stream audio rate
+    /// </summary>
     public enum bd_audio_rate_e
     {
         BLURAY_AUDIO_RATE_48 = 1,
         BLURAY_AUDIO_RATE_96 = 4,
         BLURAY_AUDIO_RATE_192 = 5,
-        BLURAY_AUDIO_RATE_192_COMBO = 12, // 48 or 96 ac3/dts
-                                          // 192 mpl/dts-hd
-        BLURAY_AUDIO_RATE_96_COMBO = 14  // 48 ac3/dts
-                                         // 96 mpl/dts-hd
+        /// <summary>
+        /// 48 or 96 ac3/dts.
+        /// 192 mpl/dts-hd.
+        /// </summary>
+        BLURAY_AUDIO_RATE_192_COMBO = 12,
+
+        /// <summary>
+        /// 48 ac3/dts.
+        /// 96 mpl/dts-hd.
+        /// </summary>
+        BLURAY_AUDIO_RATE_96_COMBO = 14  
     }
 
+    /// <summary>
+    /// Text subtitle charset
+    /// </summary>
     public enum bd_char_code_e
     {
         BLURAY_TEXT_CHAR_CODE_UTF8 = 0x01,
@@ -166,19 +422,46 @@ namespace libbluray
         BLURAY_TEXT_CHAR_CODE_BIG5 = 0x07
     }
 
+    /// <summary>
+    /// Clip still mode type
+    /// </summary>
     public enum bd_still_mode_e
     {
-        BLURAY_STILL_NONE = 0x00,  /**< No still (normal playback) */
-        BLURAY_STILL_TIME = 0x01,  /**< Still playback for fixed time */
-        BLURAY_STILL_INFINITE = 0x02,  /**< Infinite still */
+        /// <summary>
+        /// No still (normal playback)
+        /// </summary>
+        BLURAY_STILL_NONE = 0x00,
+
+        /// <summary>
+        /// Still playback for fixed time
+        /// </summary>
+        BLURAY_STILL_TIME = 0x01,
+
+        /// <summary>
+        /// Infinite still
+        /// </summary>
+        BLURAY_STILL_INFINITE = 0x02,  
     }
 
+    /// <summary>
+    /// Mark type
+    /// </summary>
     public enum bd_mark_type_e
     {
-        BLURAY_MARK_ENTRY = 0x01,  /**< entry mark for chapter search */
-        BLURAY_MARK_LINK = 0x02,  /**< link point */
+        /// <summary>
+        /// entry mark for chapter search
+        /// </summary>
+        BLURAY_MARK_ENTRY = 0x01,
+
+        /// <summary>
+        /// link point
+        /// </summary>
+        BLURAY_MARK_LINK = 0x02,  
     }
 
+    /// <summary>
+    /// Clip dynamic range
+    /// </summary>
     public enum bd_dynamic_range_type_e
     {
         BLURAY_DYNAMIC_RANGE_SDR = 0,
@@ -186,210 +469,647 @@ namespace libbluray
         BLURAY_DYNAMIC_RANGE_DOLBY_VISION = 2
     }
 
+    /// <summary>
+    /// Clip substream information
+    /// </summary>
     public struct BLURAY_STREAM_INFO
     {
-        public byte coding_type;  /**< Stream coding (\ref bd_stream_type_e) */
-        public byte format;       /**< Stream format (\ref bd_video_format_e or \ref bd_audio_format_e) */
-        public byte rate;         /**< Stream frame rate (\ref bd_audio_rate_e or \ref bd_video_rate_e) */
-        public byte char_code;    /**< Text subtitle charachter code (\ref bd_char_code_e) */
-        public string lang = "";      /**< Language code */
-        public UInt16 pid;          /**< mpeg-ts PID */
-        public byte aspect;       /**< Stream video aspect ratio (\ref bd_video_aspect_e) */
-        public byte subpath_id;   /**< Sub path identifier (= separate mpeg-ts mux / .m2ts file) */
+        /// <summary>
+        /// Stream coding (\ref bd_stream_type_e)
+        /// </summary>
+        public byte coding_type;
+
+        /// <summary>
+        /// Stream format (\ref bd_video_format_e or \ref bd_audio_format_e) 
+        /// </summary>
+        public byte format;
+
+        /// <summary>
+        /// Stream frame rate (\ref bd_audio_rate_e or \ref bd_video_rate_e)
+        /// </summary>
+        public byte rate;
+
+        /// <summary>
+        /// Text subtitle charachter code (\ref bd_char_code_e)
+        /// </summary>
+        public byte char_code;
+
+        /// <summary>
+        /// Language code
+        /// </summary>
+        public string lang = "";
+
+        /// <summary>
+        /// mpeg-ts PID
+        /// </summary>
+        public UInt16 pid;
+
+        /// <summary>
+        /// Stream video aspect ratio (\ref bd_video_aspect_e)
+        /// </summary>
+        public byte aspect;
+
+        /// <summary>
+        /// Sub path identifier (= separate mpeg-ts mux / .m2ts file)
+        /// </summary>
+        public byte subpath_id;   
 
         public BLURAY_STREAM_INFO() { }
     }
 
+    /// <summary>
+    /// Clip information
+    /// </summary>
     public struct BLURAY_CLIP_INFO
     {
-        public UInt32 pkt_count;               /**< Number of mpeg-ts packets */
-        public byte still_mode;              /**< Clip still mode (\ref bd_still_mode_e) */
-        public UInt16 still_time;              /**< Still time (seconds) if still_mode == BD_STILL_TIME */
-        public byte video_stream_count;      /**< Number of video streams */
-        public byte audio_stream_count;      /**< Number of audio streams */
-        public byte pg_stream_count;         /**< Number of PG (Presentation Graphics) streams */
-        public byte ig_stream_count;         /**< Number of IG (Interactive Graphics) streams */
-        public byte sec_audio_stream_count;  /**< Number of secondary audio streams */
-        public byte sec_video_stream_count;  /**< Number of secondary video streams */
-        public Ref<BLURAY_STREAM_INFO> video_streams;          /**< Video streams information */
-        public Ref<BLURAY_STREAM_INFO> audio_streams;          /**< Audio streams information */
-        public Ref<BLURAY_STREAM_INFO> pg_streams;             /**< PG (Presentation Graphics) streams information */
-        public Ref<BLURAY_STREAM_INFO> ig_streams;             /**< IG (Interactive Graphics) streams information */
-        public Ref<BLURAY_STREAM_INFO> sec_audio_streams;      /**< Secondary audio streams information */
-        public Ref<BLURAY_STREAM_INFO> sec_video_streams;      /**< Secondary video streams information */
+        /// <summary>
+        /// Number of mpeg-ts packets
+        /// </summary>
+        public UInt32 pkt_count;
 
-        public UInt64 start_time;  /**< start media time, 90kHz, ("playlist time") */
-        public UInt64 in_time;     /**< start timestamp, 90kHz */
-        public UInt64 out_time;    /**< end timestamp, 90kHz */
-        public string clip_id = "";  /**< Clip identifier (.m2ts file name) */
+        /// <summary>
+        /// Clip still mode (\ref bd_still_mode_e)
+        /// </summary>
+        public byte still_mode;
+
+        /// <summary>
+        /// Still time (seconds) if still_mode == BD_STILL_TIME
+        /// </summary>
+        public UInt16 still_time;
+
+        /// <summary>
+        /// Number of video streams
+        /// </summary>
+        public byte video_stream_count;
+
+        /// <summary>
+        /// Number of audio streams
+        /// </summary>
+        public byte audio_stream_count;
+
+        /// <summary>
+        /// Number of PG (Presentation Graphics) streams
+        /// </summary>
+        public byte pg_stream_count;
+
+        /// <summary>
+        /// Number of IG (Interactive Graphics) streams
+        /// </summary>
+        public byte ig_stream_count;
+
+        /// <summary>
+        /// Number of secondary audio streams
+        /// </summary>
+        public byte sec_audio_stream_count;
+
+        /// <summary>
+        /// Number of secondary video streams
+        /// </summary>
+        public byte sec_video_stream_count;
+
+        /// <summary>
+        /// Video streams information
+        /// </summary>
+        public Ref<BLURAY_STREAM_INFO> video_streams;
+
+        /// <summary>
+        /// Audio streams information
+        /// </summary>
+        public Ref<BLURAY_STREAM_INFO> audio_streams;
+
+        /// <summary>
+        /// PG (Presentation Graphics) streams information
+        /// </summary>
+        public Ref<BLURAY_STREAM_INFO> pg_streams;
+
+        /// <summary>
+        /// IG (Interactive Graphics) streams information
+        /// </summary>
+        public Ref<BLURAY_STREAM_INFO> ig_streams;
+
+        /// <summary>
+        /// Secondary audio streams information
+        /// </summary>
+        public Ref<BLURAY_STREAM_INFO> sec_audio_streams;
+
+        /// <summary>
+        /// Secondary video streams information
+        /// </summary>
+        public Ref<BLURAY_STREAM_INFO> sec_video_streams;
+
+        /// <summary>
+        /// start media time, 90kHz, ("playlist time")
+        /// </summary>
+        public UInt64 start_time;
+
+        /// <summary>
+        /// start timestamp, 90kHz
+        /// </summary>
+        public UInt64 in_time;
+
+        /// <summary>
+        /// end timestamp, 90kHz
+        /// </summary>
+        public UInt64 out_time;
+
+        /// <summary>
+        /// Clip identifier (.m2ts file name)
+        /// </summary>
+        public string clip_id = "";  
 
         public BLURAY_CLIP_INFO() { }
     }
 
+    /// <summary>
+    /// Chapter entry
+    /// </summary>
     public struct BLURAY_TITLE_CHAPTER
     {
-        public UInt32 idx;       /**< Chapter index (number - 1) */
-        public UInt64 start;     /**< start media time, 90kHz, ("playlist time") */
-        public UInt64 duration;  /**< duration */
-        public UInt64 offset;    /**< distance from title start, bytes */
-        public uint clip_ref;  /**< Clip reference (index to playlist clips list) */
+        /// <summary>
+        /// Chapter index (number - 1)
+        /// </summary>
+        public UInt32 idx;
+
+        /// <summary>
+        /// start media time, 90kHz, ("playlist time")
+        /// </summary>
+        public UInt64 start;
+
+        /// <summary>
+        /// duration
+        /// </summary>
+        public UInt64 duration;
+
+        /// <summary>
+        /// distance from title start, bytes
+        /// </summary>
+        public UInt64 offset;
+
+        /// <summary>
+        ///  Clip reference (index to playlist clips list)
+        /// </summary>
+        public uint clip_ref;  
     }
 
+    /// <summary>
+    /// Playmark information
+    /// </summary>
     public struct BLURAY_TITLE_MARK
     {
-        public UInt32 idx;       /**< Mark index (number - 1) */
-        public int type;      /**< \ref bd_mark_type_e */
-        public UInt64 start;     /**< mark media time, 90kHz, ("playlist time") */
-        public UInt64 duration;  /**< time to next mark */
-        public UInt64 offset;    /**< mark distance from title start, bytes */
-        public uint clip_ref;  /**< Clip reference (index to playlist clips list) */
+        /// <summary>
+        /// Mark index (number - 1)
+        /// </summary>
+        public UInt32 idx;
+
+        /// <summary>
+        ///  bd_mark_type_e 
+        /// </summary>
+        public int type;
+
+        /// <summary>
+        /// mark media time, 90kHz, ("playlist time") 
+        /// </summary>
+        public UInt64 start;
+
+        /// <summary>
+        /// time to next mark
+        /// </summary>
+        public UInt64 duration;
+
+        /// <summary>
+        /// mark distance from title start, bytes
+        /// </summary>
+        public UInt64 offset;
+
+        /// <summary>
+        /// Clip reference (index to playlist clips list)
+        /// </summary>
+        public uint clip_ref;  
     }
 
+    /// <summary>
+    /// Playlist information
+    /// </summary>
     public struct BLURAY_TITLE_INFO
     {
-        public UInt32 idx;            /**< Playlist index number (filled only with bd_get_title_info()) */
-        public UInt32 playlist;       /**< Playlist ID (mpls file name) */
-        public UInt64 duration;       /**< Playlist duration, 90 kHz */
-        public UInt32 clip_count;     /**< Number of clips */
-        public byte angle_count;    /**< Number of angles */
-        public UInt32 chapter_count;  /**< Number of chapters */
-        public UInt32 mark_count;     /**< Number of playmarks */
-        public Ref<BLURAY_CLIP_INFO> clips;         /**< Clip information */
-        public Ref<BLURAY_TITLE_CHAPTER> chapters;      /**< Chapter information */
-        public Ref<BLURAY_TITLE_MARK> marks;         /**< Playmark information */
+        /// <summary>
+        /// Playlist index number (filled only with bd_get_title_info())
+        /// </summary>
+        public UInt32 idx;
 
-        public byte mvc_base_view_r_flag;  /**< MVC base view (0 - left, 1 - right) */
+        /// <summary>
+        /// Playlist ID (mpls file name)
+        /// </summary>
+        public UInt32 playlist;
+
+        /// <summary>
+        /// Playlist duration, 90 kHz
+        /// </summary>
+        public UInt64 duration;
+
+        /// <summary>
+        /// Number of clips
+        /// </summary>
+        public UInt32 clip_count;
+
+        /// <summary>
+        ///  Number of angles
+        /// </summary>
+        public byte angle_count;
+
+        /// <summary>
+        /// Number of chapters
+        /// </summary>
+        public UInt32 chapter_count;
+
+        /// <summary>
+        /// Number of playmarks
+        /// </summary>
+        public UInt32 mark_count;
+
+        /// <summary>
+        /// Clip information
+        /// </summary>
+        public Ref<BLURAY_CLIP_INFO> clips;
+
+        /// <summary>
+        /// Chapter information
+        /// </summary>
+        public Ref<BLURAY_TITLE_CHAPTER> chapters;
+
+        /// <summary>
+        /// Playmark information 
+        /// </summary>
+        public Ref<BLURAY_TITLE_MARK> marks;
+
+        /// <summary>
+        /// MVC base view (0 - left, 1 - right)
+        /// </summary>
+        public byte mvc_base_view_r_flag;  
     }
 
+    /// <summary>
+    /// Sound effect data
+    /// </summary>
     public struct BLURAY_SOUND_EFFECT
     {
-        public byte num_channels; /**< 1 - mono, 2 - stereo */
-        public UInt32 num_frames;   /**< Number of audio frames */
-        public Ref<UInt16> samples;      /**< 48000 Hz, 16 bit LPCM. Interleaved if stereo */
+        /// <summary>
+        /// 1 - mono, 2 - stereo
+        /// </summary>
+        public byte num_channels;
+
+        /// <summary>
+        /// Number of audio frames
+        /// </summary>
+        public UInt32 num_frames;
+
+        /// <summary>
+        /// 48000 Hz, 16 bit LPCM. Interleaved if stereo
+        /// </summary>
+        public Ref<UInt16> samples;      
     }
 
+    /// <summary>
+    /// Player setting
+    /// </summary>
     public enum bd_player_setting
     {
-        BLURAY_PLAYER_SETTING_AUDIO_LANG = 16,    /**< Initial audio language.      String (ISO 639-2/T). */
-        BLURAY_PLAYER_SETTING_PG_LANG = 17,    /**< Initial PG/SPU language.     String (ISO 639-2/T). */
-        BLURAY_PLAYER_SETTING_MENU_LANG = 18,    /**< Initial menu language.       String (ISO 639-2/T). */
-        BLURAY_PLAYER_SETTING_COUNTRY_CODE = 19,    /**< Player country code.         String (ISO 3166-1/alpha-2). */
-        BLURAY_PLAYER_SETTING_REGION_CODE = 20,    /**< Player region code.          Integer. */
-        BLURAY_PLAYER_SETTING_OUTPUT_PREFER = 21,    /**< Output mode preference.      Integer. */
-        BLURAY_PLAYER_SETTING_PARENTAL = 13,    /**< Age for parental control.    Integer. */
-        BLURAY_PLAYER_SETTING_AUDIO_CAP = 15,    /**< Audio capability.            Bit mask. */
-        BLURAY_PLAYER_SETTING_VIDEO_CAP = 29,    /**< Video capability.            Bit mask. */
-        BLURAY_PLAYER_SETTING_DISPLAY_CAP = 23,    /**< Display capability.          Bit mask. */
-        BLURAY_PLAYER_SETTING_3D_CAP = 24,    /**< 3D capability.               Bit mask. */
-        BLURAY_PLAYER_SETTING_UHD_CAP = 25,   /**< UHD capability.              */
-        BLURAY_PLAYER_SETTING_UHD_DISPLAY_CAP = 26,   /**< UHD display capability.      */
-        BLURAY_PLAYER_SETTING_HDR_PREFERENCE = 27,   /**< HDR preference.              */
-        BLURAY_PLAYER_SETTING_SDR_CONV_PREFER = 28,   /**< SDR conversion preference.   */
-        BLURAY_PLAYER_SETTING_TEXT_CAP = 30,    /**< Text Subtitle capability.    Bit mask. */
-        BLURAY_PLAYER_SETTING_PLAYER_PROFILE = 31,    /**< Player profile and version. */
+        /// <summary>
+        /// Initial audio language.      String (ISO 639-2/T).
+        /// </summary>
+        BLURAY_PLAYER_SETTING_AUDIO_LANG = 16,
 
-        BLURAY_PLAYER_SETTING_DECODE_PG = 0x100, /**< Enable/disable PG (subtitle) decoder. Integer. Default: disabled. */
-        BLURAY_PLAYER_SETTING_PERSISTENT_STORAGE = 0x101, /**< Enable/disable BD-J persistent storage. Integer. Default: enabled. */
+        /// <summary>
+        /// Initial PG/SPU language.     String (ISO 639-2/T). 
+        /// </summary>
+        BLURAY_PLAYER_SETTING_PG_LANG = 17,
 
-        BLURAY_PLAYER_PERSISTENT_ROOT = 0x200, /**< Root path to the BD_J persistent storage location. String. */
-        BLURAY_PLAYER_CACHE_ROOT = 0x201, /**< Root path to the BD_J cache storage location. String. */
-        BLURAY_PLAYER_JAVA_HOME = 0x202, /**< Location of JRE. String. Default: null (autodetect). */
+        /// <summary>
+        /// Initial menu language.       String (ISO 639-2/T).
+        /// </summary>
+        BLURAY_PLAYER_SETTING_MENU_LANG = 18,
+
+        /// <summary>
+        /// Player country code.         String (ISO 3166-1/alpha-2).
+        /// </summary>
+        BLURAY_PLAYER_SETTING_COUNTRY_CODE = 19,
+
+        /// <summary>
+        /// Player region code.          Integer.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_REGION_CODE = 20,
+
+        /// <summary>
+        /// Output mode preference.      Integer.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_OUTPUT_PREFER = 21,
+
+        /// <summary>
+        /// Age for parental control.    Integer.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_PARENTAL = 13,
+
+        /// <summary>
+        /// Audio capability.            Bit mask.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_AUDIO_CAP = 15,
+
+        /// <summary>
+        /// Video capability.            Bit mask.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_VIDEO_CAP = 29,
+
+        /// <summary>
+        /// Display capability.          Bit mask.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_DISPLAY_CAP = 23,
+
+        /// <summary>
+        /// 3D capability.               Bit mask.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_3D_CAP = 24,
+
+        /// <summary>
+        /// UHD capability.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_UHD_CAP = 25,
+
+        /// <summary>
+        /// UHD display capability.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_UHD_DISPLAY_CAP = 26,
+
+        /// <summary>
+        /// HDR preference.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_HDR_PREFERENCE = 27,
+
+        /// <summary>
+        /// SDR conversion preference.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_SDR_CONV_PREFER = 28,
+
+        /// <summary>
+        /// Text Subtitle capability.    Bit mask.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_TEXT_CAP = 30,
+
+        /// <summary>
+        /// Player profile and version.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_PLAYER_PROFILE = 31,
+
+        /// <summary>
+        /// Enable/disable PG (subtitle) decoder. Integer. Default: disabled.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_DECODE_PG = 0x100,
+
+        /// <summary>
+        /// Enable/disable BD-J persistent storage. Integer. Default: enabled.
+        /// </summary>
+        BLURAY_PLAYER_SETTING_PERSISTENT_STORAGE = 0x101,
+
+
+        /// <summary>
+        /// Root path to the BD_J persistent storage location. String.
+        /// </summary>
+        BLURAY_PLAYER_PERSISTENT_ROOT = 0x200,
+
+        /// <summary>
+        /// Root path to the BD_J cache storage location. String.
+        /// </summary>
+        BLURAY_PLAYER_CACHE_ROOT = 0x201,
+
+        /// <summary>
+        /// Location of JRE. String. Default: null (autodetect).
+        /// </summary>
+        BLURAY_PLAYER_JAVA_HOME = 0x202, 
     }
 
+    /// <summary>
+    /// Event type
+    /// </summary>
     public enum bd_event_e
     {
-        BD_EVENT_NONE = 0,  /**< no pending events */
+        /// <summary>
+        ///  no pending events
+        /// </summary>
+        BD_EVENT_NONE = 0,
 
         /*
          * errors
          */
 
-        BD_EVENT_ERROR = 1,  /**< Fatal error. Playback can't be continued. */
-        BD_EVENT_READ_ERROR = 2,  /**< Reading of .m2ts aligned unit failed. Next call to read will try next block. */
-        BD_EVENT_ENCRYPTED = 3,  /**< .m2ts file is encrypted and can't be played */
+        /// <summary>
+        ///  Fatal error. Playback can't be continued.
+        /// </summary>
+        BD_EVENT_ERROR = 1,
+
+        /// <summary>
+        /// Reading of .m2ts aligned unit failed. Next call to read will try next block.
+        /// </summary>
+        BD_EVENT_READ_ERROR = 2,
+
+        /// <summary>
+        /// .m2ts file is encrypted and can't be played
+        /// </summary>
+        BD_EVENT_ENCRYPTED = 3,
 
         /*
          * current playback position
          */
 
-        BD_EVENT_ANGLE = 4,  /**< current angle, 1...N */
-        BD_EVENT_TITLE = 5,  /**< current title, 1...N (0 = top menu) */
-        BD_EVENT_PLAYLIST = 6,  /**< current playlist (xxxxx.mpls) */
-        BD_EVENT_PLAYITEM = 7,  /**< current play item, 0...N-1  */
-        BD_EVENT_CHAPTER = 8,  /**< current chapter, 1...N */
-        BD_EVENT_PLAYMARK = 9,  /**< playmark reached */
-        BD_EVENT_END_OF_TITLE = 10, /**< end of title reached */
+        /// <summary>
+        /// current angle, 1...N
+        /// </summary>
+        BD_EVENT_ANGLE = 4,
+
+        /// <summary>
+        /// current title, 1...N (0 = top menu)
+        /// </summary>
+        BD_EVENT_TITLE = 5,
+
+        /// <summary>
+        /// current playlist (xxxxx.mpls)
+        /// </summary>
+        BD_EVENT_PLAYLIST = 6,
+
+        /// <summary>
+        /// current play item, 0...N-1
+        /// </summary>
+        BD_EVENT_PLAYITEM = 7,
+
+        /// <summary>
+        /// current chapter, 1...N
+        /// </summary>
+        BD_EVENT_CHAPTER = 8,
+
+        /// <summary>
+        /// playmark reached
+        /// </summary>
+        BD_EVENT_PLAYMARK = 9,
+
+        /// <summary>
+        ///  end of title reached
+        /// </summary>
+        BD_EVENT_END_OF_TITLE = 10,
 
         /*
          * stream selection
          */
 
-        BD_EVENT_AUDIO_STREAM = 11,  /**< 1..32,  0xff  = none */
-        BD_EVENT_IG_STREAM = 12,  /**< 1..32                */
-        BD_EVENT_PG_TEXTST_STREAM = 13,  /**< 1..255, 0xfff = none */
-        BD_EVENT_PIP_PG_TEXTST_STREAM = 14,  /**< 1..255, 0xfff = none */
-        BD_EVENT_SECONDARY_AUDIO_STREAM = 15,  /**< 1..32,  0xff  = none */
-        BD_EVENT_SECONDARY_VIDEO_STREAM = 16,  /**< 1..32,  0xff  = none */
+        /// <summary>
+        /// 1..32,  0xff  = none
+        /// </summary>
+        BD_EVENT_AUDIO_STREAM = 11,
 
-        BD_EVENT_PG_TEXTST = 17,  /**< 0 - disable, 1 - enable */
-        BD_EVENT_PIP_PG_TEXTST = 18,  /**< 0 - disable, 1 - enable */
-        BD_EVENT_SECONDARY_AUDIO = 19,  /**< 0 - disable, 1 - enable */
-        BD_EVENT_SECONDARY_VIDEO = 20,  /**< 0 - disable, 1 - enable */
-        BD_EVENT_SECONDARY_VIDEO_SIZE = 21,  /**< 0 - PIP, 0xf - fullscreen */
+        /// <summary>
+        /// 1..32
+        /// </summary>
+        BD_EVENT_IG_STREAM = 12,
+
+        /// <summary>
+        /// 1..255, 0xfff = none
+        /// </summary>
+        BD_EVENT_PG_TEXTST_STREAM = 13,
+
+        /// <summary>
+        /// 1..255, 0xfff = none
+        /// </summary>
+        BD_EVENT_PIP_PG_TEXTST_STREAM = 14,
+
+        /// <summary>
+        /// 1..32,  0xff  = none
+        /// </summary>
+        BD_EVENT_SECONDARY_AUDIO_STREAM = 15,
+
+        /// <summary>
+        /// 1..32,  0xff  = none
+        /// </summary>
+        BD_EVENT_SECONDARY_VIDEO_STREAM = 16,
+
+        /// <summary>
+        /// 0 - disable, 1 - enable
+        /// </summary>
+        BD_EVENT_PG_TEXTST = 17,
+
+        /// <summary>
+        /// 0 - disable, 1 - enable
+        /// </summary>
+        BD_EVENT_PIP_PG_TEXTST = 18,
+
+        /// <summary>
+        /// 0 - disable, 1 - enable
+        /// </summary>
+        BD_EVENT_SECONDARY_AUDIO = 19,
+
+        /// <summary>
+        /// 0 - disable, 1 - enable
+        /// </summary>
+        BD_EVENT_SECONDARY_VIDEO = 20,
+
+        /// <summary>
+        /// 0 - PIP, 0xf - fullscreen
+        /// </summary>
+        BD_EVENT_SECONDARY_VIDEO_SIZE = 21,
 
         /*
          * playback control
          */
 
-        /** HDMV VM or JVM stopped playlist playback. Flush all buffers. */
+        /// <summary>
+        /// HDMV VM or JVM stopped playlist playback. Flush all buffers.
+        /// </summary>
         BD_EVENT_PLAYLIST_STOP = 22,
 
-        /** discontinuity in the stream (non-seamless connection). Reset demuxer PES buffers. */
-        BD_EVENT_DISCONTINUITY = 23,  /**< new timestamp (45 kHz) */
+        /// <summary>
+        /// discontinuity in the stream (non-seamless connection). Reset demuxer PES buffers.
+        /// new timestamp (45 kHz)
+        /// </summary>
+        BD_EVENT_DISCONTINUITY = 23,
 
-        /** HDMV VM or JVM seeked the stream. Next read() will return data from new position. Flush all buffers. */
-        BD_EVENT_SEEK = 24,  /**< new media time (45 kHz) */
+        /// <summary>
+        /// HDMV VM or JVM seeked the stream. Next read() will return data from new position. Flush all buffers.
+        /// new media time (45 kHz)
+        /// </summary>
+        BD_EVENT_SEEK = 24,
 
-        /** still playback (pause) */
-        BD_EVENT_STILL = 25,  /**< 0 - off, 1 - on */
+        /// <summary>
+        /// still playback (pause)
+        /// 0 - off, 1 - on
+        /// </summary>
+        BD_EVENT_STILL = 25, 
 
-        /** Still playback for n seconds (reached end of still mode play item).
-         *  Playback continues by calling bd_read_skip_still(). */
-        BD_EVENT_STILL_TIME = 26,  /**< 0 = infinite ; 1...300 = seconds */
+        /// <summary>
+        /// Still playback for n seconds (reached end of still mode play item).
+        /// Playback continues by calling bd_read_skip_still().
+        /// 0 = infinite ; 1...300 = seconds
+        /// </summary>
+        BD_EVENT_STILL_TIME = 26,
 
-        /** Play sound effect */
-        BD_EVENT_SOUND_EFFECT = 27,  /**< effect ID */
+        /// <summary>
+        /// Play sound effect
+        /// effect ID
+        /// </summary>
+        BD_EVENT_SOUND_EFFECT = 27,
 
         /*
          * status
          */
 
-        /** Nothing to do. Playlist is not playing, but title applet is running.
-         *  Application should not call bd_read*() immediately again to avoid busy loop. */
+        /// <summary>
+        /// Nothing to do. Playlist is not playing, but title applet is running.
+        /// Application should not call bd_read*() immediately again to avoid busy loop.
+        /// </summary>
         BD_EVENT_IDLE = 28,
 
-        /** Pop-Up menu available */
-        BD_EVENT_POPUP = 29,  /**< 0 - no, 1 - yes */
+        /// <summary>
+        /// Pop-Up menu available
+        /// 0 - no, 1 - yes
+        /// </summary>
+        BD_EVENT_POPUP = 29,
 
-        /** Interactive menu visible */
-        BD_EVENT_MENU = 30,  /**< 0 - no, 1 - yes */
+        /// <summary>
+        /// Interactive menu visible
+        /// 0 - no, 1 - yes
+        /// </summary>
+        BD_EVENT_MENU = 30,
 
-        /** 3D */
-        BD_EVENT_STEREOSCOPIC_STATUS = 31,  /**< 0 - 2D, 1 - 3D */
+        /// <summary>
+        /// 3D.
+        /// 0 - 2D, 1 - 3D
+        /// </summary>
+        BD_EVENT_STEREOSCOPIC_STATUS = 31,
 
-        /** BD-J key interest table changed */
-        BD_EVENT_KEY_INTEREST_TABLE = 32,  /**< bitmask, BLURAY_KIT_* */
+        /// <summary>
+        /// BD-J key interest table changed
+        /// bitmask, BLURAY_KIT_*
+        /// </summary>
+        BD_EVENT_KEY_INTEREST_TABLE = 32,
 
-        /** UO mask changed */
-        BD_EVENT_UO_MASK_CHANGED = 33,  /**< bitmask, BLURAY_UO_* */
+        /// <summary>
+        /// UO mask changed.
+        /// bitmask, BLURAY_UO_*
+        /// </summary>
+        BD_EVENT_UO_MASK_CHANGED = 33, 
 
         /*BD_EVENT_LAST = 33, */
     }
 
+    /// <summary>
+    /// Event
+    /// </summary>
     public struct BD_EVENT
     {
-        public bd_event_e _event;  /**< Event type (\ref bd_event_e) */
-        public UInt32 param;  /**< Event data */
+        /// <summary>
+        /// Event type (\ref bd_event_e)
+        /// </summary>
+        public bd_event_e _event;
+
+        /// <summary>
+        /// Event data
+        /// </summary>
+        public UInt32 param; 
     }
 
     internal enum BD_TITLE_TYPE
@@ -415,13 +1135,24 @@ namespace libbluray
         public BD_UO_MASK uo_mask;
 
         /* internally handled pids */
-        public UInt16 ig_pid; /* pid of currently selected IG stream */
-        public UInt16 pg_pid; /* pid of currently selected PG stream */
+        /// <summary>
+        /// pid of currently selected IG stream
+        /// </summary>
+        public UInt16 ig_pid;
+
+        /// <summary>
+        /// pid of currently selected PG stream
+        /// </summary>
+        public UInt16 pg_pid; 
 
         /* */
         public byte eof_hit;
         public byte encrypted_block_cnt;
-        public byte seek_flag;  /* used to fine-tune first read after seek */
+
+        /// <summary>
+        /// used to fine-tune first read after seek
+        /// </summary>
+        public byte seek_flag;  
 
         public Ref<M2TS_FILTER> m2ts_filter;
     }
@@ -435,61 +1166,194 @@ namespace libbluray
 
     public struct BLURAY
     {
-        public const int TITLES_ALL = 0;    /**< all titles. */
-        public const int TITLES_FILTER_DUP_TITLE = 0x01; /**< remove duplicate titles. */
-        public const int TITLES_FILTER_DUP_CLIP = 0x02; /**< remove titles that have duplicate clips. */
-        public const int TITLES_RELEVANT = (TITLES_FILTER_DUP_TITLE | TITLES_FILTER_DUP_CLIP); /**< remove duplicate titles and clips */
+        /// <summary>
+        /// all titles.
+        /// </summary>
+        public const int TITLES_ALL = 0;
+
+        /// <summary>
+        /// remove duplicate titles.
+        /// </summary>
+        public const int TITLES_FILTER_DUP_TITLE = 0x01;
+
+        /// <summary>
+        /// remove titles that have duplicate clips.
+        /// </summary>
+        public const int TITLES_FILTER_DUP_CLIP = 0x02;
+
+        /// <summary>
+        /// remove duplicate titles and clips
+        /// </summary>
+        public const int TITLES_RELEVANT = (TITLES_FILTER_DUP_TITLE | TITLES_FILTER_DUP_CLIP);
 
         /* AACS error codes */
-        public const int BD_AACS_CORRUPTED_DISC = -1;  /**< Corrupt disc (missing/invalid files) */
-        public const int BD_AACS_NO_CONFIG = -2;  /**< AACS configuration file missing      */
-        public const int BD_AACS_NO_PK = -3;  /**< No valid processing key found        */
-        public const int BD_AACS_NO_CERT = -4;  /**< No valid certificate found           */
-        public const int BD_AACS_CERT_REVOKED = -5;  /**< All certificates have been revoked   */
-        public const int BD_AACS_MMC_FAILED = -6;  /**< MMC (disc drive interaction) failed  */
+        /// <summary>
+        /// Corrupt disc (missing/invalid files)
+        /// </summary>
+        public const int BD_AACS_CORRUPTED_DISC = -1;
+
+        /// <summary>
+        /// AACS configuration file missing
+        /// </summary>
+        public const int BD_AACS_NO_CONFIG = -2;
+
+        /// <summary>
+        /// No valid processing key found
+        /// </summary>
+        public const int BD_AACS_NO_PK = -3;
+
+        /// <summary>
+        /// No valid certificate found
+        /// </summary>
+        public const int BD_AACS_NO_CERT = -4;
+
+        /// <summary>
+        /// All certificates have been revoked
+        /// </summary>
+        public const int BD_AACS_CERT_REVOKED = -5;
+
+        /// <summary>
+        /// MMC (disc drive interaction) failed
+        /// </summary>
+        public const int BD_AACS_MMC_FAILED = -6;
 
         /* BD_EVENT_ERROR param values */
-        public const int BD_ERROR_HDMV = 1;                /**< HDMV VM failed to play the title  */
-        public const int BD_ERROR_BDJ = 2;                /**< BD-J failed to play the title     */
+        /// <summary>
+        /// HDMV VM failed to play the title
+        /// </summary>
+        public const int BD_ERROR_HDMV = 1;
+
+        /// <summary>
+        /// BD-J failed to play the title
+        /// </summary>
+        public const int BD_ERROR_BDJ = 2;
 
         /* bd_event_e.BD_EVENT_ENCRYPTED param vlues */
-        public const int BD_ERROR_AACS = 3;                /**< AACS failed or not supported      */
-        public const int BD_ERROR_BDPLUS = 4;                /**< BD+ failed or not supported       */
+        /// <summary>
+        /// AACS failed or not supported
+        /// </summary>
+        public const int BD_ERROR_AACS = 3;
+
+        /// <summary>
+        /// BD+ failed or not supported
+        /// </summary>
+        public const int BD_ERROR_BDPLUS = 4;
 
         /* BD_EVENT_TITLE special titles */
-        public const int BLURAY_TITLE_FIRST_PLAY = 0xffff;   /**< "First Play" title started        */
-        public const int BLURAY_TITLE_TOP_MENU = 0;        /**< "Top Menu" title started          */
+        /// <summary>
+        /// "First Play" title started
+        /// </summary>
+        public const int BLURAY_TITLE_FIRST_PLAY = 0xffff;
+
+        /// <summary>
+        /// "Top Menu" title started
+        /// </summary>
+        public const int BLURAY_TITLE_TOP_MENU = 0;
 
         /* BD_EVENT_KEY_INTEREST flags */
-        public const int BLURAY_KIT_PLAY = 0x1;      /**< BD-J requests to handle "Play" UO          */
-        public const int BLURAY_KIT_STOP = 0x2;      /**< BD-J requests to handle "Stop" UO          */
-        public const int BLURAY_KIT_FFW = 0x4;      /**< BD-J requests to handle "Fast Forward" UO  */
-        public const int BLURAY_KIT_REW = 0x8;      /**< BD-J requests to handle "Reverse" UO       */
-        public const int BLURAY_KIT_TRACK_NEXT = 0x10;     /**< BD-J requests to handle "Next Track" UO    */
-        public const int BLURAY_KIT_TRACK_PREV = 0x20;     /**< BD-J requests to handle "Prev Track" UO    */
-        public const int BLURAY_KIT_PAUSE = 0x40;     /**< BD-J requests to handle "Pause" UO         */
-        public const int BLURAY_KIT_STILL_OFF = 0x80;     /**< BD-J requests to handle "Still Off" UO     */
-        public const int BLURAY_KIT_SEC_AUDIO = 0x100;    /**< BD-J requests to handle "Sec. Audio" UO    */
-        public const int BLURAY_KIT_SEC_VIDEO = 0x200;    /**< BD-J requests to handle "Sec. Video" UO    */
-        public const int BLURAY_KIT_PG_TEXTST = 0x400;    /**< BD-J requests to handle "Subtitle" UO      */
+        /// <summary>
+        /// BD-J requests to handle "Play" UO
+        /// </summary>
+        public const int BLURAY_KIT_PLAY = 0x1;
+
+        /// <summary>
+        /// BD-J requests to handle "Stop" UO
+        /// </summary>
+        public const int BLURAY_KIT_STOP = 0x2;
+
+        /// <summary>
+        /// BD-J requests to handle "Fast Forward" UO
+        /// </summary>
+        public const int BLURAY_KIT_FFW = 0x4;
+
+        /// <summary>
+        /// BD-J requests to handle "Reverse" UO
+        /// </summary>
+        public const int BLURAY_KIT_REW = 0x8;
+
+        /// <summary>
+        /// BD-J requests to handle "Next Track" UO
+        /// </summary>
+        public const int BLURAY_KIT_TRACK_NEXT = 0x10;
+
+        /// <summary>
+        /// BD-J requests to handle "Prev Track" UO
+        /// </summary>
+        public const int BLURAY_KIT_TRACK_PREV = 0x20;
+
+        /// <summary>
+        /// BD-J requests to handle "Pause" UO
+        /// </summary>
+        public const int BLURAY_KIT_PAUSE = 0x40;
+
+        /// <summary>
+        /// BD-J requests to handle "Still Off" UO
+        /// </summary>
+        public const int BLURAY_KIT_STILL_OFF = 0x80;
+
+        /// <summary>
+        /// BD-J requests to handle "Sec. Audio" UO
+        /// </summary>
+        public const int BLURAY_KIT_SEC_AUDIO = 0x100;
+
+        /// <summary>
+        /// BD-J requests to handle "Sec. Video" UO
+        /// </summary>
+        public const int BLURAY_KIT_SEC_VIDEO = 0x200;
+
+        /// <summary>
+        /// BD-J requests to handle "Subtitle" UO 
+        /// </summary>
+        public const int BLURAY_KIT_PG_TEXTST = 0x400;
 
         /* BD_EVENT_UO_MASK flags */
-        public const int BLURAY_UO_MENU_CALL = 0x1;      /**< "Menu Call" masked (not allowed)    */
-        public const int BLURAY_UO_TITLE_SEARCH = 0x2;      /**< "Title Search" masked (not allowed) */
+        /// <summary>
+        /// "Menu Call" masked (not allowed)
+        /// </summary>
+        public const int BLURAY_UO_MENU_CALL = 0x1;
 
-        public const int BLURAY_RATE_PAUSED = 0;      /**< Set playback rate to PAUSED  */
-        public const int BLURAY_RATE_NORMAL = 90000;  /**< Set playback rate to NORMAL  */
+        /// <summary>
+        /// "Title Search" masked (not allowed) 
+        /// </summary>
+        public const int BLURAY_UO_TITLE_SEARCH = 0x2;
 
+        /// <summary>
+        /// Set playback rate to PAUSED
+        /// </summary>
+        public const int BLURAY_RATE_PAUSED = 0;
+
+        /// <summary>
+        /// Set playback rate to NORMAL
+        /// </summary>
+        public const int BLURAY_RATE_NORMAL = 90000;
+
+        /// <summary>
+        /// YUV overlay handler function type
+        /// </summary>
+        /// <param name="handle">opaque handle that was given to bd_register_overlay_proc()</param>
+        /// <param name="_event">BD_OVERLAY event</param>
         public delegate void bd_overlay_proc_f(object? handle, Ref<BD_OVERLAY> _event);
 
+        /// <summary>
+        /// ARGB overlay handler function type
+        /// </summary>
+        /// <param name="handle">opaque handle that was given to bd_register_argb_overlay_proc()</param>
+        /// <param name="_event">BD_ARGB_OVERLAY event</param>
         public delegate void bd_argb_overlay_proc_f(object? handle, Ref<BD_ARGB_OVERLAY> _event);
 
-        BD_MUTEX mutex = new();  /* protect API function access to internal data */
+        /// <summary>
+        /// protect API function access to internal data
+        /// </summary>
+        BD_MUTEX mutex = new();  
 
         /* current disc */
         BD_DISC? disc;
         Variable<BLURAY_DISC_INFO> disc_info = new();
-        Ref<BLURAY_TITLE> titles;  /* titles from disc index */
+
+        /// <summary>
+        /// titles from disc index
+        /// </summary>
+        Ref<BLURAY_TITLE> titles;  
         Ref<META_ROOT> meta;
         Ref<NAV_TITLE_LIST> title_list;
 
@@ -499,11 +1363,24 @@ namespace libbluray
         UInt64 s_pos;
 
         /* streams */
-        Variable<BD_STREAM> st0 = new();       /* main path */
-        Variable<BD_PRELOAD> st_ig = new();     /* preloaded IG stream sub path */
-        Variable<BD_PRELOAD> st_textst = new(); /* preloaded TextST sub path */
+        /// <summary>
+        /// main path
+        /// </summary>
+        Variable<BD_STREAM> st0 = new();
 
-        /* buffer for bd_read(): current aligned unit of main stream (st0) */
+        /// <summary>
+        /// preloaded IG stream sub path
+        /// </summary>
+        Variable<BD_PRELOAD> st_ig = new();
+
+        /// <summary>
+        /// preloaded TextST sub path
+        /// </summary>
+        Variable<BD_PRELOAD> st_textst = new();
+
+        /// <summary>
+        /// buffer for bd_read(): current aligned unit of main stream (st0)
+        /// </summary>
         byte[] int_buf = new byte[6144];
 
         /* seamless angle change request */
@@ -517,17 +1394,44 @@ namespace libbluray
         int next_mark;
 
         /* player state */
-        Ref<BD_REGISTERS> regs;            /* player registers */
-        Ref<BD_EVENT_QUEUE<BD_EVENT>> event_queue;     /* navigation mode _event queue */
-        BD_UO_MASK uo_mask;         /* Current UO mask */
-        BD_UO_MASK title_uo_mask;   /* UO mask from current .bdjo file or Movie Object */
-        BD_TITLE_TYPE title_type;      /* type of current title (in navigation mode) */
+        /// <summary>
+        /// player registers
+        /// </summary>
+        Ref<BD_REGISTERS> regs;
+
+        /// <summary>
+        /// navigation mode _event queue
+        /// </summary>
+        Ref<BD_EVENT_QUEUE<BD_EVENT>> event_queue;
+
+        /// <summary>
+        /// Current UO mask
+        /// </summary>
+        BD_UO_MASK uo_mask;
+
+        /// <summary>
+        /// UO mask from current .bdjo file or Movie Object
+        /// </summary>
+        BD_UO_MASK title_uo_mask;
+
+        /// <summary>
+        /// type of current title (in navigation mode)
+        /// </summary>
+        BD_TITLE_TYPE title_type;
         /* Pending action after playlist end
          * BD-J: delayed sending of BDJ_EVENT_END_OF_PLAYLIST
          *       1 - message pending. 3 - message sent.
          */
-        byte end_of_playlist; /* 1 - reached. 3 - processed . */
-        byte app_scr;         /* 1 if application provides presentation timetamps */
+
+        /// <summary>
+        /// 1 - reached. 3 - processed .
+        /// </summary>
+        byte end_of_playlist;
+
+        /// <summary>
+        /// 1 if application provides presentation timetamps
+        /// </summary>
+        byte app_scr;         
 
         /* HDMV */
         Ref<HDMV_VM> hdmv_vm;
@@ -537,18 +1441,33 @@ namespace libbluray
         /* BD-J */
         Ref<BDJAVA> bdjava;
         BDJ_CONFIG bdj_config;
-        byte bdj_wait_start;  /* BD-J has selected playlist (prefetch) but not yet started playback */
+
+        /// <summary>
+        /// BD-J has selected playlist (prefetch) but not yet started playback
+        /// </summary>
+        byte bdj_wait_start;  
 
         /* HDMV graphics */
         Ref<GRAPHICS_CONTROLLER> graphics_controller;
         Ref<SOUND_DATA> sound_effects;
-        BD_UO_MASK gc_uo_mask;      /* UO mask from current menu page */
+
+        /// <summary>
+        /// UO mask from current menu page
+        /// </summary>
+        BD_UO_MASK gc_uo_mask;      
         UInt32 gc_status;
         byte decode_pg;
 
         /* TextST */
-        UInt32 gc_wakeup_time;  /* stream timestamp of next subtitle */
-        UInt64 gc_wakeup_pos;   /* stream position of gc_wakeup_time */
+        /// <summary>
+        /// stream timestamp of next subtitle
+        /// </summary>
+        UInt32 gc_wakeup_time;
+
+        /// <summary>
+        /// stream position of gc_wakeup_time
+        /// </summary>
+        UInt64 gc_wakeup_pos;   
 
         /* ARGB overlay output */
         object? argb_overlay_proc_handle;
@@ -563,6 +1482,16 @@ namespace libbluray
         /*
  * Library version
  */
+        /// <summary>
+        /// Get libbluray version
+        /// 
+        /// Get the version of libbluray(runtime)
+        /// 
+        /// See also bluray-version.h
+        /// </summary>
+        /// <param name="major">where to store major version</param>
+        /// <param name="minor">where to store minor version</param>
+        /// <param name="micro">where to store micro version</param>
         public static void bd_get_version(out uint major, out uint minor, out uint micro)
         {
             major = BlurayVersion.BLURAY_VERSION_MAJOR;
@@ -1559,6 +2488,11 @@ namespace libbluray
             _check_bdj(bd);
         }
 
+        /// <summary>
+        /// Get information about current BluRay disc
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>pointer to BLURAY_DISC_INFO object, NULL on error</returns>
         public static Ref<BLURAY_DISC_INFO> bd_get_disc_info(Ref<BLURAY> bd)
         {
             bd.Value.mutex.bd_mutex_lock();
@@ -1890,7 +2824,12 @@ namespace libbluray
         /*
          * open / close
          */
-
+        /// <summary>
+        /// Initialize BLURAY object
+        /// 
+        /// Resulting object can be passed to following bd_open_??? functions.
+        /// </summary>
+        /// <returns>allocated BLURAY object, NULL if error</returns>
         public static Ref<BLURAY> bd_init()
         {
             string? env;
@@ -1959,6 +2898,13 @@ namespace libbluray
             return bd.Value.disc_info.Value.bluray_detected != 0;
         }
 
+        /// <summary>
+        /// Open BluRay disc
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="device_path">path to mounted Blu-ray disc, device or image file</param>
+        /// <param name="keyfile_path">path to KEYDB.cfg (may be NULL)</param>
+        /// <returns>1 on success, 0 if error</returns>
         public static bool bd_open_disc(Ref<BLURAY> bd, string device_path, string keyfile_path)
         {
             if (device_path == null)
@@ -2002,6 +2948,14 @@ namespace libbluray
             return _bd_open(bd, null, null, fs);
         }*/
 
+        /// <summary>
+        /// Open BluRay disc
+        /// 
+        /// Shortcut for bd_open_disc(bd_init(), device_path, keyfile_path)
+        /// </summary>
+        /// <param name="device_path">path to mounted Blu-ray disc, device or image file</param>
+        /// <param name="keyfile_path">path to KEYDB.cfg (may be NULL)</param>
+        /// <returns>allocated BLURAY object, NULL if error</returns>
         public static Ref<BLURAY> bd_open(string device_path, string keyfile_path)
         {
             Ref<BLURAY> bd;
@@ -2021,6 +2975,10 @@ namespace libbluray
             return bd;
         }
 
+        /// <summary>
+        /// Close BluRay disc
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
         public static void bd_close(Ref<BLURAY> bd)
         {
             if (!bd)
@@ -2164,6 +3122,12 @@ namespace libbluray
             }
         }
 
+        /// <summary>
+        /// Seek to specific time in 90Khz ticks
+        /// </summary>
+        /// <param name="bd">BLURAY ojbect</param>
+        /// <param name="tick">tick count</param>
+        /// <returns>current seek position</returns>
         public static Int64 bd_seek_time(Ref<BLURAY> bd, UInt64 tick)
         {
             Variable<UInt32> clip_pkt = new(), out_pkt = new();
@@ -2201,6 +3165,11 @@ namespace libbluray
             return (long)bd.Value.s_pos;
         }
 
+        /// <summary>
+        /// Return current time
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>current time</returns>
         public static UInt64 bd_tell_time(Ref<BLURAY> bd)
         {
             Variable<UInt32> clip_pkt = new(0), out_pkt = new(0), out_time = new(0);
@@ -2227,6 +3196,12 @@ namespace libbluray
             return ((UInt64)out_time.Value) * 2;
         }
 
+        /// <summary>
+        /// Seek to a chapter. First chapter is 0
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="chapter">chapter to seek to</param>
+        /// <returns>current seek position</returns>
         public static Int64 bd_seek_chapter(Ref<BLURAY> bd, uint chapter)
         {
             Variable<UInt32> clip_pkt = new(), out_pkt = new();
@@ -2256,6 +3231,12 @@ namespace libbluray
             return (long)bd.Value.s_pos;
         }
 
+        /// <summary>
+        /// Find the byte position of a chapter
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="chapter">chapter to find position of</param>
+        /// <returns>seek position of chapter start</returns>
         public static Int64 bd_chapter_pos(Ref<BLURAY> bd, uint chapter)
         {
             Variable<UInt32> clip_pkt = new(), out_pkt = new();
@@ -2277,6 +3258,11 @@ namespace libbluray
             return ret;
         }
 
+        /// <summary>
+        /// Get the current chapter
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>current chapter</returns>
         public static UInt32 bd_get_current_chapter(Ref<BLURAY> bd)
         {
             UInt32 ret = 0;
@@ -2293,6 +3279,12 @@ namespace libbluray
             return ret;
         }
 
+        /// <summary>
+        /// Seek to a playitem.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="clip_ref">playitem to seek to</param>
+        /// <returns>current seek position</returns>
         public static Int64 bd_seek_playitem(Ref<BLURAY> bd, uint clip_ref)
         {
             UInt32 clip_pkt, out_pkt;
@@ -2323,6 +3315,12 @@ namespace libbluray
             return (long)bd.Value.s_pos;
         }
 
+        /// <summary>
+        /// Seek to a playmark. First mark is 0
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="mark">playmark to seek to</param>
+        /// <returns>current seek position</returns>
         public static Int64 bd_seek_mark(Ref<BLURAY> bd, uint mark)
         {
             Variable<UInt32> clip_pkt = new(), out_pkt = new();
@@ -2352,6 +3350,12 @@ namespace libbluray
             return (long)bd.Value.s_pos;
         }
 
+        /// <summary>
+        /// Seek to pos in currently selected title
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="pos">position to seek to</param>
+        /// <returns>current seek position</returns>
         public static Int64 bd_seek(Ref<BLURAY> bd, UInt64 pos)
         {
             Variable<UInt32> pkt = new(), clip_pkt = new(), out_pkt = new(), out_time = new();
@@ -2378,6 +3382,12 @@ namespace libbluray
             return (long)bd.Value.s_pos;
         }
 
+        /// <summary>
+        /// Returns file size in bytes of currently selected title, 0 in no title
+        /// selected
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>file size in bytes of currently selected title, 0 if no title selected</returns>
         public static UInt64 bd_get_title_size(Ref<BLURAY> bd)
         {
             Variable<UInt64> ret = new(0);
@@ -2399,6 +3409,11 @@ namespace libbluray
             return ret.Value;
         }
 
+        /// <summary>
+        /// Return current pos
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>current seek position</returns>
         public static UInt64 bd_tell(Ref<BLURAY> bd)
         {
             UInt64 ret = 0;
@@ -2651,6 +3666,13 @@ namespace libbluray
             return r;
         }
 
+        /// <summary>
+        /// Read from currently selected title file, decrypt if possible
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="buf">buffer to read data into</param>
+        /// <param name="len">size of data to be read</param>
+        /// <returns>size of data read, -1 if error, 0 if EOF</returns>
         public static int bd_read(Ref<BLURAY> bd, Ref<byte> buf, int len)
         {
             int result;
@@ -2662,6 +3684,11 @@ namespace libbluray
             return result;
         }
 
+        /// <summary>
+        /// Continue reading after still mode clip
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>0 on error</returns>
         public static bool bd_read_skip_still(Ref<BLURAY> bd)
         {
             Ref<BD_STREAM> st = bd.Value.st0.Ref;
@@ -3037,6 +4064,12 @@ namespace libbluray
             return false;
         }
 
+        /// <summary>
+        /// Select a playlist
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="playlist">playlist to select</param>
+        /// <returns>1 on success, 0 if error</returns>
         public static bool bd_select_playlist(Ref<BLURAY> bd, UInt32 playlist)
         {
             bool result;
@@ -3120,6 +4153,12 @@ namespace libbluray
             return _open_playlist(bd, bd.Value.title_list.Value.title_info[title_idx].mpls_id, 0);
         }
 
+        /// <summary>
+        /// Select the title from the list created by bd_get_titles()
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="title_idx">title to select</param>
+        /// <returns>1 on success, 0 if error</returns>
         public static bool bd_select_title(Ref<BLURAY> bd, UInt32 title_idx)
         {
             bool result;
@@ -3131,6 +4170,11 @@ namespace libbluray
             return result;
         }
 
+        /// <summary>
+        /// Returns the current title index
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>current title index</returns>
         public static UInt32 bd_get_current_title(Ref<BLURAY> bd)
         {
             return bd.Value.title_idx;
@@ -3166,6 +4210,12 @@ namespace libbluray
             return true;
         }
 
+        /// <summary>
+        /// Set the angle to play
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="angle">angle to play</param>
+        /// <returns>1 on success, 0 if error</returns>
         public static bool bd_select_angle(Ref<BLURAY> bd, uint angle)
         {
             bool result;
@@ -3175,6 +4225,11 @@ namespace libbluray
             return result;
         }
 
+        /// <summary>
+        /// Return the current angle
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>current angle</returns>
         public static uint bd_get_current_angle(Ref<BLURAY> bd)
         {
             int angle = 0;
@@ -3189,6 +4244,11 @@ namespace libbluray
             return (uint)angle;
         }
 
+        /// <summary>
+        /// Initiate seamless angle change
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="angle">angle to change to</param>
 
         public static void bd_seamless_angle_change(Ref<BLURAY> bd, uint angle)
         {
@@ -3208,7 +4268,17 @@ namespace libbluray
         /*
          * title lists
          */
-
+        /// <summary>
+        /// Get number of titles (playlists)
+        /// 
+        /// This must be called after bd_open() and before bd_select_title().
+        /// Populates the title list in BLURAY.
+        /// Filtering of the returned list is controled through title flags
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="flags">title flags</param>
+        /// <param name="min_title_length">filter out titles shorter than min_title_length seconds</param>
+        /// <returns>number of titles found</returns>
         public static UInt32 bd_get_titles(Ref<BLURAY> bd, byte flags, UInt32 min_title_length)
         {
             Ref<NAV_TITLE_LIST> title_list;
@@ -3239,6 +4309,12 @@ namespace libbluray
             return count;
         }
 
+        /// <summary>
+        /// Get main title
+        /// Returned number is an index to the list created by bd_get_titles()
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>title index of main title, -1 on error</returns>
         public static int bd_get_main_title(Ref<BLURAY> bd)
         {
             int main_title_idx = -1;
@@ -3443,6 +4519,13 @@ namespace libbluray
             return title_info;
         }
 
+        /// <summary>
+        /// Get information about a title
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="title_idx">title index number</param>
+        /// <param name="angle">angle number (chapter offsets and clip size depend on selected angle)</param>
+        /// <returns>allocated BLURAY_TITLE_INFO object, NULL on error</returns>
         public static Ref<BLURAY_TITLE_INFO> bd_get_title_info(Ref<BLURAY> bd, UInt32 title_idx, uint angle)
         {
             int mpls_id = -1;
@@ -3470,11 +4553,22 @@ namespace libbluray
             return _get_mpls_info(bd, title_idx, (uint)mpls_id, angle);
         }
 
+        /// <summary>
+        /// Get information about a playlist
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="playlist">playlist number</param>
+        /// <param name="angle"> angle number (chapter offsets and clip size depend on selected angle)</param>
+        /// <returns>allocated BLURAY_TITLE_INFO object, NULL on error</returns>
         public static Ref<BLURAY_TITLE_INFO> bd_get_playlist_info(Ref<BLURAY> bd, UInt32 playlist, uint angle)
         {
             return _get_mpls_info(bd, 0, playlist, angle);
         }
 
+        /// <summary>
+        /// Free BLURAY_TITLE_INFO object
+        /// </summary>
+        /// <param name="title_info">BLURAY_TITLE_INFO object</param>
         public static void bd_free_title_info(Ref<BLURAY_TITLE_INFO> title_info)
         {
             uint ii;
@@ -3536,6 +4630,14 @@ namespace libbluray
             new MapStruct(bd_player_setting.BLURAY_PLAYER_SETTING_PLAYER_PROFILE, bd_psr_idx.PSR_PROFILE_VERSION),
         };
 
+        /// <summary>
+        /// Update player setting.
+        /// Bit masks and enumeration values are defined in player_settings.h.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="idx">Player setting to update</param>
+        /// <param name="value">New value for player setting</param>
+        /// <returns>1 on success, 0 on error (invalid setting)</returns>
         public static int bd_set_player_setting(Ref<BLURAY> bd, bd_player_setting idx, UInt32 value)
         {
 
@@ -3580,6 +4682,13 @@ namespace libbluray
             return 0;
         }
 
+        /// <summary>
+        /// Update player setting (string)
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="idx">Player setting to update</param>
+        /// <param name="s">New value for player setting</param>
+        /// <returns>1 on success, 0 on error (invalid setting)</returns>
         public static bool bd_set_player_setting_str(Ref<BLURAY> bd, bd_player_setting idx, string s)
         {
             switch (idx)
@@ -3621,9 +4730,37 @@ namespace libbluray
             }
         }
 
-        public const uint BLURAY_AUDIO_STREAM = 0; /**< Select audio stream     */
-        public const uint BLURAY_PG_TEXTST_STREAM = 1; /**< Select subtitle stream  */
+        /// <summary>
+        /// Select audio stream
+        /// </summary>
+        public const uint BLURAY_AUDIO_STREAM = 0;
 
+        /// <summary>
+        /// Select subtitle stream
+        /// </summary>
+        public const uint BLURAY_PG_TEXTST_STREAM = 1;
+
+
+        /// <summary>
+        /// Select stream (PG / TextST track)
+        /// 
+        /// When playing with on-disc menus:
+        /// 
+        /// Stream selection is controlled by on-disc menus.
+        /// If user can change stream selection also in player GUI, this function
+        /// should be used to keep on-disc menus in sync with player GUI.
+        /// 
+        /// When playing the disc without on-disc menus:
+        /// 
+        /// Initial stream selection is done using preferred language settings.
+        /// This function can be used to override automatic stream selection.
+        /// Without on-disc menus selecting the stream is useful only when using
+        /// libbluray internal decoders or the stream is stored in a sub-path.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="stream_type">BLURAY_AUDIO_STREAM or BLURAY_PG_TEXTST_STREAM</param>
+        /// <param name="stream_id">stream number (1..N)</param>
+        /// <param name="enable_flag">set to 0 to disable streams of this type</param>
         public static void bd_select_stream(Ref<BLURAY> bd, UInt32 stream_type, UInt32 stream_id, UInt32 enable_flag)
         {
             bd.Value.mutex.bd_mutex_lock();
@@ -4081,6 +5218,13 @@ namespace libbluray
             return ret;
         }
 
+        /// <summary>
+        /// Start playing disc with on-disc menus
+        /// 
+        /// Playback is started from "First Play" title.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>1 on success, 0 if error</returns>
         public static bool bd_play(Ref<BLURAY> bd)
         {
             bool result;
@@ -4135,6 +5279,16 @@ namespace libbluray
             return _play_title(bd, title);
         }
 
+        /// <summary>
+        /// Play a title (from disc index).
+        /// 
+        /// Title 0      = Top Menu
+        /// Title 0xffff = First Play title
+        /// Number of titles can be found from BLURAY_DISC_INFO.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="title">title number from disc index</param>
+        /// <returns>1 on success, 0 if error</returns>
         public static bool bd_play_title(Ref<BLURAY> bd, uint title)
         {
             bool ret;
@@ -4179,6 +5333,14 @@ namespace libbluray
             return _play_title(bd, BLURAY_TITLE_TOP_MENU);
         }
 
+        /// <summary>
+        /// Open BluRay disc Top Menu.
+        /// 
+        /// Current pts is needed for resuming playback when menu is closed.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="pts">current playback position (1/90000s) or -1</param>
+        /// <returns>1 on success, 0 if error</returns>
         public static bool bd_menu_call(Ref<BLURAY> bd, Int64 pts)
         {
             bool ret;
@@ -4398,6 +5560,16 @@ namespace libbluray
             return bytes;
         }
 
+        /// <summary>
+        /// Read from currently playing title.
+        /// 
+        /// When playing disc in navigation mode this function must be used instead of bd_read().
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="buf">buffer to read data into</param>
+        /// <param name="len">size of data to be read</param>
+        /// <param name="_event">next BD_EVENT from event queue (BD_EVENT_NONE if no events)</param>
+        /// <returns>size of data read, -1 if error, 0 if event needs to be handled first, 0 if end of title was reached</returns>
         public static int bd_read_ext(Ref<BLURAY> bd, Ref<byte> buf, int len, Ref<BD_EVENT> _event)
         {
             int ret;
@@ -4407,6 +5579,12 @@ namespace libbluray
             return ret;
         }
 
+        /// <summary>
+        /// Get event from libbluray event queue.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="_event">next BD_EVENT from event queue, NULL to initialize event queue</param>
+        /// <returns>1 on success, 0 if no events</returns>
         public static bool bd_get_event(Ref<BLURAY> bd, Ref<BD_EVENT> _event)
         {
             if (!bd.Value.event_queue)
@@ -4428,6 +5606,11 @@ namespace libbluray
          * user interaction
          */
 
+        /// <summary>
+        /// Update current pts.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="pts">current playback position (1/90000s) or -1</param>
         void bd_set_scr(Ref<BLURAY> bd, Int64 pts)
         {
             bd.Value.mutex.bd_mutex_lock();
@@ -4451,7 +5634,18 @@ namespace libbluray
             return 0;
         }
 
-        int bd_set_rate(Ref<BLURAY> bd, UInt32 rate)
+        /// <summary>
+        /// Set current playback rate.
+        /// 
+        /// Notify BD-J media player when user changes playback rate
+        /// (ex.pauses playback).
+        /// Changing rate may fail if corresponding UO is masked or
+        /// playlist is not playing.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="rate">current playback rate * 90000 (0 = paused, 90000 = normal)</param>
+        /// <returns>less than 0 on error, 0 on success</returns>
+        public static int bd_set_rate(Ref<BLURAY> bd, UInt32 rate)
         {
             int result;
 
@@ -4462,7 +5656,17 @@ namespace libbluray
             return result;
         }
 
-        int bd_mouse_select(Ref<BLURAY> bd, Int64 pts, UInt16 x, UInt16 y)
+        /// <summary>
+        /// Select menu button at location (x,y).
+        /// 
+        /// This function has no effect with BD-J menus.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="pts">current playback position (1/90000s) or -1</param>
+        /// <param name="x">mouse pointer x-position</param>
+        /// <param name="y">mouse pointer y-position</param>
+        /// <returns>less than 0 on error, 0 when mouse is outside of buttons, 1 when mouse is inside button</returns>
+        public static int bd_mouse_select(Ref<BLURAY> bd, Int64 pts, UInt16 x, UInt16 y)
         {
             UInt32 param = ((UInt32)x << 16) | y;
             int result = -1;
@@ -4491,6 +5695,19 @@ namespace libbluray
         /* HDMV: key is triggered when pressed down */
         static bool BD_KEY_TYPED(uint k) => (k & (Keys.BD_VK_KEY_TYPED | Keys.BD_VK_KEY_RELEASED)) == 0;
 
+        /// <summary>
+        /// Pass user input to graphics controller or BD-J.
+        /// Keys are defined in libbluray/keys.h.
+        /// 
+        /// Two user input models are supported:
+        /// - Single event when a key is typed once.
+        /// - Separate events when key is pressed and released.
+        /// VD_VK_KEY_PRESSED, BD_VK_TYPED and BD_VK_KEY_RELEASED are or'd with the key.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="pts">current playback position (1/90000s) or -1</param>
+        /// <param name="key">input key (@see keys.h)</param>
+        /// <returns>less than 0 on error, 0 on success, greater than 0 if selection/activation changed</returns>
         public static int bd_user_input(Ref<BLURAY> bd, Int64 pts, UInt32 key)
         {
             int result = -1;
@@ -4535,6 +5752,22 @@ namespace libbluray
             return result;
         }
 
+        /// <summary>
+        /// Register handler for compressed YUV overlays
+        /// 
+        /// Compressed YUV overlays are used with presentation graphics(subtitles)
+        /// and HDMV mode menus.
+        /// This function can be used when player does not support full-screen ARGB overlays
+        /// or player can optimize drawing of compressed overlays, color space conversion etc.
+        /// 
+        /// Callback function is called from application thread context while bd_*() functions
+        /// are called.
+        /// 
+        /// Note that BD-J mode outputs only ARGB graphics.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="handle">application-specific handle that will be passed to handler function</param>
+        /// <param name="func">handler function pointer</param>
         public static void bd_register_overlay_proc(Ref<BLURAY> bd, object? handle, GraphicsController.gc_overlay_proc_f func)
         {
             if (!bd)
@@ -4554,6 +5787,18 @@ namespace libbluray
             bd.Value.mutex.bd_mutex_unlock();
         }
 
+        /// <summary>
+        /// Register handler for ARGB overlays
+        /// 
+        /// ARGB overlays are used with BD-J(Java) menus.
+        /// 
+        /// Callback function can be called at any time by a thread created by Java VM.
+        /// No more than single call for each overlay plane are executed in paraller.
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="handle">application-specific handle that will be passed to handler function</param>
+        /// <param name="func">handler function pointer</param>
+        /// <param name="buf">optional application-allocated frame buffer</param>
         public static void bd_register_argb_overlay_proc(Ref<BLURAY> bd, object? handle, bd_argb_overlay_proc_f func, Ref<BD_ARGB_BUFFER> buf)
         {
             if (!bd)
@@ -4570,6 +5815,13 @@ namespace libbluray
             bd.Value.argb_buffer_mutex.bd_mutex_unlock();
         }
 
+        /// <summary>
+        /// Get sound effect
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="sound_id">sound effect id (0...N)</param>
+        /// <param name="effect">sound effect data</param>
+        /// <returns> less than 0 when no effects, 0 when id out of range, 1 on success</returns>
         public static int bd_get_sound_effect(Ref<BLURAY> bd, uint sound_id, Ref<BLURAY_SOUND_EFFECT> effect)
         {
             if (!bd || !effect)
@@ -4626,11 +5878,30 @@ namespace libbluray
             return 1;
         }
 
+        /// <summary>
+        /// Read a file from BluRay Virtual File System.
+        /// 
+        /// Allocate large enough memory block and read file contents.
+        /// Caller must free the memory block with free().
+        /// </summary>
+        /// <param name="bd"></param>
+        /// <param name="path"></param>
+        /// <param name="data"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
         public static int bd_read_file(Ref<BLURAY> bd, string path, ref Ref<byte> data, Ref<Int64> size)
         {
             return _bd_read_file(bd, null, path, ref data, size);
         }
 
+        /// <summary>
+        /// Open a directory from BluRay Virtual File System.
+        /// 
+        /// Caller must close with dir->close().
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="dir">target directory (relative to disc root)</param>
+        /// <returns>BD_DIR_H *, NULL if failed</returns>
         public static BD_DIR_H? bd_open_dir(Ref<BLURAY> bd, string dir)
         {
             if (!bd || dir == null) {
@@ -4639,6 +5910,21 @@ namespace libbluray
             return Disc.disc_open_dir(bd.Value.disc, dir);
         }
 
+        /// <summary>
+        /// Open a file from BluRay Virtual File System.
+        /// 
+        /// encrypted streams are decrypted, and because of how
+        /// decryption works, it can only seek to(N*6144) bytes,
+        /// and read 6144 bytes at a time.
+        /// DO NOT mix any play functionalities with these functions.
+        /// It might cause broken stream. In general, accessing
+        /// mutiple file on disk at the same time is a bad idea.
+        /// 
+        /// Caller must close with file->close().
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="path">path to the file (relative to disc root)</param>
+        /// <returns>BD_FILE_H *, NULL if failed</returns>
         public static BD_FILE_H? bd_open_file_dec(Ref<BLURAY> bd, string path)
         {
             if (!bd || path == null) {
@@ -4650,7 +5936,17 @@ namespace libbluray
         /*
          * Metadata
          */
-
+        /// <summary>
+        /// Get meta information about current BluRay disc.
+        /// 
+        /// Meta information is optional in BluRay discs.
+        /// If information is provided in multiple languages, currently
+        /// selected language (BLURAY_PLAYER_SETTING_MENU_LANG) is used.
+        /// 
+        /// Referenced thumbnail images should be read with bd_get_meta_file().
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <returns>META_DL (disclib) object, NULL on error</returns>
         public static Ref<META_DL> bd_get_meta(Ref<BLURAY> bd)
         {
             Ref<META_DL> meta = Ref<META_DL>.Null;
@@ -4694,6 +5990,17 @@ namespace libbluray
             return meta;
         }
 
+        /// <summary>
+        /// Read metadata file from BluRay disc.
+        /// 
+        /// Allocate large enough memory block and read file contents.
+        /// Caller must free the memory block with free().
+        /// </summary>
+        /// <param name="bd">BLURAY object</param>
+        /// <param name="name">name of metadata file</param>
+        /// <param name="data">where to store pointer to file data</param>
+        /// <param name="size">where to store file size</param>
+        /// <returns>1 on success, 0 on error</returns>
         public static int bd_get_meta_file(Ref<BLURAY> bd, string name, ref Ref<byte> data, Ref<Int64> size)
         {
             return _bd_read_file(bd, Path.Combine("BDMV", "META", "DL"), name, ref data, size);
@@ -4703,6 +6010,12 @@ namespace libbluray
          * Database access
          */
 
+        /// <summary>
+        /// Get copy of clip information for requested playitem.
+        /// </summary>
+        /// <param name="bd">BLURAY objects</param>
+        /// <param name="clip_ref">requested playitem number</param>
+        /// <returns>pointer to allocated CLPI_CL object on success, NULL on error</returns>
         public static Ref<CLPI_CL> bd_get_clpi(Ref<BLURAY> bd, uint clip_ref)
         {
             if (bd.Value.title != null && clip_ref < bd.Value.title.clip_list.count)

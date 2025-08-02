@@ -6,40 +6,129 @@ using System.Threading.Tasks;
 
 namespace libbluray
 {
+    /// <summary>
+    /// Key codes
+    /// </summary>
     public enum bd_vk_key_e
     {
-        BD_VK_NONE = 0xffff,  /**< no key pressed */
+        /// <summary>
+        /// no key pressed
+        /// </summary>
+        BD_VK_NONE = 0xffff,  
 
         /* numeric key events */
-        BD_VK_0 = 0,   /**< "1" */
-        BD_VK_1 = 1,   /**< "2" */
-        BD_VK_2 = 2,   /**< "3" */
-        BD_VK_3 = 3,   /**< "4" */
-        BD_VK_4 = 4,   /**< "5" */
-        BD_VK_5 = 5,   /**< "6" */
-        BD_VK_6 = 6,   /**< "7" */
-        BD_VK_7 = 7,   /**< "8" */
-        BD_VK_8 = 8,   /**< "9" */
-        BD_VK_9 = 9,   /**< "0" */
+        
+        /// <summary>
+        /// "1"
+        /// </summary>
+        BD_VK_0 = 0, 
+
+        /// <summary>
+        /// "2"
+        /// </summary>
+        BD_VK_1 = 1, 
+        
+        /// <summary>
+        /// "3"
+        /// </summary>
+        BD_VK_2 = 2, 
+
+        /// <summary>
+        /// "4"
+        /// </summary>
+        BD_VK_3 = 3, 
+
+        /// <summary>
+        /// "5"
+        /// </summary>
+        BD_VK_4 = 4,  
+
+        /// <summary>
+        /// "6"
+        /// </summary>
+        BD_VK_5 = 5,  
+
+        /// <summary>
+        /// "7"
+        /// </summary>
+        BD_VK_6 = 6,  
+
+        /// <summary>
+        /// "8"
+        /// </summary>
+        BD_VK_7 = 7,  
+        
+        /// <summary>
+        /// "9"
+        /// </summary>
+        BD_VK_8 = 8, 
+        
+        /// <summary>
+        /// "0"
+        /// </summary>
+        BD_VK_9 = 9,
 
         /* */
-        BD_VK_ROOT_MENU = 10,  /**< Open disc root menu */
-        BD_VK_POPUP = 11,  /**< Toggle popup menu */
+        /// <summary>
+        /// Open disc root menu
+        /// </summary>
+        BD_VK_ROOT_MENU = 10,
+
+        /// <summary>
+        /// Toggle popup menu
+        /// </summary>
+        BD_VK_POPUP = 11,
 
         /* interactive key events */
-        BD_VK_UP = 12,  /**< Arrow up */
-        BD_VK_DOWN = 13,  /**< Arrow down */
-        BD_VK_LEFT = 14,  /**< Arrow left */
-        BD_VK_RIGHT = 15,  /**< Arrow right */
-        BD_VK_ENTER = 16,  /**< Select */
+        /// <summary>
+        /// Arrow up
+        /// </summary>
+        BD_VK_UP = 12,
 
-        /** Mouse click. Translated to BD_VK_ENTER if mouse is over a valid button. */
+        /// <summary>
+        ///  Arrow down
+        /// </summary>
+        BD_VK_DOWN = 13,
+
+        /// <summary>
+        /// Arrow left
+        /// </summary>
+        BD_VK_LEFT = 14,
+
+        /// <summary>
+        /// Arrow right
+        /// </summary>
+        BD_VK_RIGHT = 15,
+
+        /// <summary>
+        /// Select
+        /// </summary>
+        BD_VK_ENTER = 16,
+
+        /// <summary>
+        /// Mouse click. Translated to BD_VK_ENTER if mouse is over a valid button.
+        /// </summary>
         BD_VK_MOUSE_ACTIVATE = 17,
 
-        BD_VK_RED = 403, /**< Color key "Red" */
-        BD_VK_GREEN = 404, /**< Color key "Green" */
-        BD_VK_YELLOW = 405, /**< Color key "Yellow" */
-        BD_VK_BLUE = 406, /**< Color key "Blue" */
+        /// <summary>
+        /// Color key "Red"
+        /// </summary>
+        BD_VK_RED = 403,
+
+        /// <summary>
+        /// Color key "Green"
+        /// </summary>
+        BD_VK_GREEN = 404,
+
+        /// <summary>
+        /// Color key "Yellow"
+        /// </summary>
+        BD_VK_YELLOW = 405,
+
+        /// <summary>
+        /// Color key "Blue"
+        /// </summary>
+        BD_VK_BLUE = 406, 
     }
 
     public static class Keys

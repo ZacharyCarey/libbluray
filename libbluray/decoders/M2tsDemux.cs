@@ -16,6 +16,9 @@ namespace libbluray.decoders
         public M2TS_DEMUX() { }
     }
 
+    /// <summary>
+    /// simple single-pid demuxer for BDAV m2ts.
+    /// </summary>
     public static class M2tsDemux
     {
         /*
@@ -182,10 +185,15 @@ namespace libbluray.decoders
         }
 
 
-        /*
-         *
-         */
-
+        /// <summary>
+        /// Demux aligned unit (mpeg-ts + pes).
+        /// input:  aligned unit(6144 bytes). NULL to flush demuxer buffer.
+        /// output: PES payload
+        /// Flush demuxer internal cache if block == NULL.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="buf"></param>
+        /// <returns></returns>
         internal static Ref<PES_BUFFER> m2ts_demux(Ref<M2TS_DEMUX> p, Ref<byte> buf)
         {
             Ref<byte> end = buf + 6144;

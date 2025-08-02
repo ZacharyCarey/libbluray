@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace libbluray.hdmv
 {
+    /// <summary>
+    /// instruction groups
+    /// </summary>
     public enum hdmv_insn_grp
     {
         INSN_GROUP_BRANCH = 0,
@@ -13,6 +16,9 @@ namespace libbluray.hdmv
         INSN_GROUP_SET = 2,
     }
 
+    /// <summary>
+    /// BRANCH sub-groups
+    /// </summary>
     public enum hdmv_insn_grp_branch
     {
         BRANCH_GOTO = 0x00,
@@ -20,6 +26,9 @@ namespace libbluray.hdmv
         BRANCH_PLAY = 0x02,
     }
 
+    /// <summary>
+    /// GOTO sub-group
+    /// </summary>
     public enum hdmv_insn_goto
     {
         INSN_NOP = 0x00,
@@ -27,6 +36,9 @@ namespace libbluray.hdmv
         INSN_BREAK = 0x02,
     }
 
+    /// <summary>
+    /// JUMP sub-group
+    /// </summary>
     public enum hdmv_insn_jump
     {
         INSN_JUMP_OBJECT = 0x00,
@@ -36,6 +48,9 @@ namespace libbluray.hdmv
         INSN_RESUME = 0x04,
     }
 
+    /// <summary>
+    /// PLAY sub-group
+    /// </summary>
     public enum hdmv_insn_play
     {
         INSN_PLAY_PL = 0x00,
@@ -46,6 +61,9 @@ namespace libbluray.hdmv
         INSN_LINK_MK = 0x05,
     }
 
+    /// <summary>
+    /// COMPARE group
+    /// </summary>
     public enum hdmv_insn_cmp
     {
         INSN_BC = 0x01,
@@ -57,12 +75,18 @@ namespace libbluray.hdmv
         INSN_LT = 0x07,
     }
 
+    /// <summary>
+    /// SET sub-groups
+    /// </summary>
     public enum hdmv_insn_grp_set
     {
         SET_SET = 0x00,
         SET_SETSYSTEM = 0x01,
     }
 
+    /// <summary>
+    /// SET sub-group
+    /// </summary>
     public enum hdmv_insn_set
     {
         INSN_MOVE = 0x01,
@@ -82,6 +106,9 @@ namespace libbluray.hdmv
         INSN_SHR = 0x0f,
     }
 
+    /// <summary>
+    /// SETSYSTEM sub-group
+    /// </summary>
     public enum hdmv_insn_setsystem
     {
         INSN_SET_STREAM = 0x01,

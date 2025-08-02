@@ -30,9 +30,24 @@ namespace libbluray.decoders
         public const uint HDMV_PID_PG_FIRST = 0x1200;
         public const uint HDMV_PID_PG_LAST = 0x121f;
 
-        public const uint HDMV_PID_PG_B_FIRST = 0x1220;  /* base view */
+        /// <summary>
+        /// base view
+        /// </summary>
+        public const uint HDMV_PID_PG_B_FIRST = 0x1220;
+
+        /// <summary>
+        /// base view
+        /// </summary>
         public const uint HDMV_PID_PG_B_LAST = 0x123f;
-        public const uint HDMV_PID_PG_E_FIRST = 0x1240;  /* enhanced view */
+
+        /// <summary>
+        /// enhanced view
+        /// </summary>
+        public const uint HDMV_PID_PG_E_FIRST = 0x1240;
+
+        /// <summary>
+        /// enhanced view
+        /// </summary>
         public const uint HDMV_PID_PG_E_LAST = 0x125f;
 
         public const uint HDMV_PID_IG_FIRST = 0x1400;
@@ -56,10 +71,11 @@ namespace libbluray.decoders
         public static bool IS_HDMV_PID_IG(ushort pid) => ((pid) >= HDMV_PID_IG_FIRST && (pid) <= HDMV_PID_IG_LAST);
         public static bool IS_HDMV_PID_TEXTST(ushort pid) => ((pid) == HDMV_PID_TEXTST);
 
-        /*
-         * Extract PID from HDMV MPEG-TS packet
-         */
-
+        /// <summary>
+        /// Extract PID from HDMV MPEG-TS packet
+        /// </summary>
+        /// <param name="buf"></param>
+        /// <returns></returns>
         public static ushort TS_PID(Ref<byte> buf) => (ushort)(((buf[4 + 1] & 0x1fu) << 8) | buf[4 + 2]);
     }
 }

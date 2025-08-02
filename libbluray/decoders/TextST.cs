@@ -31,7 +31,11 @@ namespace libbluray.decoders
     public struct BD_TEXTST_REGION_INFO
     {
         public Variable<BD_TEXTST_RECT> region = new();
-        public byte background_color; /* palette entry id ref */
+
+        /// <summary>
+        /// palette entry id ref
+        /// </summary>
+        public byte background_color; 
 
         public BD_TEXTST_REGION_INFO() { }
     }
@@ -49,17 +53,45 @@ namespace libbluray.decoders
     {
         public byte region_style_id;
         public Variable<BD_TEXTST_REGION_INFO> region_info = new();
-        public Variable<BD_TEXTST_RECT> text_box = new();          /* relative to region */
-        public byte text_flow;         /* BD_TEXTST_FLOW_* */
-        public byte text_halign;       /* BD_TEXTST_HALIGN_* */
-        public byte text_valign;       /* BD_TEXTST_VALIGN_* */
+
+        /// <summary>
+        /// relative to region
+        /// </summary>
+        public Variable<BD_TEXTST_RECT> text_box = new();
+
+        /// <summary>
+        /// BD_TEXTST_FLOW_*
+        /// </summary>
+        public byte text_flow;
+
+        /// <summary>
+        /// BD_TEXTST_HALIGN_*
+        /// </summary>
+        public byte text_halign;
+
+        /// <summary>
+        /// BD_TEXTST_VALIGN_*
+        /// </summary>
+        public byte text_valign;       
         public byte line_space;
         public byte font_id_ref;
         public Variable<BD_TEXTST_FONT_STYLE> font_style = new();
         public byte font_size;
-        public byte font_color;        /* palette entry id ref */
-        public byte outline_color;     /* palette entry id ref */
-        public byte outline_thickness; /* BD_TEXTST_FONT_OUTLINE_* */
+
+        /// <summary>
+        /// palette entry id ref
+        /// </summary>
+        public byte font_color;
+
+        /// <summary>
+        /// palette entry id ref
+        /// </summary>
+        public byte outline_color;
+
+        /// <summary>
+        /// BD_TEXTST_FONT_OUTLINE_*
+        /// </summary>
+        public byte outline_thickness; 
 
         public BD_TEXTST_REGION_STYLE() { }
     }
@@ -124,7 +156,7 @@ namespace libbluray.decoders
         public byte region_style_id_ref;
 
         public uint elem_count;
-        public Ref<BD_TEXTST_DATA> elem = new(); /* note: variable-sized elements */
+        public Ref<BD_TEXTST_DATA> elem = new(); 
 
         public uint line_count;
 
@@ -164,9 +196,20 @@ namespace libbluray.decoders
     public static class TextST
     {
         // TODO enums
-        public const int BD_TEXTST_FLOW_LEFT_RIGHT = 1;  /* Left-to-Right character progression, Top-to-Bottom line progression */
-        public const int BD_TEXTST_FLOW_RIGHT_LEFT = 2;  /* Right-to-Left character progression, Top-to-Bottom line progression */
-        public const int BD_TEXTST_FLOW_TOP_BOTTOM = 3;  /* Top-to-Bottom character progression, Right-to-Left line progression */
+        /// <summary>
+        /// Left-to-Right character progression, Top-to-Bottom line progression
+        /// </summary>
+        public const int BD_TEXTST_FLOW_LEFT_RIGHT = 1;
+
+        /// <summary>
+        /// Right-to-Left character progression, Top-to-Bottom line progression
+        /// </summary>
+        public const int BD_TEXTST_FLOW_RIGHT_LEFT = 2;
+
+        /// <summary>
+        /// Top-to-Bottom character progression, Right-to-Left line progression
+        /// </summary>
+        public const int BD_TEXTST_FLOW_TOP_BOTTOM = 3;  
 
         public const int BD_TEXTST_HALIGN_LEFT = 1;
         public const int BD_TEXTST_HALIGN_CENTER = 2;

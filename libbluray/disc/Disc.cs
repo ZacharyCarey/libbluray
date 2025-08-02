@@ -11,6 +11,9 @@ using static libbluray.disc.BD_DISC;
 
 namespace libbluray.disc
 {
+    /// <summary>
+    /// application provided file system access (optional)
+    /// </summary>
     public class fs_access {
         public object fs_handle = default;
 
@@ -417,7 +420,12 @@ namespace libbluray.disc
             return 0;
         }
 
-        /* Open decrypted file */
+        /// <summary>
+        /// Open decrypted file 
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="rel_path"></param>
+        /// <returns></returns>
         internal static BD_FILE_H disc_open_path_dec(this BD_DISC p, string rel_path)
         {
             UInt64 size = (ulong)rel_path.Length;
@@ -500,15 +508,23 @@ namespace libbluray.disc
             return (p.properties_file != null) ? 0 : -1;
         }
 
-        /* open BD-ROM directory (relative to disc root) */
+        /// <summary>
+        /// open BD-ROM directory (relative to disc root) 
+        /// </summary>
+        /// <param name="disc"></param>
+        /// <param name="rel_path"></param>
+        /// <returns></returns>
         internal static BD_DIR_H disc_open_bdrom_dir(this BD_DISC disc, string rel_path)
         {
             return disc.pf_dir_open_bdrom(disc.fs_handle, rel_path);
         }
 
-        /*
-         * m2ts stream interface
-         */
+        /// <summary>
+        /// m2ts stream interface
+        /// </summary>
+        /// <param name="disc"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
 
         internal static BD_FILE_H disc_open_stream(this BD_DISC disc, string file)
         {
@@ -597,9 +613,20 @@ namespace libbluray.disc
         }
 
         public enum DiscEventType {
-            DISC_EVENT_START,       /* param: number of titles, 0 if playing with menus */
-            DISC_EVENT_TITLE,       /* param: title number */
-            DISC_EVENT_APPLICATION, /* param: app data */
+            /// <summary>
+            /// param: number of titles, 0 if playing with menus
+            /// </summary>
+            DISC_EVENT_START,
+
+            /// <summary>
+            /// param: title number
+            /// </summary>
+            DISC_EVENT_TITLE,
+
+            /// <summary>
+            /// param: app data
+            /// </summary>
+            DISC_EVENT_APPLICATION, 
         };
 
         internal static void disc_event(this BD_DISC disc, DiscEventType _event, UInt32 param)
@@ -621,8 +648,13 @@ namespace libbluray.disc
             }
         }
 
-        // Pseudo disc ID
-        // This is used when AACS disc ID is not available
+        /// <summary>
+        /// Pseudo disc ID
+        /// This is used when AACS disc ID is not available
+        /// </summary>
+        /// <param name="k"></param>
+        /// <param name="n"></param>
+        /// <returns></returns>
         private static UInt64 ROTL64(UInt64 k, Int32 n)
         {
             return ((k << n) | (k >> (64 - n)));
@@ -953,11 +985,25 @@ namespace libbluray.disc
 
     public class BD_DISC
     {
-        internal BD_MUTEX ovl_mutex = new();     /* protect access to overlay root */
-        internal BD_MUTEX properties_mutex = new(); /* protect access to properties file */
+        /// <summary>
+        /// protect access to overlay root
+        /// </summary>
+        internal BD_MUTEX ovl_mutex = new();
 
-        internal string disc_root = null;     /* disc filesystem root (if disc is mounted) */
-        internal string overlay_root = null;  /* overlay filesystem root (if set) */
+        /// <summary>
+        /// protect access to properties file
+        /// </summary>
+        internal BD_MUTEX properties_mutex = new();
+
+        /// <summary>
+        /// disc filesystem root (if disc is mounted)
+        /// </summary>
+        internal string disc_root = null;
+
+        /// <summary>
+        /// overlay filesystem root (if set)
+        /// </summary>
+        internal string overlay_root = null;  
 
         internal BD_DEC dec = null;
 
@@ -967,9 +1013,16 @@ namespace libbluray.disc
         internal Action<object> pf_fs_close = null;
 
         internal string udf_volid = null;
-        internal string properties_file = null;  /* NULL if not yet used */
 
-        internal sbyte avchd = -1;  /* -1 - unknown. 0 - no. 1 - yes */
+        /// <summary>
+        /// NULL if not yet used
+        /// </summary>
+        internal string properties_file = null;
+
+        /// <summary>
+        /// -1 - unknown. 0 - no. 1 - yes
+        /// </summary>
+        internal sbyte avchd = -1;  
 
         /* disc cache */
         internal BD_MUTEX cache_mutex = new();

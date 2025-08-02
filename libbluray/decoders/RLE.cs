@@ -10,9 +10,20 @@ namespace libbluray.decoders
 {
     public struct RLE_ENC
     {
-        public Ref<BD_PG_RLE_ELEM> elem = new();     /* current element */
-        public uint free_elem;/* unused element count */
-        public uint num_elem; /* allocated element count */
+        /// <summary>
+        /// current element
+        /// </summary>
+        public Ref<BD_PG_RLE_ELEM> elem = new();
+
+        /// <summary>
+        /// unused element count
+        /// </summary>
+        public uint free_elem;
+
+        /// <summary>
+        /// allocated element count
+        /// </summary>
+        public uint num_elem; 
 
         public int error;
 

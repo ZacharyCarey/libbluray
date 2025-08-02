@@ -16,7 +16,11 @@ namespace libbluray.decoders
         public UInt16 width;
         public UInt16 height;
         public UInt16 stride;
-        public byte argb;    /* Output buffer is ARGB (support for anti-aliasing) */
+
+        /// <summary>
+        /// Output buffer is ARGB (support for anti-aliasing)
+        /// </summary>
+        public byte argb;    
 
         public TEXTST_BITMAP() { }
     }

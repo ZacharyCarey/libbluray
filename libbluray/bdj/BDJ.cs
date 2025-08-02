@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace libbluray.bdj
 {
+    /// <summary>
+    /// these must be in sync with Libbluray.java !
+    /// </summary>
     public enum BDJ_EVENT
     {
-        /* Note: these must be in sync with Libbluray.java ! */
-
         BDJ_EVENT_NONE = 0,
 
         /* Application control */
@@ -47,13 +48,30 @@ namespace libbluray.bdj
 
     public struct BDJ_CONFIG
     {
-        public string persistent_root;   /* BD-J Xlet persistent storage */
-        public string cache_root;        /* BD-J binding unit data area */
+        /// <summary>
+        /// BD-J Xlet persistent storage
+        /// </summary>
+        public string persistent_root;
 
-        public string java_home;         /* JAVA_HOME override from application */
-        public string[] classpath = new string[2];      /* BD-J implementation class path (location of libbluray.jar) */
+        /// <summary>
+        /// BD-J binding unit data area
+        /// </summary>
+        public string cache_root;
 
-        public byte no_persistent_storage; /* disable persistent storage (remove files at close) */
+        /// <summary>
+        /// JAVA_HOME override from application
+        /// </summary>
+        public string java_home;
+
+        /// <summary>
+        /// BD-J implementation class path (location of libbluray.jar)
+        /// </summary>
+        public string[] classpath = new string[2];
+
+        /// <summary>
+        /// disable persistent storage (remove files at close)
+        /// </summary>
+        public byte no_persistent_storage; 
 
         public BDJ_CONFIG() { }
     }
@@ -70,6 +88,10 @@ namespace libbluray.bdj
 
     }
 
+    /// <summary>
+    /// BDJ is not currently supported as it requires Java, so this class is largly
+    /// stubbed out.
+    /// </summary>
     internal static class BDJ
     {
 

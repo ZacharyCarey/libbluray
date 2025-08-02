@@ -1,27 +1,60 @@
 ﻿using libbluray;
 using libbluray.decoders;
 using libbluray.util;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace libbluray
 {
-    // Player status registers
-
+    /// <summary>
+    /// Player Status Registers
+    /// </summary>
     public enum bd_psr_idx : uint
     {
         PSR_IG_STREAM_ID = 0,
         PSR_PRIMARY_AUDIO_ID = 1,
-        PSR_PG_STREAM = 2, /* PG TextST and PIP PG TextST stream number */
-        PSR_ANGLE_NUMBER = 3, /* 1..N */
-        PSR_TITLE_NUMBER = 4, /* 1..N  (0 = top menu, 0xffff = first play) */
-        PSR_CHAPTER = 5, /* 1..N  (0xffff = invalid) */
-        PSR_PLAYLIST = 6, /* playlist file name number */
-        PSR_PLAYITEM = 7, /* 0..N-1 (playitem_id) */
-        PSR_TIME = 8, /* presetation time */
+
+        /// <summary>
+        /// PG TextST and PIP PG TextST stream number
+        /// </summary>
+        PSR_PG_STREAM = 2,
+
+        /// <summary>
+        /// 1..N
+        /// </summary>
+        PSR_ANGLE_NUMBER = 3,
+
+        /// <summary>
+        /// 1..N  (0 = top menu, 0xffff = first play)
+        /// </summary>
+        PSR_TITLE_NUMBER = 4,
+
+        /// <summary>
+        /// 1..N  (0xffff = invalid)
+        /// </summary>
+        PSR_CHAPTER = 5,
+
+        /// <summary>
+        ///  playlist file name number
+        /// </summary>
+        PSR_PLAYLIST = 6,
+
+        /// <summary>
+        /// 0..N-1 (playitem_id)
+        /// </summary>
+        PSR_PLAYITEM = 7,
+
+        /// <summary>
+        /// presetation time
+        /// </summary>
+        PSR_TIME = 8, 
         PSR_NAV_TIMER = 9,
         PSR_SELECTED_BUTTON_ID = 10,
         PSR_MENU_PAGE_ID = 11,
@@ -43,8 +76,16 @@ namespace libbluray
         PSR_UHD_HDR_PREFER = 27,
         PSR_UHD_SDR_CONV_PREFER = 28,
         PSR_VIDEO_CAP = 29,
-        PSR_TEXT_CAP = 30, /* text subtitles */
-        PSR_PROFILE_VERSION = 31, /* player profile and version */
+
+        /// <summary>
+        /// text subtitles
+        /// </summary>
+        PSR_TEXT_CAP = 30,
+
+        /// <summary>
+        /// player profile and version
+        /// </summary>
+        PSR_PROFILE_VERSION = 31, 
         PSR_BACKUP_PSR4 = 36,
         PSR_BACKUP_PSR5 = 37,
         PSR_BACKUP_PSR6 = 38,
@@ -56,13 +97,30 @@ namespace libbluray
         /* 48-61: caps for characteristic text subtitle */
     }
 
+    /// <summary>
+    /// event data
+    /// </summary>
     public struct BD_PSR_EVENT
     {
-        public uint ev_type; /* event type */
+        /// <summary>
+        /// event type
+        /// </summary>
+        public uint ev_type;
 
-        public bd_psr_idx psr_idx; /* register index */
-        public UInt32 old_val; /* old value of register */
-        public UInt32 new_val; /* new value of register */
+        /// <summary>
+        /// register index
+        /// </summary>
+        public bd_psr_idx psr_idx;
+
+        /// <summary>
+        /// old value of register
+        /// </summary>
+        public UInt32 old_val;
+
+        /// <summary>
+        /// new value of register
+        /// </summary>
+        public UInt32 new_val; 
     }
 
     public struct PSR_CB_DATA
@@ -87,10 +145,25 @@ namespace libbluray
 
     public static class Register
     {
-        public const int BD_PSR_SAVE = 1; /* backup player state. Single event, psr_idx and values undefined */
-        public const int BD_PSR_WRITE = 2; /* write, value unchanged */
-        public const int BD_PSR_CHANGE = 3; /* write, value changed */
-        public const int BD_PSR_RESTORE = 4; /* restore backup values */
+        /// <summary>
+        /// backup player state. Single event, psr_idx and values undefined
+        /// </summary>
+        public const int BD_PSR_SAVE = 1;
+
+        /// <summary>
+        /// write, value unchanged
+        /// </summary>
+        public const int BD_PSR_WRITE = 2;
+
+        /// <summary>
+        /// write, value changed
+        /// </summary>
+        public const int BD_PSR_CHANGE = 3;
+
+        /// <summary>
+        /// restore backup values
+        /// </summary>
+        public const int BD_PSR_RESTORE = 4; 
 
         public const int BD_PSR_COUNT = 128;
         public const int BD_GPR_COUNT = 4096;
@@ -227,6 +300,10 @@ namespace libbluray
  * init / free
  */
 
+        /// <summary>
+        /// Initialize registers
+        /// </summary>
+        /// <returns>allocated BD_REGISTERS object with default values</returns>
         internal static Ref<BD_REGISTERS> bd_registers_init()
         {
             Ref<BD_REGISTERS> p = Ref<BD_REGISTERS>.Allocate();
@@ -241,6 +318,10 @@ namespace libbluray
             return p;
         }
 
+        /// <summary>
+        /// Free BD_REGISTERS object
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
         internal static void bd_registers_free(Ref<BD_REGISTERS> p)
         {
             if (p)
@@ -256,12 +337,19 @@ namespace libbluray
         /*
          * PSR lock / unlock
          */
-
+        /// <summary>
+        /// Lock PSRs for atomic read-modify-write operation
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
         internal static void bd_psr_lock(Ref<BD_REGISTERS> p)
         {
             p.Value.mutex.bd_mutex_lock();
         }
 
+        /// <summary>
+        /// Unlock PSRs
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
         internal static void bd_psr_unlock(Ref<BD_REGISTERS> p)
         {
             p.Value.mutex.bd_mutex_unlock();
@@ -270,7 +358,14 @@ namespace libbluray
         /*
          * PSR change callback register / unregister
          */
-
+        /// <summary>
+        /// Register callback function
+        /// 
+        /// Function is called every time PSR value changes.
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
+        /// <param name="callback">callback function pointer</param>
+        /// <param name="cb_handle">application-specific handle that is provided to callback function as first parameter</param>
         internal static void bd_psr_register_cb(Ref<BD_REGISTERS> p, Action<object, Ref<BD_PSR_EVENT>> callback, object cb_handle)
         {
             /* no duplicates ! */
@@ -305,6 +400,12 @@ namespace libbluray
             bd_psr_unlock(p);
         }
 
+        /// <summary>
+        /// Unregister callback function
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
+        /// <param name="callback">callback function to unregister</param>
+        /// <param name="cb_handle">application-specific handle that was used when callback was registered</param>
         internal static void bd_psr_unregister_cb(Ref<BD_REGISTERS> p, Action<object, Ref<BD_PSR_EVENT>> callback, object cb_handle)
         {
             uint i = 0;
@@ -330,7 +431,11 @@ namespace libbluray
         /*
          * PSR state save / restore
          */
-
+        /// <summary>
+        /// Save player state.
+        /// Copy values of registers 4-8 and 10-12 to backup registers 36-40 and 42-44.
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
         internal static void bd_psr_save_state(Ref<BD_REGISTERS> p)
         {
             /* store registers 4-8 and 10-12 to backup registers */
@@ -361,6 +466,12 @@ namespace libbluray
             bd_psr_unlock(p);
         }
 
+        /// <summary>
+        /// Reset backup registers
+        /// 
+        /// Initialize backup registers 36-40 and 42-44 to default values.
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
         internal static void bd_psr_reset_backup_registers(Ref<BD_REGISTERS> p)
         {
             bd_psr_lock(p);
@@ -374,6 +485,13 @@ namespace libbluray
             bd_psr_unlock(p);
         }
 
+        /// <summary>
+        /// Restore player state
+        /// 
+        /// Restore registers 4-8 and 10-12 from backup registers 36-40 and 42-44.
+        /// Initialize backup registers to default values.
+        /// </summary>
+        /// <param name="p"></param>
         internal static void bd_psr_restore_state(Ref<BD_REGISTERS> p)
         {
             UInt32[] old_psr = new UInt32[13];
@@ -432,7 +550,13 @@ namespace libbluray
         /*
          * GPR read / write
          */
-
+        /// <summary>
+        /// Write to general-purprose register
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
+        /// <param name="reg">register number</param>
+        /// <param name="val">new value for register</param>
+        /// <returns>0 on success, -1 on error (invalid register number)</returns>
         internal static int bd_gpr_write(Ref<BD_REGISTERS> p, bd_psr_idx reg, UInt32 val)
         {
             if ((uint)reg >= BD_GPR_COUNT)
@@ -445,6 +569,12 @@ namespace libbluray
             return 0;
         }
 
+        /// <summary>
+        /// Read value of general-purprose register
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
+        /// <param name="reg">register number</param>
+        /// <returns>value stored in register, -1 on error (invalid register number)</returns>
         internal static UInt32 bd_gpr_read(Ref<BD_REGISTERS> p, bd_psr_idx reg)
         {
             if ((uint)reg >= BD_GPR_COUNT)
@@ -459,7 +589,12 @@ namespace libbluray
         /*
          * PSR read / write
          */
-
+        /// <summary>
+        /// Read value of player status/setting register
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
+        /// <param name="reg">register number</param>
+        /// <returns>value stored in register, -1 on error (invalid register number)</returns>
         internal static UInt32 bd_psr_read(Ref<BD_REGISTERS> p, bd_psr_idx reg)
         {
             UInt32 val;
@@ -479,6 +614,14 @@ namespace libbluray
             return val;
         }
 
+        /// <summary>
+        /// Write to any PSR, including player setting registers.
+        /// This should be called only by the application.
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
+        /// <param name="reg">register number</param>
+        /// <param name="val">new value for register</param>
+        /// <returns>0 on success, -1 on error (invalid register number)</returns>
         internal static int bd_psr_setting_write(Ref<BD_REGISTERS> p, bd_psr_idx reg, UInt32 val)
         {
             if ((int)reg >= BD_PSR_COUNT)
@@ -531,6 +674,14 @@ namespace libbluray
             return 0;
         }
 
+        /// <summary>
+        /// Write to player status register.
+        /// Writing to player setting registers will fail.
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
+        /// <param name="reg">register number</param>
+        /// <param name="val">new value for register</param>
+        /// <returns>0 on success, -1 on error (invalid register number)</returns>
         internal static int bd_psr_write(Ref<BD_REGISTERS> p, bd_psr_idx reg, UInt32 val)
         {
             uint r = (uint)reg;
@@ -546,6 +697,18 @@ namespace libbluray
             return bd_psr_setting_write(p, reg, val);
         }
 
+        /// <summary>
+        /// Atomically change bits in player status register.
+        /// 
+        /// Replace selected bits of player status register.
+        /// New value for PSR is (CURRENT_PSR_VALUE & ~mask) | (val & mask)
+        /// Writing to player setting registers will fail.
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
+        /// <param name="reg">register number</param>
+        /// <param name="val">new value for register</param>
+        /// <param name="mask">bit mask. bits to be written are set to 1.</param>
+        /// <returns>0 on success, -1 on error (invalid register number)</returns>
         internal static int bd_psr_write_bits(Ref<BD_REGISTERS> p, bd_psr_idx reg, UInt32 val, UInt32 mask)
         {
             int result;
@@ -569,7 +732,14 @@ namespace libbluray
         /*
          * save / restore registers between playback sessions
          */
-
+        /// <summary>
+        /// save / restore registers between playback sessions
+        /// 
+        /// When state is restored, restore events will be generated and playback state is restored.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="psr"></param>
+        /// <param name="gpr"></param>
         internal static void registers_save(Ref<BD_REGISTERS> p, Ref<UInt32> psr, Ref<UInt32> gpr)
         {
             bd_psr_lock(p);
@@ -670,6 +840,14 @@ namespace libbluray
             return 0;
         }
 
+        /// <summary>
+        /// Initialize registers for profile 6 (UHD) playback.
+        /// 
+        /// Profiles 5 (3D) and 6 (UHD) can't be enabld at the same time.
+        /// </summary>
+        /// <param name="p">BD_REGISTERS object</param>
+        /// <param name="force">0 on success, -1 on error (invalid state)</param>
+        /// <returns></returns>
         internal static int psr_init_UHD(Ref<BD_REGISTERS> p, int force)
         {
             bd_psr_lock(p);

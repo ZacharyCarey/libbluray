@@ -14,7 +14,10 @@ namespace libbluray.util
         public Ref<byte> p = new();
         public Ref<byte> p_end = new();
 
-        public int i_left; // Number of available bits
+        /// <summary>
+        /// Number of available bits
+        /// </summary>
+        public int i_left;
 
         public BITBUFFER() { }
 
@@ -138,9 +141,21 @@ namespace libbluray.util
         public BD_FILE_H fp = null;
         public byte[] buf = new byte[BF_BUF_SIZE];
         public BITBUFFER bb = new();
-        public Int64 pos; // File offset of buffer start buf[0]
-        public Int64 end; // size of file
-        public UInt64 size; // bytes in buf
+
+        /// <summary>
+        /// File offset of buffer start buf[0]
+        /// </summary>
+        public Int64 pos;
+
+        /// <summary>
+        /// size of file
+        /// </summary>
+        public Int64 end;
+
+        /// <summary>
+        /// bytes in buf
+        /// </summary>
+        public UInt64 size; 
 
         public BITSTREAM() { }
 

@@ -419,9 +419,16 @@ namespace libbluray.bdnav
             return 0;
         }
 
-        // Looks up the start packet number for the timestamp
-        // Returns the spn for the entry that is closest to but
-        // before the given timestamp
+        /// <summary>
+        /// Looks up the start packet number for the timestamp
+        /// Returns the spn for the entry that is closest to but
+        /// before the given timestamp
+        /// </summary>
+        /// <param name="cl"></param>
+        /// <param name="timestamp"></param>
+        /// <param name="before"></param>
+        /// <param name="stc_id"></param>
+        /// <returns></returns>
         internal static UInt32 clpi_lookup_spn(Ref<CLPI_CL> cl, UInt32 timestamp, int before, byte stc_id)
         {
             Ref<CLPI_EP_MAP_ENTRY> entry;
@@ -541,9 +548,17 @@ namespace libbluray.bdnav
             return spn;
         }
 
-        // Looks up the start packet number that is closest to the requested packet
-        // Returns the spn for the entry that is closest to but
-        // before the given packet
+        /// <summary>
+        /// Looks up the start packet number that is closest to the requested packet
+        /// Returns the spn for the entry that is closest to but
+        /// before the given packet
+        /// </summary>
+        /// <param name="cl"></param>
+        /// <param name="pkt"></param>
+        /// <param name="next"></param>
+        /// <param name="angle_change"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         internal static UInt32 clpi_access_point(Ref<CLPI_CL> cl, UInt32 pkt, int next, int angle_change, Ref<UInt32> time)
         {
             Ref<CLPI_EP_MAP_ENTRY> entry;

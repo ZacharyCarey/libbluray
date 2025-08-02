@@ -92,7 +92,11 @@ namespace libbluray.bdnav
         public CLPI_TS_TYPE ts_type_info = new();
         public byte atc_delta_count;
         public Ref<CLPI_ATC_DELTA> atc_delta = new();
-        public Variable<CLPI_FONT_INFO> font_info = new();      /* Text subtitle stream font files */
+
+        /// <summary>
+        /// Text subtitle stream font files
+        /// </summary>
+        public Variable<CLPI_FONT_INFO> font_info = new();      
 
         public CLPI_CLIP_INFO() { }
     }
@@ -114,7 +118,11 @@ namespace libbluray.bdnav
         public byte dynamic_range_type;
         public byte color_space;
         public byte hdr_plus_flag;
-        public byte[] isrc = new byte[12];     /* International Standard Recording Code (usually empty or all zeroes) */
+
+        /// <summary>
+        /// International Standard Recording Code (usually empty or all zeroes)
+        /// </summary>
+        public byte[] isrc = new byte[12];     
 
         public CLPI_PROG_STREAM() { }
     }
@@ -205,7 +213,11 @@ namespace libbluray.bdnav
 
         // extensions for 3D
 
-        public Variable<CLPI_EXTENT_START> extent_start = new(); /* extent start points (.ssif interleaving) */
+
+        /// <summary>
+        /// extent start points (.ssif interleaving)
+        /// </summary>
+        public Variable<CLPI_EXTENT_START> extent_start = new(); 
         public Variable<CLPI_PROG_INFO> program_ss = new();
         public Variable<CLPI_CPI> cpi_ss = new();
 

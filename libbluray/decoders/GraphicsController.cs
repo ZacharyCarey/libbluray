@@ -41,7 +41,11 @@ namespace libbluray.decoders
         public uint effect_idx;
         public Ref<BD_IG_EFFECT_SEQUENCE> in_effects = new();
         public Ref<BD_IG_EFFECT_SEQUENCE> out_effects = new();
-        public Int64 next_effect_time; /* 90 kHz */
+
+        /// <summary>
+        /// 90 kHz
+        /// </summary>
+        public Int64 next_effect_time; 
 
         /* timers */
         public Int64 user_timeout;
@@ -54,12 +58,20 @@ namespace libbluray.decoders
         /* data */
         public Ref<PG_DISPLAY_SET> pgs = new();
         public Ref<PG_DISPLAY_SET> igs = new();
-        public Ref<PG_DISPLAY_SET> tgs = new();  /* TextST */
+
+        /// <summary>
+        /// TextST
+        /// </summary>
+        public Ref<PG_DISPLAY_SET> tgs = new();  
 
         /* */
         public Ref<GRAPHICS_PROCESSOR> pgp = new();
         public Ref<GRAPHICS_PROCESSOR> igp = new();
-        public Ref<GRAPHICS_PROCESSOR> tgp = new();  /* TextST */
+
+        /// <summary>
+        /// TextST
+        /// </summary>
+        public Ref<GRAPHICS_PROCESSOR> tgp = new();  
 
         /* */
         public Ref<TEXTST_RENDER> textst_render = new();
@@ -77,28 +89,69 @@ namespace libbluray.decoders
     public enum gc_ctrl_e
     {
         /* */
-        GC_CTRL_INIT_MENU,       /* */
-        GC_CTRL_NOP,             /* No input. Render page / run timers / run animations */
-        GC_CTRL_RESET,           /* reset graphics controller */
+        GC_CTRL_INIT_MENU,
+
+        /// <summary>
+        /// No input. Render page / run timers / run animations
+        /// </summary>
+        GC_CTRL_NOP,
+
+        /// <summary>
+        /// reset graphics controller
+        /// </summary>
+        GC_CTRL_RESET,
 
         /* user input */
-        GC_CTRL_VK_KEY,          /* param: bd_vk_key_e */
-        GC_CTRL_MOUSE_MOVE,      /* move selected button to (x,y), param: (x<<16 | y) */
+        /// <summary>
+        /// param: bd_vk_key_e
+        /// </summary>
+        GC_CTRL_VK_KEY,
+
+        /// <summary>
+        /// move selected button to (x,y), param: (x<<16 | y)
+        /// </summary>
+        GC_CTRL_MOUSE_MOVE,
 
         /* HDMV VM control messages */
-        GC_CTRL_ENABLE_BUTTON,   /* param: button_id */
-        GC_CTRL_DISABLE_BUTTON,  /* param: button_id */
+        /// <summary>
+        /// param: button_id
+        /// </summary>
+        GC_CTRL_ENABLE_BUTTON,
+
+        /// <summary>
+        /// param: button_id
+        /// </summary>
+        GC_CTRL_DISABLE_BUTTON,  
         GC_CTRL_SET_BUTTON_PAGE,
-        GC_CTRL_POPUP,           /* param: on/off */
-        GC_CTRL_IG_END,          /* execution of IG object is complete */
+
+        /// <summary>
+        /// param: on/off
+        /// </summary>
+        GC_CTRL_POPUP,
+
+        /// <summary>
+        /// execution of IG object is complete
+        /// </summary>
+        GC_CTRL_IG_END,
 
         /* PG */
-        GC_CTRL_PG_UPDATE,       /* render decoded PG composition */
-        GC_CTRL_PG_RESET,        /* reset PG composition state */
+        /// <summary>
+        /// render decoded PG composition
+        /// </summary>
+        GC_CTRL_PG_UPDATE,
+
+        /// <summary>
+        /// reset PG composition state
+        /// </summary>
+        GC_CTRL_PG_RESET,        
 
         /* TextST */
         GC_CTRL_PG_CHARCODE,
-        GC_CTRL_STYLE_SELECT,    /* select next TextST user style */
+
+        /// <summary>
+        /// select next TextST user style
+        /// </summary>
+        GC_CTRL_STYLE_SELECT,    
     }
 
     public struct GC_NAV_CMDS
@@ -123,11 +176,30 @@ namespace libbluray.decoders
 
     public struct BOG_DATA
     {
-        public UInt16 enabled_button;  /* enabled button id */
-        public UInt16 x, y, w, h;      /* button rect on overlay plane (if drawn) */
-        public int visible_object_id; /* id of currently visible object */
-        public int animate_indx;    /* currently showing object index of animated button, < 0 for static buttons */
-        public int effect_running;  /* single-loop animation not yet complete */
+        /// <summary>
+        /// enabled button id
+        /// </summary>
+        public UInt16 enabled_button;
+
+        /// <summary>
+        /// button rect on overlay plane (if drawn)
+        /// </summary>
+        public UInt16 x, y, w, h;
+
+        /// <summary>
+        /// id of currently visible object
+        /// </summary>
+        public int visible_object_id;
+
+        /// <summary>
+        /// currently showing object index of animated button, < 0 for static buttons
+        /// </summary>
+        public int animate_indx;
+
+        /// <summary>
+        /// single-loop animation not yet complete 
+        /// </summary>
+        public int effect_running;  
 
         public BOG_DATA() { }
     }
@@ -936,6 +1008,15 @@ namespace libbluray.decoders
          * graphics stream input
          */
 
+        /// <summary>
+        /// Decode data from MPEG-TS input stream
+        /// </summary>
+        /// <param name="gc">GRAPHICS_CONTROLLER object</param>
+        /// <param name="pid">mpeg-ts PID to decode (HDMV IG/PG stream)</param>
+        /// <param name="block">mpeg-ts data</param>
+        /// <param name="num_blocks">number of aligned units in data</param>
+        /// <param name="stc">current playback time</param>
+        /// <returns> less than 0 on error, 0 when not complete,  greater than 0 when complete</returns>
         internal static int gc_decode_ts(Ref<GRAPHICS_CONTROLLER> gc, UInt16 pid, Ref<byte> block, uint num_blocks, Int64 stc)
         {
             if (!gc)
@@ -943,7 +1024,7 @@ namespace libbluray.decoders
                 GC_TRACE("gc_decode_ts(): no graphics controller\n");
                 return -1;
             }
-
+            
             if (HdmvPIDs.IS_HDMV_PID_IG(pid))
             {
                 /* IG stream */
@@ -1057,6 +1138,13 @@ namespace libbluray.decoders
             return -1;
         }
 
+        /// <summary>
+        /// Add TextST font
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="data"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
         internal static int gc_add_font(Ref<GRAPHICS_CONTROLLER> p, object? data, UInt64 size)
         {
             if (!p)
@@ -2180,6 +2268,14 @@ namespace libbluray.decoders
             return result;
         }
 
+        /// <summary>
+        /// run graphics controller
+        /// </summary>
+        /// <param name="gc"></param>
+        /// <param name="ctrl"></param>
+        /// <param name="param"></param>
+        /// <param name="cmds"></param>
+        /// <returns></returns>
         internal static int gc_run(Ref<GRAPHICS_CONTROLLER> gc, gc_ctrl_e ctrl, UInt32 param, Ref<GC_NAV_CMDS> cmds)
         {
             int result = -1;

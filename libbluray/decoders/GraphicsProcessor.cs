@@ -45,6 +45,9 @@ namespace libbluray.decoders
         public PG_DISPLAY_SET() { }
     }
 
+    /// <summary>
+    /// segment types
+    /// </summary>
     public enum pgs_segment_type_e
     {
         PGS_PALETTE = 0x14,
@@ -135,7 +138,11 @@ namespace libbluray.decoders
             p2.Value.len = 0;
         }
 
-        /* return 1 if segment is ready for decoding, 0 if more data is needed */
+        /// <summary>
+        /// return 1 if segment is ready for decoding, 0 if more data is needed
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         static bool _join_segment_fragments(Ref<PES_BUFFER> p)
         {
             byte type;
@@ -539,7 +546,11 @@ namespace libbluray.decoders
         /*
          * mpeg-pes interface
          */
-        const Int64 MAX_STC_DTS_DIFF = (90000L * 30L); /* 30 seconds */
+
+        /// <summary>
+        /// 30 seconds
+        /// </summary>
+        const Int64 MAX_STC_DTS_DIFF = (90000L * 30L); 
         static bool graphics_processor_decode_pes(ref Ref<PG_DISPLAY_SET> s, ref Ref<PES_BUFFER> p, Int64 stc)
         {
             if (!s)

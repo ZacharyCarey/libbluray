@@ -16,46 +16,118 @@ namespace libbluray
         /* LPCM capability */
 
         /* 48/96kHz (mandatory) */
-        BLURAY_ACAP_LPCM_48_96_STEREO_ONLY = 0x0001,  /**< LPCM 48kHz and 96kHz stereo capable */
-        BLURAY_ACAP_LPCM_48_96_SURROUND = 0x0002,  /**< LPCM 48kHz and 96kHz surround capable */
+        /// <summary>
+        /// LPCM 48kHz and 96kHz stereo capable
+        /// </summary>
+        BLURAY_ACAP_LPCM_48_96_STEREO_ONLY = 0x0001,
+
+        /// <summary>
+        /// LPCM 48kHz and 96kHz surround capable
+        /// </summary>
+        BLURAY_ACAP_LPCM_48_96_SURROUND = 0x0002,
 
         /* 192kHz (optional) */
-        BLURAY_ACAP_LPCM_192_NONE = 0x0000,  /**< LPCM 192kHz not supported */
-        BLURAY_ACAP_LPCM_192_STEREO_ONLY = 0x0004,  /**< LPCM 192kHz stereo capable */
-        BLURAY_ACAP_LPCM_192_SURROUND = 0x0008,  /**< LPCM 192kHz surround capable */
+        /// <summary>
+        /// LPCM 192kHz not supported
+        /// </summary>
+        BLURAY_ACAP_LPCM_192_NONE = 0x0000,
+
+        /// <summary>
+        /// LPCM 192kHz stereo capable
+        /// </summary>
+        BLURAY_ACAP_LPCM_192_STEREO_ONLY = 0x0004,
+
+        /// <summary>
+        /// LPCM 192kHz surround capable
+        /// </summary>
+        BLURAY_ACAP_LPCM_192_SURROUND = 0x0008,
 
         /* Dolby Digital Plus capability */
 
         /* independent substream (mandatory) */
-        BLURAY_ACAP_DDPLUS_STEREO_ONLY = 0x0010,  /**< DD Plus independent substream stereo capable */
-        BLURAY_ACAP_DDPLUS_SURROUND = 0x0020,  /**< DD Plus independent substream surround capable */
+        /// <summary>
+        /// DD Plus independent substream stereo capable
+        /// </summary>
+        BLURAY_ACAP_DDPLUS_STEREO_ONLY = 0x0010,
+
+        /// <summary>
+        /// DD Plus independent substream surround capable
+        /// </summary>
+        BLURAY_ACAP_DDPLUS_SURROUND = 0x0020,
 
         /* dependent substream (optional) */
-        BLURAY_ACAP_DDPLUS_DEP_NONE = 0x0000,  /**< DD Plus dependent substream not supported */
-        BLURAY_ACAP_DDPLUS_DEP_STEREO_ONLY = 0x0040,  /**< DD Plus dependent substream stereo capable */
-        BLURAY_ACAP_DDPLUS_DEP_SURROUND = 0x0080,  /**< DD Plus dependent substream surround capable */
+        /// <summary>
+        /// DD Plus dependent substream not supported
+        /// </summary>
+        BLURAY_ACAP_DDPLUS_DEP_NONE = 0x0000,
+
+        /// <summary>
+        /// DD Plus dependent substream stereo capable
+        /// </summary>
+        BLURAY_ACAP_DDPLUS_DEP_STEREO_ONLY = 0x0040,
+
+        /// <summary>
+        /// DD Plus dependent substream surround capable
+        /// </summary>
+        BLURAY_ACAP_DDPLUS_DEP_SURROUND = 0x0080,
 
         /* DTS-HD */
 
         /* Core substream (mandatory) */
-        BLURAY_ACAP_DTSHD_CORE_STEREO_ONLY = 0x0100,  /**< DTS-HD Core stereo capable */
-        BLURAY_ACAP_DTSHD_CORE_SURROUND = 0x0200,  /**< DTS-HD Core surround capable */
+        /// <summary>
+        /// DTS-HD Core stereo capable
+        /// </summary>
+        BLURAY_ACAP_DTSHD_CORE_STEREO_ONLY = 0x0100,
+
+        /// <summary>
+        ///  DTS-HD Core surround capable
+        /// </summary>
+        BLURAY_ACAP_DTSHD_CORE_SURROUND = 0x0200,
 
         /* Extension substream (optional) */
-        BLURAY_ACAP_DTSHD_EXT_NONE = 0x0000,  /**< DTS-HD extension substream not supported */
-        BLURAY_ACAP_DTSHD_EXT_STEREO_ONLY = 0x0400,  /**< DTS-HD extension substream stereo capable */
-        BLURAY_ACAP_DTSHD_EXT_SURROUND = 0x0800,  /**< DTS-HD extension substream surround capable */
+        /// <summary>
+        /// DTS-HD extension substream not supported
+        /// </summary>
+        BLURAY_ACAP_DTSHD_EXT_NONE = 0x0000,
+
+        /// <summary>
+        /// DTS-HD extension substream stereo capable
+        /// </summary>
+        BLURAY_ACAP_DTSHD_EXT_STEREO_ONLY = 0x0400,
+
+        /// <summary>
+        /// DTS-HD extension substream surround capable
+        /// </summary>
+        BLURAY_ACAP_DTSHD_EXT_SURROUND = 0x0800,
 
         /* Dolby lossless (TrueHD) */
 
         /* Dolby Digital (mandatory) */
-        BLURAY_ACAP_DD_STEREO_ONLY = 0x1000,  /**< Dolby Digital audio stereo capable */
-        BLURAY_ACAP_DD_SURROUND = 0x2000,  /**< Dolby Digital audio surround capable */
+        /// <summary>
+        /// Dolby Digital audio stereo capable
+        /// </summary>
+        BLURAY_ACAP_DD_STEREO_ONLY = 0x1000,
+
+        /// <summary>
+        /// Dolby Digital audio surround capable
+        /// </summary>
+        BLURAY_ACAP_DD_SURROUND = 0x2000,
 
         /* MLP (optional) */
-        BLURAY_ACAP_MLP_NONE = 0x0000,  /**< MLP not supported */
-        BLURAY_ACAP_MLP_STEREO_ONLY = 0x4000,  /**< MLP stereo capable */
-        BLURAY_ACAP_MLP_SURROUND = 0x8000,  /**< MLP surround capable */
+        /// <summary>
+        /// MLP not supported
+        /// </summary>
+        BLURAY_ACAP_MLP_NONE = 0x0000,
+
+        /// <summary>
+        /// MLP stereo capable
+        /// </summary>
+        BLURAY_ACAP_MLP_STEREO_ONLY = 0x4000,
+
+        /// <summary>
+        /// MLP surround capable
+        /// </summary>
+        BLURAY_ACAP_MLP_SURROUND = 0x8000,  
     }
 
     /// <summary>
@@ -86,8 +158,15 @@ namespace libbluray
     /// </summary>
     public enum BLURAY_PLAYER_SETTING_OUTPUT_PREFER
     {
-        BLURAY_OUTPUT_PREFER_2D = 0,  /**< 2D output preferred */
-        BLURAY_OUTPUT_PREFER_3D = 1,  /**< 3D output preferred */
+        /// <summary>
+        /// 2D output preferred
+        /// </summary>
+        BLURAY_OUTPUT_PREFER_2D = 0,
+
+        /// <summary>
+        /// 3D output preferred
+        /// </summary>
+        BLURAY_OUTPUT_PREFER_3D = 1, 
     }
 
     /// <summary>
@@ -95,10 +174,25 @@ namespace libbluray
     /// </summary>
     public enum BLURAY_PLAYER_SETTING_DISPLAY_CAP
     {
-        BLURAY_DCAP_1080p_720p_3D = 0x01,  /**< capable of 1920x1080 23.976Hz and 1280x720 59.94Hz 3D */
-        BLURAY_DCAP_720p_50Hz_3D = 0x02,  /**< capable of 1280x720 50Hz 3D */
-        BLURAY_DCAP_NO_3D_CLASSES_REQUIRED = 0x04,  /**< 3D glasses are not required */
-        BLURAY_DCAP_INTERLACED_3D = 0x08,  /**< capable of interlaced 3D */
+        /// <summary>
+        /// capable of 1920x1080 23.976Hz and 1280x720 59.94Hz 3D
+        /// </summary>
+        BLURAY_DCAP_1080p_720p_3D = 0x01,
+
+        /// <summary>
+        /// capable of 1280x720 50Hz 3D
+        /// </summary>
+        BLURAY_DCAP_720p_50Hz_3D = 0x02,
+
+        /// <summary>
+        /// 3D glasses are not required
+        /// </summary>
+        BLURAY_DCAP_NO_3D_CLASSES_REQUIRED = 0x04,
+
+        /// <summary>
+        /// capable of interlaced 3D
+        /// </summary>
+        BLURAY_DCAP_INTERLACED_3D = 0x08,  
     }
 
     /// <summary>

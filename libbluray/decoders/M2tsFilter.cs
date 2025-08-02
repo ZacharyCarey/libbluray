@@ -1,8 +1,10 @@
 ﻿using libbluray.decoders;
 using libbluray.disc;
+using libbluray.file;
 using libbluray.util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -18,12 +20,20 @@ namespace libbluray.decoders
 
         public Int64 in_pts;
         public Int64 out_pts;
-        public UInt32 pat_packets; /* how many packets to search for PAT (seeked pat_packets packets before the actual seek point) */
+
+        /// <summary>
+        /// how many packets to search for PAT (seeked pat_packets packets before the actual seek point)
+        /// </summary>
+        public UInt32 pat_packets; 
         public byte pat_seen;
 
         public M2TS_FILTER() { }
     }
 
+    /// <summary>
+    ///  simple timestamp filter for BDAV m2ts.
+    ///  Used to cut stream at specific timestamps.
+    /// </summary>
     public static class M2tsFilter
     {
         internal static void M2TS_TRACE(string msg, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
@@ -176,6 +186,13 @@ namespace libbluray.decoders
             return -1;
         }
 
+        /// <summary>
+        /// Notify seek. All streams are discarded until next PUSI.
+        /// Wait at most pat_packets for first PAT.
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="pat_packets"></param>
+        /// <param name="in_pts"></param>
         internal static void m2ts_filter_seek(Ref<M2TS_FILTER> p, UInt32 pat_packets, Int64 in_pts)
         {
             M2TS_TRACE("seek notify\n");
@@ -265,6 +282,16 @@ namespace libbluray.decoders
             p[4 + 1] |= 0x1f;
         }
 
+        /// <summary>
+        /// Filter aligned unit (mpeg-ts + pes).
+        /// - drop incomplete PES packets at start of clip
+        /// - drop PES packets where timestamp is outside of clip range
+        /// 
+        /// - drop packets before PAT in seek buffer
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="buf"></param>
+        /// <returns></returns>
         internal static int m2ts_filter(Ref<M2TS_FILTER> p, Ref<byte> buf)
         {
             Ref<byte> end = buf + 6144;

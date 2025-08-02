@@ -105,7 +105,11 @@ namespace libbluray.decoders
     public struct BD_IG_INTERACTIVE_COMPOSITION
     {
         public byte stream_model;
-        public byte ui_model;      /* 0 - always on, 1 - pop-up */
+
+        /// <summary>
+        /// 0 - always on, 1 - pop-up
+        /// </summary>
+        public byte ui_model;      
 
         public UInt64 composition_timeout_pts;
         public UInt64 selection_timeout_pts;

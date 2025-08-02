@@ -10,8 +10,16 @@ namespace libbluray.decoders
     public struct PES_BUFFER
     {
         public Ref<byte> buf = new();
-        public UInt32 len;  // payload length
-        public uint size; // allocated size
+
+        /// <summary>
+        /// payload length
+        /// </summary>
+        public UInt32 len;
+
+        /// <summary>
+        /// allocated size
+        /// </summary>
+        public uint size; 
 
         public Int64 pts;
         public Int64 dts;
@@ -30,6 +38,10 @@ namespace libbluray.decoders
             return p;
         }
 
+        /// <summary>
+        /// free list of buffers
+        /// </summary>
+        /// <param name="p"></param>
         internal static void pes_buffer_free(ref Ref<PES_BUFFER> p)
         {
             if (p)
@@ -43,6 +55,11 @@ namespace libbluray.decoders
             }
         }
 
+        /// <summary>
+        /// append buf to list
+        /// </summary>
+        /// <param name="head"></param>
+        /// <param name="buf"></param>
         internal static void pes_buffer_append(ref Ref<PES_BUFFER> head, Ref<PES_BUFFER> buf)
         {
             if (!head)
@@ -73,6 +90,11 @@ namespace libbluray.decoders
             return Ref<PES_BUFFER>.Null;
         }
 
+        /// <summary>
+        /// remove buf from list and free it
+        /// </summary>
+        /// <param name="head"></param>
+        /// <param name="p"></param>
         internal static void pes_buffer_remove(ref Ref<PES_BUFFER> head, Ref<PES_BUFFER> p)
         {
             if (head && p)
@@ -96,6 +118,10 @@ namespace libbluray.decoders
             }
         }
 
+        /// <summary>
+        /// free first buffer and advance head to next buffer
+        /// </summary>
+        /// <param name="head"></param>
         internal static void pes_buffer_next(ref Ref<PES_BUFFER> head)
         {
             if (head)

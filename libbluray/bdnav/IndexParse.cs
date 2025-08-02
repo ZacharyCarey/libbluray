@@ -54,37 +54,32 @@ namespace libbluray.bdnav
 
     public enum indx_access_type
     {
-        indx_access_permitted = 0,  /* jump into this title is permitted.  title number may be shown on UI.  */
-        indx_access_prohibited = 1,  /* jump into this title is prohibited. title number may be shown on UI. */
-        indx_access_hidden = 3,  /* jump into this title is prohibited. title number shall not be shown on UI. */
+        /// <summary>
+        /// jump into this title is permitted.  title number may be shown on UI.
+        /// </summary>
+        indx_access_permitted = 0,
+
+        /// <summary>
+        /// jump into this title is prohibited. title number may be shown on UI.
+        /// </summary>
+        indx_access_prohibited = 1,
+
+        /// <summary>
+        /// jump into this title is prohibited. title number shall not be shown on UI.
+        /// </summary>
+        indx_access_hidden = 3,  
     }
 
     public struct INDX_APP_INFO
     {
         /// <summary>
-        /// 1 bit
         /// 0 = 2D, 1 = 3D
         /// </summary>
         public uint initial_output_mode_preference;
 
-        /// <summary>
-        /// 1 bit
-        /// </summary>
         public uint content_exist_flag;
-
-        /// <summary>
-        /// 4 bits
-        /// </summary>
         public uint initial_dynamic_range_type;
-
-        /// <summary>
-        /// 4 bits
-        /// </summary>
         public uint video_format;
-
-        /// <summary>
-        /// 4 bits
-        /// </summary>
         public uint frame_rate;
 
         public string user_data = "";
@@ -154,8 +149,15 @@ namespace libbluray.bdnav
 
     internal static class IndexParse
     {
-        public const int INDX_ACCESS_PROHIBITED_MASK = 0x01; /* if set, jump to this title is not allowed */
-        public const int INDX_ACCESS_HIDDEN_MASK = 0x02; /* if set, title number shall not be displayed on UI */
+        /// <summary>
+        /// if set, jump to this title is not allowed
+        /// </summary>
+        public const int INDX_ACCESS_PROHIBITED_MASK = 0x01;
+
+        /// <summary>
+        /// if set, title number shall not be displayed on UI
+        /// </summary>
+        public const int INDX_ACCESS_HIDDEN_MASK = 0x02; 
 
         private const UInt32 INDX_SIG1 = ('I' << 24) | ('N' << 16) | ('D' << 8) | 'X';
 

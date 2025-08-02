@@ -17,7 +17,11 @@ namespace libbluray.bdnav
         public byte bits_per_sample;
 
         public UInt32 num_frames;
-        public Ref<UInt16> samples = new(); // LPCM, interleaved
+
+        /// <summary>
+        /// LPCM, interleaved
+        /// </summary>
+        public Ref<UInt16> samples = new(); 
 
         public SOUND_OBJECT() { }
     }

@@ -76,7 +76,10 @@ namespace libbluray.bdnav
 
         public NAV_TITLE? title = null;
 
-        public UInt32 stc_spn;  /* start packet of clip STC sequence */
+        /// <summary>
+        /// start packet of clip STC sequence
+        /// </summary>
+        public UInt32 stc_spn;  
 
         public byte still_mode;
         public ushort still_time;
@@ -186,10 +189,13 @@ _pl_duration(Ref<MPLS_PL> pl)
             return i_num_audio * 2 + i_num_pg;
         }
 
-        /*
-         * Check if two playlists are the same
-         */
 
+        /// <summary>
+        /// Check if two playlists are the same
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         static bool _stream_cmp(Ref<MPLS_STREAM> a, Ref<MPLS_STREAM> b)
         {
             if (a.Value.stream_type == b.Value.stream_type &&
@@ -310,7 +316,13 @@ _pl_duration(Ref<MPLS_PL> pl)
          * Playlist filtering
          */
 
-        /* return 0 if duplicate playlist */
+        /// <summary>
+        /// return false if duplicate playlist
+        /// </summary>
+        /// <param name="pl_list"></param>
+        /// <param name="count"></param>
+        /// <param name="pl"></param>
+        /// <returns></returns>
         static bool _filter_dup(Ref<Ref<MPLS_PL>> pl_list, uint count, Ref<MPLS_PL> pl)
         {
             uint ii;
@@ -1002,8 +1014,15 @@ _pl_duration(Ref<MPLS_PL> pl)
             return title;
         }
 
-        // Search for random access point closest to the requested packet
-        // Packets are 192 byte TS packets
+        /// <summary>
+        /// Search for random access point closest to the requested packet
+        /// Packets are 192 byte TS packets
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="chapter"></param>
+        /// <param name="clip_pkt"></param>
+        /// <param name="out_pkt"></param>
+        /// <returns></returns>
         internal static Ref<NAV_CLIP> nav_chapter_search(NAV_TITLE? title, uint chapter,
                                            Ref<UInt32> clip_pkt, Ref<UInt32> out_pkt)
         {
@@ -1050,8 +1069,15 @@ _pl_duration(Ref<MPLS_PL> pl)
             return 0;
         }
 
-        // Search for random access point closest to the requested packet
-        // Packets are 192 byte TS packets
+        /// <summary>
+        /// Search for random access point closest to the requested packet
+        /// Packets are 192 byte TS packets
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="mark"></param>
+        /// <param name="clip_pkt"></param>
+        /// <param name="out_pkt"></param>
+        /// <returns></returns>
         internal static Ref<NAV_CLIP> nav_mark_search(NAV_TITLE? title, uint mark,
                                         Ref<UInt32> clip_pkt, Ref<UInt32> out_pkt)
         {
@@ -1094,10 +1120,18 @@ _pl_duration(Ref<MPLS_PL> pl)
             }
         }
 
-        // Search for random access point closest to the requested packet
-        // Packets are 192 byte TS packets
-        // pkt is relative to the beginning of the title
-        // out_pkt and out_time is relative to the the clip which the packet falls in
+        /// <summary>
+        /// Search for random access point closest to the requested packet
+        /// Packets are 192 byte TS packets
+        /// pkt is relative to the beginning of the title
+        /// out_pkt and out_time is relative to the the clip which the packet falls in
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="pkt"></param>
+        /// <param name="clip_pkt"></param>
+        /// <param name="out_pkt"></param>
+        /// <param name="out_time"></param>
+        /// <returns></returns>
         internal static Ref<NAV_CLIP> nav_packet_search(NAV_TITLE? title, UInt32 pkt,
                                           Ref<UInt32> clip_pkt, Ref<UInt32> out_pkt, Ref<UInt32> out_time)
         {
@@ -1134,27 +1168,33 @@ _pl_duration(Ref<MPLS_PL> pl)
             return clip;
         }
 
-        // Search for the nearest random access point after the given pkt
-        // which is an angle change point.
-        // Packets are 192 byte TS packets
-        // pkt is relative to the clip
-        // time is the clip relative time where the angle change point occurs
-        // returns a packet number
-        //
-        // To perform a seamless angle change, perform the following sequence:
-        // 1. Find the next angle change point with nav_angle_change_search.
-        // 2. Read and process packets until the angle change point is reached.
-        //    This may mean progressing to the next play item if the angle change
-        //    point is at the end of the current play item.
-        // 3. Change angles with nav_set_angle. Changing angles means changing
-        //    m2ts files. The new clip information is returned from nav_set_angle.
-        // 4. Close the current m2ts file and open the new one returned 
-        //    from nav_set_angle.
-        // 4. If the angle change point was within the time period of the current
-        //    play item (i.e. the angle change point is not at the end of the clip),
-        //    Search to the timestamp obtained from nav_angle_change_search using
-        //    nav_clip_time_search. Otherwise start at the start_pkt defined 
-        //    by the clip.
+        /// <summary>
+        /// Search for the nearest random access point after the given pkt
+        /// which is an angle change point.
+        /// Packets are 192 byte TS packets
+        /// pkt is relative to the clip
+        /// time is the clip relative time where the angle change point occurs
+        /// returns a packet number
+        ///
+        /// To perform a seamless angle change, perform the following sequence:
+        /// 1. Find the next angle change point with nav_angle_change_search.
+        /// 2. Read and process packets until the angle change point is reached.
+        ///    This may mean progressing to the next play item if the angle change
+        ///    point is at the end of the current play item.
+        /// 3. Change angles with nav_set_angle. Changing angles means changing
+        ///    m2ts files. The new clip information is returned from nav_set_angle.
+        /// 4. Close the current m2ts file and open the new one returned 
+        ///    from nav_set_angle.
+        /// 4. If the angle change point was within the time period of the current
+        ///    play item (i.e. the angle change point is not at the end of the clip),
+        ///    Search to the timestamp obtained from nav_angle_change_search using
+        ///    nav_clip_time_search. Otherwise start at the start_pkt defined 
+        ///    by the clip.
+        /// </summary>
+        /// <param name="clip"></param>
+        /// <param name="pkt"></param>
+        /// <param name="time"></param>
+        /// <returns></returns>
         internal static UInt32 nav_clip_angle_change_search(Ref<NAV_CLIP> clip, UInt32 pkt, Ref<UInt32> time)
         {
             if (clip.Value.cl == null)
@@ -1164,8 +1204,15 @@ _pl_duration(Ref<MPLS_PL> pl)
             return ClpiParse.clpi_access_point(clip.Value.cl, pkt, 1, 1, time);
         }
 
-        // Search for random access point closest to the requested time
-        // Time is in 45khz ticks
+        /// <summary>
+        /// Search for random access point closest to the requested time
+        /// Time is in 45khz ticks
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="tick"></param>
+        /// <param name="clip_pkt"></param>
+        /// <param name="out_pkt"></param>
+        /// <returns></returns>
         internal static Ref<NAV_CLIP> nav_time_search(NAV_TITLE? title, UInt32 tick,
                                         Ref<UInt32> clip_pkt, Ref<UInt32> out_pkt)
         {
@@ -1208,8 +1255,14 @@ _pl_duration(Ref<MPLS_PL> pl)
             return clip;
         }
 
-        // Search for random access point closest to the requested time
-        // Time is in 45khz ticks, between clip in_time and out_time.
+        /// <summary>
+        /// Search for random access point closest to the requested time
+        /// Time is in 45khz ticks, between clip in_time and out_time.
+        /// </summary>
+        /// <param name="clip"></param>
+        /// <param name="tick"></param>
+        /// <param name="clip_pkt"></param>
+        /// <param name="out_pkt"></param>
         internal static void nav_clip_time_search(Ref<NAV_CLIP> clip, UInt32 tick, Ref<UInt32> clip_pkt, Ref<UInt32> out_pkt)
         {
             if (tick >= clip.Value.out_time)
@@ -1239,14 +1292,19 @@ _pl_duration(Ref<MPLS_PL> pl)
             }
         }
 
-        /*
-         * Input Parameters:
-         * title     - title struct obtained from nav_title_open
-         *
-         * Return value:
-         * Pointer to NAV_CLIP struct
-         * NULL - End of clip list
-         */
+        
+        /// <summary>
+        /// Input Parameters:
+        /// title     - title struct obtained from nav_title_open
+        ///        
+        /// Return value:
+        /// Pointer to NAV_CLIP struct
+        /// NULL - End of clip list
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="clip"></param>
+        /// <returns></returns>
+         
         internal static Ref<NAV_CLIP> nav_next_clip(NAV_TITLE? title, Ref<NAV_CLIP> clip)
         {
             if (clip == null)

@@ -27,21 +27,59 @@ namespace libbluray.bdnav
         public const uint BD_STREAM_TYPE_SUB_IG = 0x91;
         public const uint BD_STREAM_TYPE_SUB_TEXT = 0x92;
 
-        public const uint BD_VIDEO_FORMAT_480I = 1;   // ITU-R BT.601-5
-        public const uint BD_VIDEO_FORMAT_576I = 2;   // ITU-R BT.601-4
-        public const uint BD_VIDEO_FORMAT_480P = 3;   // SMPTE 293M
-        public const uint BD_VIDEO_FORMAT_1080I = 4;   // SMPTE 274M
-        public const uint BD_VIDEO_FORMAT_720P = 5;   // SMPTE 296M
-        public const uint BD_VIDEO_FORMAT_1080P = 6;   // SMPTE 274M
-        public const uint BD_VIDEO_FORMAT_576P = 7;   // ITU-R BT.1358
+        /// <summary>
+        /// ITU-R BT.601-5
+        /// </summary>
+        public const uint BD_VIDEO_FORMAT_480I = 1;
+
+        /// <summary>
+        /// ITU-R BT.601-4
+        /// </summary>
+        public const uint BD_VIDEO_FORMAT_576I = 2;
+
+        /// <summary>
+        /// SMPTE 293M
+        /// </summary>
+        public const uint BD_VIDEO_FORMAT_480P = 3;
+
+        /// <summary>
+        /// SMPTE 274M
+        /// </summary>
+        public const uint BD_VIDEO_FORMAT_1080I = 4;
+
+        /// <summary>
+        /// SMPTE 296M
+        /// </summary>
+        public const uint BD_VIDEO_FORMAT_720P = 5;
+
+        /// <summary>
+        /// SMPTE 274M
+        /// </summary>
+        public const uint BD_VIDEO_FORMAT_1080P = 6;
+
+        /// <summary>
+        /// ITU-R BT.1358
+        /// </summary>
+        public const uint BD_VIDEO_FORMAT_576P = 7;  
         public const uint BD_VIDEO_FORMAT_2160P = 8;
 
-        public const uint BD_VIDEO_RATE_24000_1001 = 1;   // 23.976
+        /// <summary>
+        /// 23.976
+        /// </summary>
+        public const uint BD_VIDEO_RATE_24000_1001 = 1;
         public const uint BD_VIDEO_RATE_24 = 2;
         public const uint BD_VIDEO_RATE_25 = 3;
-        public const uint BD_VIDEO_RATE_30000_1001 = 4;   // 29.97
+
+        /// <summary>
+        /// 29.97
+        /// </summary>
+        public const uint BD_VIDEO_RATE_30000_1001 = 4;  
         public const uint BD_VIDEO_RATE_50 = 6;
-        public const uint BD_VIDEO_RATE_60000_1001 = 7;   // 59.94
+
+        /// <summary>
+        /// 59.94
+        /// </summary>
+        public const uint BD_VIDEO_RATE_60000_1001 = 7; 
 
         public const uint BD_ASPECT_RATIO_4_3 = 2;
         public const uint BD_ASPECT_RATIO_16_9 = 3;
@@ -52,16 +90,29 @@ namespace libbluray.bdnav
         public const uint BD_AUDIO_FORMAT_MONO = 1;
         public const uint BD_AUDIO_FORMAT_STEREO = 3;
         public const uint BD_AUDIO_FORMAT_MULTI_CHAN = 6;
-        public const uint BD_AUDIO_FORMAT_COMBO = 12;  // Stereo ac3/dts, 
-                                                       // multi mlp/dts-hd
+
+        /// <summary>
+        /// Stereo ac3/dts,  
+        /// multi mlp/dts-hd
+        /// </summary>
+        public const uint BD_AUDIO_FORMAT_COMBO = 12;  
 
         public const uint BD_AUDIO_RATE_48 = 1;
         public const uint BD_AUDIO_RATE_96 = 4;
         public const uint BD_AUDIO_RATE_192 = 5;
-        public const uint BD_AUDIO_RATE_192_COMBO = 12;  // 48 or 96 ac3/dts
-                                                         // 192 mpl/dts-hd
-        public const uint BD_AUDIO_RATE_96_COMBO = 14;  // 48 ac3/dts
-                                                        // 96 mpl/dts-hd
+
+        /// <summary>
+        /// 48 or 96 ac3/dts
+        /// 192 mpl/dts-hd
+        /// </summary>
+        public const uint BD_AUDIO_RATE_192_COMBO = 12;
+
+        /// <summary>
+        /// 48 ac3/dts
+        /// 96 mpl/dts-hd
+        /// </summary>
+        public const uint BD_AUDIO_RATE_96_COMBO = 14;  
+                                                        
 
         public const uint BD_TEXT_CHAR_CODE_UTF8 = 0x01;
         public const uint BD_TEXT_CHAR_CODE_UTF16BE = 0x02;
