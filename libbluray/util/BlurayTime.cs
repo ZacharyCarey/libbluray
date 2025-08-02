@@ -56,7 +56,7 @@ namespace libbluray.util
             if (retval == false)
                 return 0;
 
-            Ref<BLURAY_TITLE_INFO> bluray_title_info = Ref<BLURAY_TITLE_INFO>.Null;
+            BLURAY_TITLE_INFO? bluray_title_info = null;
             bluray_title_info = BLURAY.bd_get_playlist_info(bd, title_ix, angle_ix);
 
             if (bluray_title_info == null)
@@ -65,11 +65,11 @@ namespace libbluray.util
             UInt32 chapter_number;
             chapter_number = chapter_ix + 1;
 
-            if (chapter_number > bluray_title_info.Value.chapter_count)
+            if (chapter_number > bluray_title_info.chapter_count)
                 return 0;
 
             Ref<BLURAY_TITLE_CHAPTER> bd_chapter = Ref<BLURAY_TITLE_CHAPTER>.Null;
-            bd_chapter = bluray_title_info.Value.chapters.AtIndex(chapter_ix);
+            bd_chapter = bluray_title_info.chapters.AtIndex(chapter_ix);
 
             return bd_chapter.Value.duration;
         }

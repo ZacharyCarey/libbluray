@@ -11,10 +11,15 @@ using System.Threading.Tasks;
 
 namespace libbluray.bdnav
 {
-    internal struct BDID_DATA
+    internal class BDID_DATA
     {
-        public string org_id;
-        public string disc_id;
+        public string OrganizationID => org_id;
+        internal string org_id = null;
+        
+        public string DiscID => disc_id;
+        internal string disc_id = null;
+
+        internal BDID_DATA() { }
     }
 
     internal static class BdidParse
@@ -34,10 +39,10 @@ namespace libbluray.bdnav
             return true;
         }
 
-        static Ref<BDID_DATA> _bdid_parse(BD_FILE_H fp)
+        static BDID_DATA? _bdid_parse(BD_FILE_H fp)
         {
             Variable<BITSTREAM> bs = new();
-            Ref<BDID_DATA> bdid = Ref<BDID_DATA>.Null;
+            BDID_DATA? bdid = null;
 
             Variable<UInt32> data_start = new(), extension_data_start = new();
             byte[] tmp = new byte[16];
@@ -45,27 +50,27 @@ namespace libbluray.bdnav
             if (bs.Value.bs_init(fp) < 0)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_NAV, $"id.bdmv: read error");
-                return Ref<BDID_DATA>.Null;
+                return null;
             }
 
             if (!_parse_header(bs.Ref, data_start.Ref, extension_data_start.Ref))
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_NAV | DebugMaskEnum.DBG_CRIT, "id.bdmv: invalid header");
-                return Ref<BDID_DATA>.Null;
+                return null;
             }
 
             if (bs.Value.bs_seek_byte(40) < 0)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_NAV, "id.bdmv: read error");
-                return Ref<BDID_DATA>.Null;
+                return null;
             }
 
-            bdid = Ref<BDID_DATA>.Allocate();
+            bdid = new BDID_DATA();
             bs.Value.bs_read_bytes(tmp, 4);
-            Util.str_print_hex(out bdid.Value.org_id, tmp, 4);
+            Util.str_print_hex(out bdid.org_id, tmp, 4);
 
             bs.Value.bs_read_bytes(tmp, 16);
-            Util.str_print_hex(out bdid.Value.disc_id, tmp, 16);
+            Util.str_print_hex(out bdid.disc_id, tmp, 16);
 
             if (extension_data_start.Value != 0)
             {
@@ -75,14 +80,14 @@ namespace libbluray.bdnav
             return bdid;
         }
 
-        static Ref<BDID_DATA> _bdid_get(BD_DISC disc, string path)
+        static BDID_DATA? _bdid_get(BD_DISC disc, string path)
         {
             BD_FILE_H? fp;
-            Ref<BDID_DATA> bdid;
+            BDID_DATA? bdid;
 
             fp = disc.disc_open_path(path);
             if (fp == null) {
-                return Ref<BDID_DATA>.Null;
+                return null;
             }
 
             bdid = _bdid_parse(fp);
@@ -90,14 +95,14 @@ namespace libbluray.bdnav
             return bdid;
         }
 
-        public static Ref<BDID_DATA> bdid_get(BD_DISC disc)
+        public static BDID_DATA? bdid_get(BD_DISC disc)
         {
-            Ref<BDID_DATA> bdid;
+            BDID_DATA? bdid;
 
             bdid = _bdid_get(disc, Path.Combine("CERTIFICATE", "id.bdmv"));
 
             /* if failed, try backup file */
-            if (!bdid)
+            if (bdid == null)
             {
                 bdid = _bdid_get(disc, Path.Combine("CERTIFICATE", "BACKUP", "id.bdmv"));
             }
@@ -105,11 +110,11 @@ namespace libbluray.bdnav
             return bdid;
         }
 
-        public static void bdid_free(ref Ref<BDID_DATA> p)
+        public static void bdid_free(ref BDID_DATA? p)
         {
-            if (p)
+            if (p != null)
             {
-                p.Free();
+                p = null;
             }
         }
     }

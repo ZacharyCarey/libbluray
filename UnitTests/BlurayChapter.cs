@@ -22,7 +22,7 @@ namespace UnitTests.BlurayInfo
 			if (retval == false)
 				return 0;
 
-			Ref<BLURAY_TITLE_INFO> bluray_title_info = Ref<BLURAY_TITLE_INFO>.Null;
+			BLURAY_TITLE_INFO? bluray_title_info = null;
 			bluray_title_info = BLURAY.bd_get_playlist_info(bd, title_ix, 0);
 
 			if (bluray_title_info == null)
@@ -31,7 +31,7 @@ namespace UnitTests.BlurayInfo
 			UInt32 chapter_number;
 			chapter_number = chapter_ix + 1;
 
-			if (chapter_number > bluray_title_info.Value.chapter_count)
+			if (chapter_number > bluray_title_info.ChapterCount)
 				return 0;
 
 			// libbluray.h has two functions to jump to a chapter and return a seek position.
@@ -63,7 +63,7 @@ namespace UnitTests.BlurayInfo
 			// Selecting other than the first angle is not supported right now
 			UInt32 angle = 0;
 
-			Ref<BLURAY_TITLE_INFO> bluray_title_info = Ref<BLURAY_TITLE_INFO>.Null;
+			BLURAY_TITLE_INFO? bluray_title_info = null;
 			bluray_title_info = BLURAY.bd_get_playlist_info(bd, title_ix, angle);
 
 			if (bluray_title_info == null)
@@ -72,13 +72,13 @@ namespace UnitTests.BlurayInfo
 			UInt32 chapter_number;
 			chapter_number = chapter_ix + 1;
 
-			if (chapter_number > bluray_title_info.Value.chapter_count)
+			if (chapter_number > bluray_title_info.ChapterCount)
 				return 0;
 
 			UInt64 last_position = 0;
 
 			// If only one chapter, or the final one, return the title size as the last position
-			if (bluray_title_info.Value.chapter_count == 1 || chapter_number == bluray_title_info.Value.chapter_count)
+			if (bluray_title_info.ChapterCount == 1 || chapter_number == bluray_title_info.ChapterCount)
 			{
 				// Casting this here makes me nervous, even though the highest a position
 				last_position = BLURAY.bd_get_title_size(bd);
@@ -86,7 +86,7 @@ namespace UnitTests.BlurayInfo
 
 			// If this not the final chapter, simply calculate the position against the
 			// next chapter's position.
-			if (chapter_number != bluray_title_info.Value.chapter_count)
+			if (chapter_number != bluray_title_info.ChapterCount)
 			{
 				last_position = bluray_chapter_first_position(bd, title_ix, chapter_ix + 1);
 			}

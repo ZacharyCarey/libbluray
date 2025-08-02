@@ -63,196 +63,232 @@ namespace libbluray
     /// <summary>
     /// BluRay disc information
     /// </summary>
-    public struct BLURAY_DISC_INFO
+    public class BLURAY_DISC_INFO
     {
         /// <summary>
         /// 1 if BluRay disc was detected
         /// </summary>
-        public byte bluray_detected;
+        public byte BlurayDetected => bluray_detected;
+        internal byte bluray_detected;
 
         /* Disc ID */
         /// <summary>
         /// optional disc name in preferred language
         /// </summary>
-        public string disc_name;
+        public string? DiscName => disc_name;
+        internal string? disc_name = null;
 
         /// <summary>
         /// optional UDF volume identifier
         /// </summary>
-        public string udf_volume_id;
+        public string? UdfVolumeID => udf_volume_id;
+        internal string? udf_volume_id = null;
 
         /// <summary>
         /// Disc ID
         /// </summary>
-        public byte[] disc_id = new byte[20];
+        public string? DiscID => disc_id;
+        internal string? disc_id = null;
 
         /** HDMV / BD-J titles */
         /// <summary>
         /// 1 if this disc can't be played using on-disc menus
         /// </summary>
-        public byte no_menu_support;            
+        public byte NoMenuSupport => no_menu_support;
+        internal byte no_menu_support;
 
         /// <summary>
         /// 1 if First Play title is present on the disc and can be played
         /// </summary>
-        public byte first_play_supported;
+        public byte FirsPlaySupported => first_play_supported;
+        internal byte first_play_supported;
 
         /// <summary>
         /// 1 if Top Menu title is present on the disc and can be played 
         /// </summary>
-        public byte top_menu_supported;
+        public byte TopMenuSupported => top_menu_supported;
+        internal byte top_menu_supported;
 
         /// <summary>
         /// number of titles on the disc, not including "First Play" and "Top Menu"
         /// </summary>
-        public UInt32 num_titles;
+        public uint NumberOfTitles => num_titles;
+        internal UInt32 num_titles;
 
         /// <summary>
         /// index is title number 1 ... N
         /// </summary>
-        public Ref<BLURAY_TITLE> titles;
+        public Ref<BLURAY_TITLE> Titles => titles;
+        internal Ref<BLURAY_TITLE> titles;
 
         /// <summary>
         /// titles[N+1].   null if not present on the disc.
         /// </summary>
-        public Ref<BLURAY_TITLE> first_play;
+        public Ref<BLURAY_TITLE> FirstPlay => first_play;
+        internal Ref<BLURAY_TITLE> first_play;
 
         /// <summary>
         /// titles[0]. null if not present on the disc.
         /// </summary>
-        public Ref<BLURAY_TITLE> top_menu;
+        public Ref<BLURAY_TITLE> TopMenu => top_menu;
+        internal Ref<BLURAY_TITLE> top_menu;
 
         /// <summary>
         /// number of HDMV titles
         /// </summary>
-        public UInt32 num_hdmv_titles;
+        public uint NumberHdmvTitles => num_hdmv_titles;
+        internal UInt32 num_hdmv_titles;
 
         /// <summary>
         ///  number of BD-J titles
         /// </summary>
-        public UInt32 num_bdj_titles;
+        public uint NumberBdjTitles => num_bdj_titles;
+        internal UInt32 num_bdj_titles;
 
         /// <summary>
         /// number of unsupported titles
         /// </summary>
-        public UInt32 num_unsupported_titles;
+        public uint NumberUnsupportedTitles => num_unsupported_titles;
+        internal UInt32 num_unsupported_titles;
 
         /** BD-J info (valid only if disc uses BD-J) */
         /// <summary>
         /// 1 if disc uses BD-J
         /// </summary>
-        public byte bdj_detected;
+        public byte BdjDetected => bdj_detected;
+        internal byte bdj_detected;
 
         /// <summary>
         /// (deprecated)
         /// </summary>
-        public byte bdj_supported;
+        public byte BdjSupported => bdj_supported;
+        internal byte bdj_supported;
 
         /// <summary>
         /// 1 if usable Java VM was found
         /// </summary>
-        public byte libjvm_detected;
+        public byte LibJvmDetected => libjvm_detected;
+        internal byte libjvm_detected;
 
         /// <summary>
         /// 1 if usable Java VM + libbluray.jar was found 
         /// </summary>
-        public byte bdj_handled;
+        public byte BdjHandles => bdj_handled;
+        internal byte bdj_handled;
 
         /// <summary>
         /// (BD-J) disc organization ID
         /// </summary>
-        public string bdj_org_id = "";
+        public string BdjOrganizationID => bdj_org_id;
+        internal string bdj_org_id = "";
 
         /// <summary>
         /// (BD-J) disc ID
         /// </summary>
-        public string bdj_disc_id = "";
+        public string BdjDiscID => bdj_disc_id;
+        internal string bdj_disc_id = "";
 
         /* disc application info */
         /// <summary>
         /// bd_video_format_e
         /// </summary>
-        public byte video_format;
+        public byte VideoFormat => video_format;
+        internal byte video_format;
 
         /// <summary>
         /// bd_video_rate_e
         /// </summary>
-        public byte frame_rate;
+        public byte FrameRate => frame_rate;
+        internal byte frame_rate;
 
         /// <summary>
         /// 1 if 3D content exists on the disc
         /// </summary>
-        public byte content_exist_3D;
+        public byte ContentExist3D => content_exist_3D;
+        internal byte content_exist_3D;
 
         /// <summary>
         /// 0 - 2D, 1 - 3D
         /// </summary>
-        public byte initial_output_mode_preference;
+        public byte InitialOutputModePreference => initial_output_mode_preference;
+        internal byte initial_output_mode_preference;
 
         /// <summary>
         /// Content provider data
         /// </summary>
-        public string provider_data = "";
+        public string ProviderData => provider_data;
+        internal string provider_data = "";
 
         /* AACS info  (valid only if disc uses AACS) */
         /// <summary>
         /// 1 if disc is using AACS encoding
         /// </summary>
-        public byte aacs_detected;
+        public byte AacsDetected => aacs_detected;
+        internal byte aacs_detected;
 
         /// <summary>
         /// 1 if usable AACS decoding library was found
         /// </summary>
-        public byte libaacs_detected;
+        public byte LibAacsDetected => libaacs_detected;
+        internal byte libaacs_detected;
 
         /// <summary>
         /// 1 if disc is using supported AACS encoding
         /// </summary>
-        public byte aacs_handled;
+        public byte AacsHandles => aacs_handled;
+        internal byte aacs_handled;
 
         /// <summary>
         /// AACS error code (BD_AACS_*) 
         /// </summary>
-        public int aacs_error_code;
+        public int AacsErrorCode => aacs_error_code;
+        internal int aacs_error_code;
 
         /// <summary>
         /// AACS MKB version
         /// </summary>
-        public int aacs_mkbv;
+        public int AacsMkbVersion => aacs_mkbv;
+        internal int aacs_mkbv;
 
         /* BD+ info  (valid only if disc uses BD+) */
         /// <summary>
         /// 1 if disc is using BD+ encoding
         /// </summary>
-        public byte bdplus_detected;
+        public byte BdPlusDetected => bdplus_detected;
+        internal byte bdplus_detected;
 
         /// <summary>
         /// 1 if usable BD+ decoding library was found 
         /// </summary>
-        public byte libbdplus_detected;
+        public byte LibBdPlusDetected => libbdplus_detected;
+        internal byte libbdplus_detected;
 
         /// <summary>
         /// 1 if disc is using supporred BD+ encoding
         /// </summary>
-        public byte bdplus_handled;
+        public byte BdPlusHandles => bdplus_handled;
+        internal byte bdplus_handled;
 
         /// <summary>
         /// BD+ content code generation
         /// </summary>
-        public byte bdplus_gen;
+        public byte BdPlusGeneration => bdplus_gen;
+        internal byte bdplus_gen;
 
         /// <summary>
         /// BD+ content code relese date ((year<<16)|(month<<8)|day)
         /// </summary>
-        public UInt32 bdplus_date;
+        public uint BdPlusReleaseDate => bdplus_date;
+        internal UInt32 bdplus_date;
 
         /* disc application info (libbluray > 1.2.0) */
         /// <summary>
         /// bd_dynamic_range_type_e
         /// </summary>
-        public byte initial_dynamic_range_type; 
+        public byte InitialDynamicRangeType => initial_dynamic_range_type;
+        internal byte initial_dynamic_range_type;
 
-        public BLURAY_DISC_INFO() { }
+        internal BLURAY_DISC_INFO() { }
     }
 
     /// <summary>
@@ -690,62 +726,73 @@ namespace libbluray
     /// <summary>
     /// Playlist information
     /// </summary>
-    public struct BLURAY_TITLE_INFO
+    public class BLURAY_TITLE_INFO
     {
         /// <summary>
         /// Playlist index number (filled only with bd_get_title_info())
         /// </summary>
-        public UInt32 idx;
+        public uint Index => idx;
+        internal UInt32 idx;
 
         /// <summary>
         /// Playlist ID (mpls file name)
         /// </summary>
-        public UInt32 playlist;
+        public uint PlaylistID => playlist;
+        internal UInt32 playlist;
 
         /// <summary>
         /// Playlist duration, 90 kHz
         /// </summary>
-        public UInt64 duration;
+        public ulong Duration => duration;
+        internal UInt64 duration;
 
         /// <summary>
         /// Number of clips
         /// </summary>
-        public UInt32 clip_count;
+        public uint ClipCount => clip_count;
+        internal UInt32 clip_count;
 
         /// <summary>
         ///  Number of angles
         /// </summary>
-        public byte angle_count;
+        public byte AngleCount => angle_count;
+        internal byte angle_count;
 
         /// <summary>
         /// Number of chapters
         /// </summary>
-        public UInt32 chapter_count;
+        public uint ChapterCount => chapter_count;
+        internal UInt32 chapter_count;
 
         /// <summary>
         /// Number of playmarks
         /// </summary>
-        public UInt32 mark_count;
+        public uint MarkCount => mark_count;
+        internal UInt32 mark_count;
 
         /// <summary>
         /// Clip information
         /// </summary>
-        public Ref<BLURAY_CLIP_INFO> clips;
+        public Ref<BLURAY_CLIP_INFO> Clips => clips;
+        internal Ref<BLURAY_CLIP_INFO> clips;
 
         /// <summary>
         /// Chapter information
         /// </summary>
-        public Ref<BLURAY_TITLE_CHAPTER> chapters;
+        public Ref<BLURAY_TITLE_CHAPTER> Chapters => chapters;
+        internal Ref<BLURAY_TITLE_CHAPTER> chapters;
 
         /// <summary>
         /// Playmark information 
         /// </summary>
-        public Ref<BLURAY_TITLE_MARK> marks;
+        public Ref<BLURAY_TITLE_MARK> Marks => marks;
+        internal Ref<BLURAY_TITLE_MARK> marks;
 
         /// <summary>
         /// MVC base view (0 - left, 1 - right)
         /// </summary>
-        public byte mvc_base_view_r_flag;  
+        public byte MvcBaseViewRFlag => mvc_base_view_r_flag;
+        internal byte mvc_base_view_r_flag;  
     }
 
     /// <summary>
@@ -1350,7 +1397,7 @@ namespace libbluray
 
         /* current disc */
         BD_DISC? disc;
-        Variable<BLURAY_DISC_INFO> disc_info = new();
+        BLURAY_DISC_INFO disc_info = new();
 
         /// <summary>
         /// titles from disc index
@@ -1718,10 +1765,10 @@ namespace libbluray
         {
             if (bd.Value.titles && bd.Value.title_type != BD_TITLE_TYPE.title_undef) {
                 uint title = Register.bd_psr_read(bd.Value.regs, bd_psr_idx.PSR_TITLE_NUMBER);
-                if (title == BLURAY_TITLE_FIRST_PLAY && bd.Value.disc_info.Value.first_play.Value.interactive != 0) {
+                if (title == BLURAY_TITLE_FIRST_PLAY && bd.Value.disc_info.first_play.Value.interactive != 0) {
                     return true;
                 }
-                if (title <= bd.Value.disc_info.Value.num_titles/* && bd.Value.titles[title]*/) {
+                if (title <= bd.Value.disc_info.num_titles/* && bd.Value.titles[title]*/) {
                     return bd.Value.titles[title].interactive != 0;
                 }
             }
@@ -2250,20 +2297,20 @@ namespace libbluray
 
         static void _check_bdj(Ref<BLURAY> bd)
         {
-            if (bd.Value.disc_info.Value.bdj_handled == 0)
+            if (bd.Value.disc_info.bdj_handled == 0)
             {
-                if (bd.Value.disc == null || bd.Value.disc_info.Value.bdj_detected == 0)
+                if (bd.Value.disc == null || bd.Value.disc_info.bdj_detected == 0)
                 {
 
                     /* Check if jvm + jar can be loaded ? */
                     switch (BDJ.bdj_jvm_available(bd.Value.bdj_config))
                     {
                         case BdjStatus.BDJ_CHECK_OK:
-                            bd.Value.disc_info.Value.bdj_handled = 1;
+                            bd.Value.disc_info.bdj_handled = 1;
                             goto case BdjStatus.BDJ_CHECK_NO_JAR;
                         /* fall thru */
                         case BdjStatus.BDJ_CHECK_NO_JAR:
-                            bd.Value.disc_info.Value.libjvm_detected = 1;
+                            bd.Value.disc_info.libjvm_detected = 1;
                             goto case default;
                         /* fall thru */
                         default:
@@ -2279,43 +2326,43 @@ namespace libbluray
 
             if (enc_info)
             {
-                bd.Value.disc_info.Value.aacs_detected = enc_info.Value.aacs_detected;
-                bd.Value.disc_info.Value.libaacs_detected = enc_info.Value.libaacs_detected;
-                bd.Value.disc_info.Value.aacs_error_code = enc_info.Value.aacs_error_code;
-                bd.Value.disc_info.Value.aacs_handled = enc_info.Value.aacs_handled;
-                bd.Value.disc_info.Value.aacs_mkbv = enc_info.Value.aacs_mkbv;
-                Array.Copy(enc_info.Value.disc_id, bd.Value.disc_info.Value.disc_id, 20);
-                bd.Value.disc_info.Value.bdplus_detected = enc_info.Value.bdplus_detected;
-                bd.Value.disc_info.Value.libbdplus_detected = enc_info.Value.libbdplus_detected;
-                bd.Value.disc_info.Value.bdplus_handled = enc_info.Value.bdplus_handled;
-                bd.Value.disc_info.Value.bdplus_gen = enc_info.Value.bdplus_gen;
-                bd.Value.disc_info.Value.bdplus_date = enc_info.Value.bdplus_date;
-                bd.Value.disc_info.Value.no_menu_support = enc_info.Value.no_menu_support;
+                bd.Value.disc_info.aacs_detected = enc_info.Value.aacs_detected;
+                bd.Value.disc_info.libaacs_detected = enc_info.Value.libaacs_detected;
+                bd.Value.disc_info.aacs_error_code = enc_info.Value.aacs_error_code;
+                bd.Value.disc_info.aacs_handled = enc_info.Value.aacs_handled;
+                bd.Value.disc_info.aacs_mkbv = enc_info.Value.aacs_mkbv;
+                bd.Value.disc_info.disc_id = Encoding.ASCII.GetString(enc_info.Value.disc_id, 0, 20).TrimEnd('\0');
+                bd.Value.disc_info.bdplus_detected = enc_info.Value.bdplus_detected;
+                bd.Value.disc_info.libbdplus_detected = enc_info.Value.libbdplus_detected;
+                bd.Value.disc_info.bdplus_handled = enc_info.Value.bdplus_handled;
+                bd.Value.disc_info.bdplus_gen = enc_info.Value.bdplus_gen;
+                bd.Value.disc_info.bdplus_date = enc_info.Value.bdplus_date;
+                bd.Value.disc_info.no_menu_support = enc_info.Value.no_menu_support;
             }
 
-            bd.Value.disc_info.Value.bluray_detected = 0;
-            bd.Value.disc_info.Value.top_menu_supported = 0;
-            bd.Value.disc_info.Value.first_play_supported = 0;
-            bd.Value.disc_info.Value.num_hdmv_titles = 0;
-            bd.Value.disc_info.Value.num_bdj_titles = 0;
-            bd.Value.disc_info.Value.num_unsupported_titles = 0;
+            bd.Value.disc_info.bluray_detected = 0;
+            bd.Value.disc_info.top_menu_supported = 0;
+            bd.Value.disc_info.first_play_supported = 0;
+            bd.Value.disc_info.num_hdmv_titles = 0;
+            bd.Value.disc_info.num_bdj_titles = 0;
+            bd.Value.disc_info.num_unsupported_titles = 0;
 
-            bd.Value.disc_info.Value.bdj_detected = 0;
-            bd.Value.disc_info.Value.bdj_supported = 1;
+            bd.Value.disc_info.bdj_detected = 0;
+            bd.Value.disc_info.bdj_supported = 1;
 
-            bd.Value.disc_info.Value.num_titles = 0;
-            bd.Value.disc_info.Value.titles = Ref<BLURAY_TITLE>.Null;
-            bd.Value.disc_info.Value.top_menu = Ref<BLURAY_TITLE>.Null;
-            bd.Value.disc_info.Value.first_play = Ref<BLURAY_TITLE>.Null;
+            bd.Value.disc_info.num_titles = 0;
+            bd.Value.disc_info.titles = Ref<BLURAY_TITLE>.Null;
+            bd.Value.disc_info.top_menu = Ref<BLURAY_TITLE>.Null;
+            bd.Value.disc_info.first_play = Ref<BLURAY_TITLE>.Null;
 
             bd.Value.titles.Free();
 
-            bd.Value.disc_info.Value.bdj_org_id = "";
-            bd.Value.disc_info.Value.bdj_disc_id = "";
+            bd.Value.disc_info.bdj_org_id = "";
+            bd.Value.disc_info.bdj_disc_id = "";
 
             if (bd.Value.disc != null)
             {
-                bd.Value.disc_info.Value.udf_volume_id = Disc.disc_volume_id(bd.Value.disc);
+                bd.Value.disc_info.udf_volume_id = Disc.disc_volume_id(bd.Value.disc);
                 index = IndexParse.indx_get(bd.Value.disc);
                 if (!index)
                 {
@@ -2324,8 +2371,8 @@ namespace libbluray
                     if (title_list && title_list.Value.count > 0)
                     {
                         Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"Possible incomplete BluRay image detected. No menu support.");
-                        bd.Value.disc_info.Value.bluray_detected = 1;
-                        bd.Value.disc_info.Value.no_menu_support = 1;
+                        bd.Value.disc_info.bluray_detected = 1;
+                        bd.Value.disc_info.no_menu_support = 1;
                     }
                     Navigation.nav_free_title_list(ref title_list);
                 }
@@ -2336,22 +2383,22 @@ namespace libbluray
                 Ref<INDX_PLAY_ITEM> pi;
                 uint ii;
 
-                bd.Value.disc_info.Value.bluray_detected = 1;
+                bd.Value.disc_info.bluray_detected = 1;
 
                 /* application info */
-                bd.Value.disc_info.Value.video_format = (byte)index.Value.app_info.Value.video_format;
-                bd.Value.disc_info.Value.frame_rate = (byte)index.Value.app_info.Value.frame_rate;
-                bd.Value.disc_info.Value.initial_dynamic_range_type = (byte)index.Value.app_info.Value.initial_dynamic_range_type;
-                bd.Value.disc_info.Value.content_exist_3D = (byte)index.Value.app_info.Value.content_exist_flag;
-                bd.Value.disc_info.Value.initial_output_mode_preference = (byte)index.Value.app_info.Value.initial_output_mode_preference;
-                bd.Value.disc_info.Value.provider_data = index.Value.app_info.Value.user_data;
+                bd.Value.disc_info.video_format = (byte)index.Value.app_info.Value.video_format;
+                bd.Value.disc_info.frame_rate = (byte)index.Value.app_info.Value.frame_rate;
+                bd.Value.disc_info.initial_dynamic_range_type = (byte)index.Value.app_info.Value.initial_dynamic_range_type;
+                bd.Value.disc_info.content_exist_3D = (byte)index.Value.app_info.Value.content_exist_flag;
+                bd.Value.disc_info.initial_output_mode_preference = (byte)index.Value.app_info.Value.initial_output_mode_preference;
+                bd.Value.disc_info.provider_data = index.Value.app_info.Value.user_data;
 
                 /* allocate array for title info */
                 Ref<BLURAY_TITLE> titles = Ref<BLURAY_TITLE>.Allocate(index.Value.num_titles + 2);
 
                 bd.Value.titles = titles;
-                bd.Value.disc_info.Value.titles = titles;
-                bd.Value.disc_info.Value.num_titles = index.Value.num_titles;
+                bd.Value.disc_info.titles = titles;
+                bd.Value.disc_info.num_titles = index.Value.num_titles;
 
                 /* count titles and fill title info */
 
@@ -2359,14 +2406,14 @@ namespace libbluray
                 {
                     if (index.Value.titles[ii].object_type == indx_object_type.indx_object_type_hdmv)
                     {
-                        bd.Value.disc_info.Value.num_hdmv_titles++;
+                        bd.Value.disc_info.num_hdmv_titles++;
                         titles[ii + 1].interactive = (byte)((index.Value.titles[ii].hdmv.Value.playback_type == indx_hdmv_playback_type.indx_hdmv_playback_type_interactive) ? 1u : 0u);
                         titles[ii + 1].id_ref = index.Value.titles[ii].hdmv.Value.id_ref;
                     }
                     if (index.Value.titles[ii].object_type == indx_object_type.indx_object_type_bdj)
                     {
-                        bd.Value.disc_info.Value.num_bdj_titles++;
-                        bd.Value.disc_info.Value.bdj_detected = 1;
+                        bd.Value.disc_info.num_bdj_titles++;
+                        bd.Value.disc_info.bdj_detected = 1;
                         titles[ii + 1].bdj = 1;
                         titles[ii + 1].interactive = (byte)((index.Value.titles[ii].bdj.Value.playback_type == indx_bdj_playback_type.indx_bdj_playback_type_interactive) ? 1u : 0u);
                         titles[ii + 1].id_ref = uint.Parse(index.Value.titles[ii].bdj.Value.name);
@@ -2379,7 +2426,7 @@ namespace libbluray
                 pi = index.Value.first_play.Ref;
                 if (pi.Value.object_type == indx_object_type.indx_object_type_bdj)
                 {
-                    bd.Value.disc_info.Value.bdj_detected = 1;
+                    bd.Value.disc_info.bdj_detected = 1;
                     titles[index.Value.num_titles + 1].bdj = 1;
                     titles[index.Value.num_titles + 1].interactive = (byte)((pi.Value.bdj.Value.playback_type == indx_bdj_playback_type.indx_bdj_playback_type_interactive) ? 1u : 0u);
                     titles[index.Value.num_titles + 1].id_ref = uint.Parse(pi.Value.bdj.Value.name);
@@ -2393,7 +2440,7 @@ namespace libbluray
                 pi = index.Value.top_menu.Ref;
                 if (pi.Value.object_type == indx_object_type.indx_object_type_bdj)
                 {
-                    bd.Value.disc_info.Value.bdj_detected = 1;
+                    bd.Value.disc_info.bdj_detected = 1;
                     titles[0].bdj = 1;
                     titles[0].interactive = (byte)((pi.Value.bdj.Value.playback_type == indx_bdj_playback_type.indx_bdj_playback_type_interactive) ? 1u : 0u);
                     titles[0].id_ref = uint.Parse(pi.Value.bdj.Value.name);
@@ -2408,42 +2455,42 @@ namespace libbluray
 
                 _check_bdj(bd);
 
-                if (bd.Value.disc_info.Value.bdj_detected != 0 && bd.Value.disc_info.Value.bdj_handled == 0)
+                if (bd.Value.disc_info.bdj_detected != 0 && bd.Value.disc_info.bdj_handled == 0)
                 {
-                    bd.Value.disc_info.Value.num_unsupported_titles = bd.Value.disc_info.Value.num_bdj_titles;
+                    bd.Value.disc_info.num_unsupported_titles = bd.Value.disc_info.num_bdj_titles;
                 }
 
                 pi = index.Value.first_play.Ref;
                 if (pi.Value.object_type == indx_object_type.indx_object_type_hdmv && pi.Value.hdmv.Value.id_ref != 0xffff)
                 {
-                    bd.Value.disc_info.Value.first_play_supported = 1;
+                    bd.Value.disc_info.first_play_supported = 1;
                 }
                 if (pi.Value.object_type == indx_object_type.indx_object_type_bdj)
                 {
-                    bd.Value.disc_info.Value.first_play_supported = bd.Value.disc_info.Value.bdj_handled;
+                    bd.Value.disc_info.first_play_supported = bd.Value.disc_info.bdj_handled;
                 }
 
                 pi = index.Value.top_menu.Ref;
                 if (pi.Value.object_type == indx_object_type.indx_object_type_hdmv && pi.Value.hdmv.Value.id_ref != 0xffff)
                 {
-                    bd.Value.disc_info.Value.top_menu_supported = 1;
+                    bd.Value.disc_info.top_menu_supported = 1;
                 }
                 if (pi.Value.object_type == indx_object_type.indx_object_type_bdj)
                 {
-                    bd.Value.disc_info.Value.top_menu_supported = bd.Value.disc_info.Value.bdj_handled;
+                    bd.Value.disc_info.top_menu_supported = bd.Value.disc_info.bdj_handled;
                 }
 
                 /* */
 
-                if (bd.Value.disc_info.Value.first_play_supported != 0)
+                if (bd.Value.disc_info.first_play_supported != 0)
                 {
                     titles[index.Value.num_titles + 1].accessible = 1;
-                    bd.Value.disc_info.Value.first_play = titles.AtIndex(index.Value.num_titles + 1);
+                    bd.Value.disc_info.first_play = titles.AtIndex(index.Value.num_titles + 1);
                 }
-                if (bd.Value.disc_info.Value.top_menu_supported != 0)
+                if (bd.Value.disc_info.top_menu_supported != 0)
                 {
                     titles[0].accessible = 1;
-                    bd.Value.disc_info.Value.top_menu = titles.AtIndex(0);
+                    bd.Value.disc_info.top_menu = titles.AtIndex(0);
                 }
 
                 /* increase player profile and version when 3D or UHD disc is detected */
@@ -2476,13 +2523,13 @@ namespace libbluray
     }
 #endif
 
-            if (bd.Value.disc_info.Value.bdj_detected != 0)
+            if (bd.Value.disc_info.bdj_detected != 0)
             {
-                Ref<BDID_DATA> bdid = BdidParse.bdid_get(bd.Value.disc); /* parse id.bdmv */
-                if (bdid)
+                BDID_DATA? bdid = BdidParse.bdid_get(bd.Value.disc); /* parse id.bdmv */
+                if (bdid != null)
                 {
-                    bd.Value.disc_info.Value.bdj_org_id = bdid.Value.org_id;
-                    bd.Value.disc_info.Value.bdj_disc_id = bdid.Value.disc_id;
+                    bd.Value.disc_info.bdj_org_id = bdid.org_id;
+                    bd.Value.disc_info.bdj_disc_id = bdid.disc_id;
                     BdidParse.bdid_free(ref bdid);
                 }
             }
@@ -2495,7 +2542,7 @@ namespace libbluray
         /// </summary>
         /// <param name="bd">BLURAY object</param>
         /// <returns>pointer to BLURAY_DISC_INFO object, NULL on error</returns>
-        public static Ref<BLURAY_DISC_INFO> bd_get_disc_info(Ref<BLURAY> bd)
+        public static BLURAY_DISC_INFO? bd_get_disc_info(Ref<BLURAY> bd)
         {
             bd.Value.mutex.bd_mutex_lock();
             if (bd.Value.disc == null)
@@ -2503,7 +2550,7 @@ namespace libbluray
                 _fill_disc_info(bd, Ref<BD_ENC_INFO>.Null);
             }
             bd.Value.mutex.bd_mutex_unlock();
-            return bd.Value.disc_info.Ref;
+            return bd.Value.disc_info;
         }
 
         /*
@@ -2785,7 +2832,7 @@ namespace libbluray
             if (bd.Value.bdjava == null)
             {
                 string root = bd.Value.disc.disc_root();
-                bd.Value.bdjava = BDJ.bdj_open(root, bd, bd.Value.disc_info.Value.bdj_disc_id, ref bd.Value.bdj_config);
+                bd.Value.bdjava = BDJ.bdj_open(root, bd, bd.Value.disc_info.bdj_disc_id, ref bd.Value.bdj_config);
                 if (!bd.Value.bdjava)
                 {
                     return false;
@@ -2897,7 +2944,7 @@ namespace libbluray
 
             bd.Value.mutex.bd_mutex_unlock();
 
-            return bd.Value.disc_info.Value.bluray_detected != 0;
+            return bd.Value.disc_info.bluray_detected != 0;
         }
 
         /// <summary>
@@ -4012,8 +4059,8 @@ namespace libbluray
 
             if (!bd.Value.title_list && bd.Value.title_type == BD_TITLE_TYPE.title_undef)
             {
-                Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"open_playlist(%s): bd_play() or bd_get_titles() not called", f_name);
-                bd.Value.disc.disc_event(Disc.DiscEventType.DISC_EVENT_START, bd.Value.disc_info.Value.num_titles);
+                Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"open_playlist({f_name}): bd_play() or bd_get_titles() not called");
+                bd.Value.disc.disc_event(Disc.DiscEventType.DISC_EVENT_START, bd.Value.disc_info.num_titles);
             }
 
             _close_playlist(bd);
@@ -4303,7 +4350,7 @@ namespace libbluray
             Navigation.nav_free_title_list(ref bd.Value.title_list);
             bd.Value.title_list = title_list;
 
-            bd.Value.disc.disc_event(Disc.DiscEventType.DISC_EVENT_START, bd.Value.disc_info.Value.num_titles);
+            bd.Value.disc.disc_event(Disc.DiscEventType.DISC_EVENT_START, bd.Value.disc_info.num_titles);
             count = bd.Value.title_list.Value.count;
 
             bd.Value.mutex.bd_mutex_unlock();
@@ -4381,66 +4428,66 @@ namespace libbluray
             return true;
         }
 
-        static Ref<BLURAY_TITLE_INFO> _fill_title_info(NAV_TITLE? title, UInt32 title_idx, UInt32 playlist)
+        static BLURAY_TITLE_INFO? _fill_title_info(NAV_TITLE? title, UInt32 title_idx, UInt32 playlist)
         {
-            Ref<BLURAY_TITLE_INFO> title_info;
+            BLURAY_TITLE_INFO? title_info;
             uint ii;
 
-            title_info = Ref<BLURAY_TITLE_INFO>.Allocate();
-            if (!title_info)
+            title_info = new BLURAY_TITLE_INFO();
+            if (title_info == null)
             {
                 goto error;
             }
-            title_info.Value.idx = title_idx;
-            title_info.Value.playlist = playlist;
-            title_info.Value.duration = (UInt64)title.duration * 2;
-            title_info.Value.angle_count = title.angle_count;
-            title_info.Value.chapter_count = title.chap_list.count;
-            if (title_info.Value.chapter_count != 0)
+            title_info.idx = title_idx;
+            title_info.playlist = playlist;
+            title_info.duration = (UInt64)title.duration * 2;
+            title_info.angle_count = title.angle_count;
+            title_info.chapter_count = title.chap_list.count;
+            if (title_info.chapter_count != 0)
             {
-                title_info.Value.chapters = Ref<BLURAY_TITLE_CHAPTER>.Allocate(title_info.Value.chapter_count);
-                if (!title_info.Value.chapters)
+                title_info.chapters = Ref<BLURAY_TITLE_CHAPTER>.Allocate(title_info.chapter_count);
+                if (!title_info.chapters)
                 {
                     goto error;
                 }
-                for (ii = 0; ii < title_info.Value.chapter_count; ii++)
+                for (ii = 0; ii < title_info.chapter_count; ii++)
                 {
-                    title_info.Value.chapters[ii].idx = ii;
-                    title_info.Value.chapters[ii].start = (UInt64)title.chap_list.mark[ii].title_time * 2;
-                    title_info.Value.chapters[ii].duration = (UInt64)title.chap_list.mark[ii].duration * 2;
-                    title_info.Value.chapters[ii].offset = (UInt64)title.chap_list.mark[ii].title_pkt * 192L;
-                    title_info.Value.chapters[ii].clip_ref = title.chap_list.mark[ii].clip_ref;
+                    title_info.chapters[ii].idx = ii;
+                    title_info.chapters[ii].start = (UInt64)title.chap_list.mark[ii].title_time * 2;
+                    title_info.chapters[ii].duration = (UInt64)title.chap_list.mark[ii].duration * 2;
+                    title_info.chapters[ii].offset = (UInt64)title.chap_list.mark[ii].title_pkt * 192L;
+                    title_info.chapters[ii].clip_ref = title.chap_list.mark[ii].clip_ref;
                 }
             }
-            title_info.Value.mark_count = title.mark_list.count;
-            if (title_info.Value.mark_count != 0)
+            title_info.mark_count = title.mark_list.count;
+            if (title_info.mark_count != 0)
             {
-                title_info.Value.marks = Ref<BLURAY_TITLE_MARK>.Allocate(title_info.Value.mark_count);
-                if (!title_info.Value.marks)
+                title_info.marks = Ref<BLURAY_TITLE_MARK>.Allocate(title_info.mark_count);
+                if (!title_info.marks)
                 {
                     goto error;
                 }
-                for (ii = 0; ii < title_info.Value.mark_count; ii++)
+                for (ii = 0; ii < title_info.mark_count; ii++)
                 {
-                    title_info.Value.marks[ii].idx = ii;
-                    title_info.Value.marks[ii].type = title.mark_list.mark[ii].mark_type;
-                    title_info.Value.marks[ii].start = (UInt64)title.mark_list.mark[ii].title_time * 2;
-                    title_info.Value.marks[ii].duration = (UInt64)title.mark_list.mark[ii].duration * 2;
-                    title_info.Value.marks[ii].offset = (UInt64)title.mark_list.mark[ii].title_pkt * 192L;
-                    title_info.Value.marks[ii].clip_ref = title.mark_list.mark[ii].clip_ref;
+                    title_info.marks[ii].idx = ii;
+                    title_info.marks[ii].type = title.mark_list.mark[ii].mark_type;
+                    title_info.marks[ii].start = (UInt64)title.mark_list.mark[ii].title_time * 2;
+                    title_info.marks[ii].duration = (UInt64)title.mark_list.mark[ii].duration * 2;
+                    title_info.marks[ii].offset = (UInt64)title.mark_list.mark[ii].title_pkt * 192L;
+                    title_info.marks[ii].clip_ref = title.mark_list.mark[ii].clip_ref;
                 }
             }
-            title_info.Value.clip_count = title.clip_list.count;
-            if (title_info.Value.clip_count != 0)
+            title_info.clip_count = title.clip_list.count;
+            if (title_info.clip_count != 0)
             {
-                title_info.Value.clips = Ref<BLURAY_CLIP_INFO>.Allocate(title_info.Value.clip_count);
-                if (!title_info.Value.clips)
+                title_info.clips = Ref<BLURAY_CLIP_INFO>.Allocate(title_info.clip_count);
+                if (!title_info.clips)
                 {
                     goto error;
                 }
-                for (ii = 0; ii < title_info.Value.clip_count; ii++)
+                for (ii = 0; ii < title_info.clip_count; ii++)
                 {
-                    Ref<BLURAY_CLIP_INFO> ci = title_info.Value.clips.AtIndex(ii);
+                    Ref<BLURAY_CLIP_INFO> ci = title_info.clips.AtIndex(ii);
                     Ref<MPLS_PI> pi = title.pl.Value.play_item.AtIndex(ii);
                     Ref<NAV_CLIP> nc = title.clip_list.clip.AtIndex(ii);
 
@@ -4470,32 +4517,32 @@ namespace libbluray
                 }
             }
 
-            title_info.Value.mvc_base_view_r_flag = title.pl.Value.app_info.Value.mvc_base_view_r_flag;
+            title_info.mvc_base_view_r_flag = title.pl.Value.app_info.Value.mvc_base_view_r_flag;
 
             return title_info;
 
         error:
             Logging.bd_debug(DebugMaskEnum.DBG_CRIT, $"Out of memory");
-            bd_free_title_info(title_info);
-            return Ref<BLURAY_TITLE_INFO>.Null;
+            bd_free_title_info(ref title_info);
+            return null;
         }
 
-        static Ref<BLURAY_TITLE_INFO> _get_mpls_info(Ref<BLURAY> bd, UInt32 title_idx, UInt32 playlist, uint angle)
+        static BLURAY_TITLE_INFO? _get_mpls_info(Ref<BLURAY> bd, UInt32 title_idx, UInt32 playlist, uint angle)
         {
             NAV_TITLE? title;
-            Ref<BLURAY_TITLE_INFO> title_info;
+            BLURAY_TITLE_INFO? title_info;
             string mpls_name;
 
             if (playlist > 99999)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"Invalid playlist {playlist}!");
-                return Ref<BLURAY_TITLE_INFO>.Null;
+                return null;
             }
 
             mpls_name = $"{playlist:00000}.mpls";
             if (mpls_name.Length != 10)
             {
-                return Ref<BLURAY_TITLE_INFO>.Null;
+                return null;
             }
 
             /* current title ? => no need to load mpls file */
@@ -4512,7 +4559,7 @@ namespace libbluray
             if (title == null)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"Unable to open title {mpls_name}!");
-                return Ref<BLURAY_TITLE_INFO>.Null;
+                return null;
             }
 
             title_info = _fill_title_info(title, title_idx, playlist);
@@ -4528,7 +4575,7 @@ namespace libbluray
         /// <param name="title_idx">title index number</param>
         /// <param name="angle">angle number (chapter offsets and clip size depend on selected angle)</param>
         /// <returns>allocated BLURAY_TITLE_INFO object, NULL on error</returns>
-        public static Ref<BLURAY_TITLE_INFO> bd_get_title_info(Ref<BLURAY> bd, UInt32 title_idx, uint angle)
+        public static BLURAY_TITLE_INFO? bd_get_title_info(Ref<BLURAY> bd, UInt32 title_idx, uint angle)
         {
             int mpls_id = -1;
 
@@ -4550,7 +4597,7 @@ namespace libbluray
             bd.Value.mutex.bd_mutex_unlock();
 
             if (mpls_id < 0)
-                return Ref<BLURAY_TITLE_INFO>.Null;
+                return null;
 
             return _get_mpls_info(bd, title_idx, (uint)mpls_id, angle);
         }
@@ -4562,7 +4609,7 @@ namespace libbluray
         /// <param name="playlist">playlist number</param>
         /// <param name="angle"> angle number (chapter offsets and clip size depend on selected angle)</param>
         /// <returns>allocated BLURAY_TITLE_INFO object, NULL on error</returns>
-        public static Ref<BLURAY_TITLE_INFO> bd_get_playlist_info(Ref<BLURAY> bd, UInt32 playlist, uint angle)
+        public static BLURAY_TITLE_INFO? bd_get_playlist_info(Ref<BLURAY> bd, UInt32 playlist, uint angle)
         {
             return _get_mpls_info(bd, 0, playlist, angle);
         }
@@ -4571,28 +4618,28 @@ namespace libbluray
         /// Free BLURAY_TITLE_INFO object
         /// </summary>
         /// <param name="title_info">BLURAY_TITLE_INFO object</param>
-        public static void bd_free_title_info(Ref<BLURAY_TITLE_INFO> title_info)
+        public static void bd_free_title_info(ref BLURAY_TITLE_INFO? title_info)
         {
             uint ii;
 
-            if (title_info)
+            if (title_info != null)
             {
-                title_info.Value.chapters.Free();
-                title_info.Value.marks.Free();
-                if (title_info.Value.clips)
+                title_info.chapters.Free();
+                title_info.marks.Free();
+                if (title_info.clips)
                 {
-                    for (ii = 0; ii < title_info.Value.clip_count; ii++)
+                    for (ii = 0; ii < title_info.clip_count; ii++)
                     {
-                        title_info.Value.clips[ii].video_streams.Free();
-                        title_info.Value.clips[ii].audio_streams.Free();
-                        title_info.Value.clips[ii].pg_streams.Free();
-                        title_info.Value.clips[ii].ig_streams.Free();
-                        title_info.Value.clips[ii].sec_video_streams.Free();
-                        title_info.Value.clips[ii].sec_audio_streams.Free();
+                        title_info.clips[ii].video_streams.Free();
+                        title_info.clips[ii].audio_streams.Free();
+                        title_info.clips[ii].pg_streams.Free();
+                        title_info.clips[ii].ig_streams.Free();
+                        title_info.clips[ii].sec_video_streams.Free();
+                        title_info.clips[ii].sec_audio_streams.Free();
                     }
-                    title_info.Value.clips.Free();
+                    title_info.clips.Free();
                 }
-                title_info.Free();
+                title_info = null;
             }
         }
 
@@ -4802,9 +4849,9 @@ namespace libbluray
             }
 
             /* first play object ? */
-            if (bd.Value.disc_info.Value.first_play_supported != 0)
+            if (bd.Value.disc_info.first_play_supported != 0)
             {
-                t = bd.Value.disc_info.Value.first_play;
+                t = bd.Value.disc_info.first_play;
                 if (t && t.Value.bdj != 0 && t.Value.id_ref == title_num)
                 {
                     return _start_bdj(bd, BLURAY_TITLE_FIRST_PLAY);
@@ -4812,11 +4859,11 @@ namespace libbluray
             }
 
             /* valid BD-J title from disc index ? */
-            if (bd.Value.disc_info.Value.titles)
+            if (bd.Value.disc_info.titles)
             {
-                for (ii = 0; ii <= bd.Value.disc_info.Value.num_titles; ii++)
+                for (ii = 0; ii <= bd.Value.disc_info.num_titles; ii++)
                 {
-                    t = bd.Value.disc_info.Value.titles.AtIndex(ii);
+                    t = bd.Value.disc_info.titles.AtIndex(ii);
                     if (t && t.Value.bdj != 0 && t.Value.id_ref == title_num)
                     {
                         return _start_bdj(bd, ii);
@@ -5110,8 +5157,7 @@ namespace libbluray
 
             if (!bd.Value.hdmv_vm)
             {
-                bd.Value.hdmv_vm = HdmvVm.hdmv_vm_init(bd.Value.disc, bd.Value.regs, bd.Value.disc_info.Value.num_titles,
-                                           bd.Value.disc_info.Value.first_play_supported, bd.Value.disc_info.Value.top_menu_supported);
+                bd.Value.hdmv_vm = HdmvVm.hdmv_vm_init(bd.Value.disc, bd.Value.regs, bd.Value.disc_info.num_titles, bd.Value.disc_info.first_play_supported, bd.Value.disc_info.top_menu_supported);
             }
 
             if (HdmvVm.hdmv_vm_select_object(bd.Value.hdmv_vm, id_ref) != 0)
@@ -5132,13 +5178,13 @@ namespace libbluray
 
         static bool _play_title(Ref<BLURAY> bd, uint title)
         {
-            if (!bd.Value.disc_info.Value.titles)
+            if (!bd.Value.disc_info.titles)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"_play_title(#{title}): No disc index");
                 return false;
             }
 
-            if (bd.Value.disc_info.Value.no_menu_support != 0)
+            if (bd.Value.disc_info.no_menu_support != 0)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"_play_title(): no menu support");
                 return false;
@@ -5150,7 +5196,7 @@ namespace libbluray
 
                 Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_TITLE_NUMBER, BLURAY_TITLE_FIRST_PLAY); /* 5.2.3.3 */
 
-                if (bd.Value.disc_info.Value.first_play_supported == 0)
+                if (bd.Value.disc_info.first_play_supported == 0)
                 {
                     /* no first play title (5.2.3.3) */
                     Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"_play_title(): No first play title");
@@ -5158,13 +5204,13 @@ namespace libbluray
                     return true;
                 }
 
-                if (bd.Value.disc_info.Value.first_play.Value.bdj != 0)
+                if (bd.Value.disc_info.first_play.Value.bdj != 0)
                 {
                     return _play_bdj(bd, title);
                 }
                 else
                 {
-                    return _play_hdmv(bd, bd.Value.disc_info.Value.first_play.Value.id_ref);
+                    return _play_hdmv(bd, bd.Value.disc_info.first_play.Value.id_ref);
                 }
             }
 
@@ -5178,7 +5224,7 @@ namespace libbluray
             /* top menu ? */
             if (title == BLURAY_TITLE_TOP_MENU)
             {
-                if (bd.Value.disc_info.Value.top_menu_supported == 0)
+                if (bd.Value.disc_info.top_menu_supported == 0)
                 {
                     /* no top menu (5.2.3.3) */
                     Logging.bd_debug(DebugMaskEnum.DBG_BLURAY | DebugMaskEnum.DBG_CRIT, $"_play_title(): No top menu title");
@@ -5188,17 +5234,17 @@ namespace libbluray
             }
 
             /* valid title from disc index ? */
-            if (title <= bd.Value.disc_info.Value.num_titles)
+            if (title <= bd.Value.disc_info.num_titles)
             {
 
                 Register.bd_psr_write(bd.Value.regs, bd_psr_idx.PSR_TITLE_NUMBER, title); /* 5.2.3.3 */
-                if (bd.Value.disc_info.Value.titles[title].bdj != 0)
+                if (bd.Value.disc_info.titles[title].bdj != 0)
                 {
                     return _play_bdj(bd, title);
                 }
                 else
                 {
-                    return _play_hdmv(bd, bd.Value.disc_info.Value.titles[title].id_ref);
+                    return _play_hdmv(bd, bd.Value.disc_info.titles[title].id_ref);
                 }
             }
             else
@@ -5981,12 +6027,12 @@ namespace libbluray
                 uint ii;
                 for (ii = 0; ii < meta.Value.toc_count; ii++)
                 {
-                    if (meta.Value.toc_entries[ii].title_number > 0 && meta.Value.toc_entries[ii].title_number <= bd.Value.disc_info.Value.num_titles)
+                    if (meta.Value.toc_entries[ii].title_number > 0 && meta.Value.toc_entries[ii].title_number <= bd.Value.disc_info.num_titles)
                     {
                         bd.Value.titles[meta.Value.toc_entries[ii].title_number].name = meta.Value.toc_entries[ii].title_name;
                     }
                 }
-                bd.Value.disc_info.Value.disc_name = meta.Value.di_name;
+                bd.Value.disc_info.disc_name = meta.Value.di_name;
             }
 
             return meta;

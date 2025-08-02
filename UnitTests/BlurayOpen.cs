@@ -95,7 +95,7 @@ namespace UnitTests.BlurayInfo
             bluray_info = new();
 
             // Get main disc information
-            Ref<BLURAY_DISC_INFO> bd_disc_info = Ref<BLURAY_DISC_INFO>.Null;
+            BLURAY_DISC_INFO? bd_disc_info = null;
             bd_disc_info = BLURAY.bd_get_disc_info(bd);
 
             // Quit if couldn't open disc
@@ -112,18 +112,19 @@ namespace UnitTests.BlurayInfo
             // Use the UDF volume name as disc title; will only work if input file
             // is an image or disc.
             bluray_info.udf_volume_id = "";
-            if (!string.IsNullOrWhiteSpace(bd_disc_info.Value.udf_volume_id))
-                bluray_info.udf_volume_id = bd_disc_info.Value.udf_volume_id;
+            if (!string.IsNullOrWhiteSpace(bd_disc_info.UdfVolumeID))
+                bluray_info.udf_volume_id = bd_disc_info.UdfVolumeID;
 
             // Set the disc ID if AACS is present
             bluray_info.disc_id = "";
             UInt32 ix = 0;
-            if (bd_disc_info.Value.libaacs_detected != 0)
+            if (bd_disc_info.LibAacsDetected != 0)
             {
-                for (ix = 0; ix < 20; ix++)
-                {
-                    bluray_info.disc_id += $"{bd_disc_info.Value.disc_id[ix]:X2}";
-                }
+                //for (ix = 0; ix < 20; ix++)
+                //{
+                //    bluray_info.disc_id += $"{bd_disc_info.disc_id[ix]:X2}";
+                //}
+                bluray_info.disc_id = bd_disc_info.DiscID;
             }
 
             // Titles, Indexes and Playlists
@@ -163,20 +164,18 @@ namespace UnitTests.BlurayInfo
             bluray_info.main_title = (UInt32)bd_main_title;
 
             // These are going to change depending on if you have the JVM installed or not
-            bluray_info.first_play_supported = ((bd_disc_info.Value.first_play_supported != 0) ? true : false);
-            bluray_info.top_menu_supported = ((bd_disc_info.Value.top_menu_supported != 0) ? true : false);
-            bluray_info.disc_num_titles = bd_disc_info.Value.num_titles;
-            bluray_info.hdmv_titles = bd_disc_info.Value.num_hdmv_titles;
-            bluray_info.bdj_titles = bd_disc_info.Value.num_bdj_titles;
-            bluray_info.unsupported_titles = bd_disc_info.Value.num_unsupported_titles;
-            bluray_info.aacs = ((bd_disc_info.Value.aacs_detected != 0) ? true : false);
-            bluray_info.bdplus = ((bd_disc_info.Value.bdplus_detected != 0) ? true : false);
-            bluray_info.bdj = ((bd_disc_info.Value.bdj_detected != 0) ? true : false);
-            bluray_info.content_exist_3D = ((bd_disc_info.Value.content_exist_3D != 0) ? true : false);
-            bluray_info.provider_data = "";
-            bluray_info.provider_data = bd_disc_info.Value.provider_data;
-            bluray_info.initial_output_mode_preference = "";
-            bluray_info.initial_output_mode_preference = ((bd_disc_info.Value.initial_output_mode_preference != 0) ? "3D" : "2D");
+            bluray_info.first_play_supported = ((bd_disc_info.FirsPlaySupported != 0) ? true : false);
+            bluray_info.top_menu_supported = ((bd_disc_info.TopMenuSupported != 0) ? true : false);
+            bluray_info.disc_num_titles = bd_disc_info.NumberOfTitles;
+            bluray_info.hdmv_titles = bd_disc_info.NumberHdmvTitles;
+            bluray_info.bdj_titles = bd_disc_info.NumberBdjTitles;
+            bluray_info.unsupported_titles = bd_disc_info.NumberUnsupportedTitles;
+            bluray_info.aacs = ((bd_disc_info.AacsDetected != 0) ? true : false);
+            bluray_info.bdplus = ((bd_disc_info.BdPlusDetected != 0) ? true : false);
+            bluray_info.bdj = ((bd_disc_info.BdjDetected != 0) ? true : false);
+            bluray_info.content_exist_3D = ((bd_disc_info.ContentExist3D != 0) ? true : false);
+            bluray_info.provider_data = bd_disc_info.ProviderData;
+            bluray_info.initial_output_mode_preference = ((bd_disc_info.InitialOutputModePreference != 0) ? "3D" : "2D");
 
             return 0;
 
@@ -221,7 +220,7 @@ namespace UnitTests.BlurayInfo
             if (retval == false)
                 return 2;
 
-            Ref<BLURAY_TITLE_INFO> bd_title = Ref<BLURAY_TITLE_INFO>.Null;
+            BLURAY_TITLE_INFO? bd_title = null;
             if (playlist)
                 bd_title = BLURAY.bd_get_playlist_info(bd, title_ix, angle_ix);
             else
@@ -232,26 +231,26 @@ namespace UnitTests.BlurayInfo
                 return 3;
 
             // Populate data
-            bluray_title.playlist = bd_title.Value.playlist;
-            bluray_title.duration = bd_title.Value.duration;
+            bluray_title.playlist = bd_title.PlaylistID;
+            bluray_title.duration = bd_title.Duration;
             bluray_title.seconds = BlurayTime.bluray_duration_seconds(bluray_title.duration);
             bluray_title.minutes = BlurayTime.bluray_duration_minutes(bluray_title.duration);
             BlurayTime.bluray_duration_length(out bluray_title.length, bluray_title.duration);
             bluray_title.size = BLURAY.bd_get_title_size(bd);
             bluray_title.size_mbs = (bluray_title.size / 1048576) + 1;
             bluray_title.blocks = bluray_title.size / BLURAY_BLOCK_SIZE;
-            bluray_title.chapters = bd_title.Value.chapter_count;
-            bluray_title.clips = bd_title.Value.clip_count;
-            bluray_title.angles = bd_title.Value.angle_count;
+            bluray_title.chapters = bd_title.ChapterCount;
+            bluray_title.clips = bd_title.ClipCount;
+            bluray_title.angles = bd_title.AngleCount;
             if (bluray_title.clips != 0)
             {
-                bluray_title.video_streams = bd_title.Value.clips[0].video_stream_count;
-                bluray_title.audio_streams = bd_title.Value.clips[0].audio_stream_count;
-                bluray_title.pg_streams = bd_title.Value.clips[0].pg_stream_count;
+                bluray_title.video_streams = bd_title.Clips[0].video_stream_count;
+                bluray_title.audio_streams = bd_title.Clips[0].audio_stream_count;
+                bluray_title.pg_streams = bd_title.Clips[0].pg_stream_count;
             }
 
-            bluray_title.clip_info = bd_title.Value.clips;
-            bluray_title.title_chapters = bd_title.Value.chapters;
+            bluray_title.clip_info = bd_title.Clips;
+            bluray_title.title_chapters = bd_title.Chapters;
 
             return 0;
 

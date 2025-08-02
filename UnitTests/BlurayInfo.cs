@@ -79,7 +79,7 @@ namespace UnitTests.BlurayInfo
 
             UInt32[] arr_playlists = new UInt32[bluray_info.titles];
 
-            Ref<BLURAY_TITLE_INFO> bd_title = Ref<BLURAY_TITLE_INFO>.Null;
+            BLURAY_TITLE_INFO? bd_title = null;
 
             UInt32 num_playlists = 0;
 
@@ -97,13 +97,13 @@ namespace UnitTests.BlurayInfo
                 // weren't there to begin with.
                 Assert.IsNotNull(bd_title, $"Couldn't open title {ix}");
 
-                arr_playlists[ix] = bd_title.Value.playlist;
+                arr_playlists[ix] = bd_title.PlaylistID;
 
-                if (bd_title.Value.idx == bluray_info.main_title)
-                    main_playlist = bd_title.Value.playlist;
+                if (bd_title.Index == bluray_info.main_title)
+                    main_playlist = bd_title.PlaylistID;
 
                 //bd_free_title_info(bd_title);
-                bd_title = Ref<BLURAY_TITLE_INFO>.Null;
+                bd_title = null;
 
             }
 
@@ -139,14 +139,14 @@ namespace UnitTests.BlurayInfo
                         continue;
                     }
 
-                    if (bd_title.Value.duration > max_duration)
+                    if (bd_title.Duration > max_duration)
                     {
-                        longest_playlist = bd_title.Value.playlist;
-                        max_duration = bd_title.Value.duration;
+                        longest_playlist = bd_title.PlaylistID;
+                        max_duration = bd_title.Duration;
                     }
 
                     //bd_title.bd_free_title_info();
-                    bd_title = Ref<BLURAY_TITLE_INFO>.Null;
+                    bd_title = null;
 
                 }
 
