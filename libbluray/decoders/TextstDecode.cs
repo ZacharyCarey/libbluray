@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public static class TextstDecode
+    internal static class TextstDecode
     {
         static sbyte _decode_int8(Ref<BITBUFFER> bb)
         {

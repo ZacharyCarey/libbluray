@@ -280,7 +280,7 @@ namespace libbluray
         BLURAY_PERSISTENT_STORAGE_ENABLE = 1,  /**< enable persistent storage */
     }
 
-    public static class PlayerSettings
+    internal static class PlayerSettings
     {
         /* horizontal display size in centimeters */
         /// <summary>

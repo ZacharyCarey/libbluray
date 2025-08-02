@@ -10,7 +10,7 @@ namespace libbluray.bdj
     /// <summary>
     /// these must be in sync with Libbluray.java !
     /// </summary>
-    public enum BDJ_EVENT
+    internal enum BDJ_EVENT
     {
         BDJ_EVENT_NONE = 0,
 
@@ -46,7 +46,7 @@ namespace libbluray.bdj
         BDJ_EVENT_LAST = 18,
     }
 
-    public struct BDJ_CONFIG
+    internal struct BDJ_CONFIG
     {
         /// <summary>
         /// BD-J Xlet persistent storage
@@ -76,14 +76,14 @@ namespace libbluray.bdj
         public BDJ_CONFIG() { }
     }
 
-    public enum BdjStatus
+    internal enum BdjStatus
     {
         BDJ_CHECK_OK = 0,
         BDJ_CHECK_NO_JVM = 1,
         BDJ_CHECK_NO_JAR = 2,
     }
 
-    public struct BDJAVA
+    internal struct BDJAVA
     {
 
     }

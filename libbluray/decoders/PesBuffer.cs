@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public struct PES_BUFFER
+    internal struct PES_BUFFER
     {
         public Ref<byte> buf = new();
 
@@ -29,7 +29,7 @@ namespace libbluray.decoders
         public PES_BUFFER() { }
     }
 
-    public static class PesBuffer
+    internal static class PesBuffer
     {
         internal static Ref<PES_BUFFER> pes_buffer_alloc()
         {

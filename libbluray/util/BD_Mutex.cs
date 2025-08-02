@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.util
 {
-    public class BD_MUTEX
+    internal class BD_MUTEX
     {
         private Mutex mutex;
 

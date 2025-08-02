@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public static class IgDecode
+    internal static class IgDecode
     {
         public const int MAX_NUM_BOGS = 256;
         public const int IG_UI_MODEL_ALWAYS_ON = 0;

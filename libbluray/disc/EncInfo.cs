@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.disc
 {
-    public struct BD_ENC_INFO
+    internal struct BD_ENC_INFO
     {
         public byte aacs_detected;
         public byte libaacs_detected;

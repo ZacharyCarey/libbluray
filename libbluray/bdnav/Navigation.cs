@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.bdnav
 {
-    public class NAV_TITLE
+    internal class NAV_TITLE
     {
         public BD_DISC? disc = null;
         public string name;
@@ -31,7 +31,7 @@ namespace libbluray.bdnav
         public NAV_TITLE() { }
     }
 
-    public struct NAV_MARK
+    internal struct NAV_MARK
     {
         public int number;
         public int mark_type;
@@ -47,7 +47,7 @@ namespace libbluray.bdnav
         public NAV_MARK() { }
     }
 
-    public struct NAV_MARK_LIST
+    internal struct NAV_MARK_LIST
     {
         public uint count;
         public Ref<NAV_MARK> mark = new();
@@ -55,7 +55,7 @@ namespace libbluray.bdnav
         public NAV_MARK_LIST() { }
     }
 
-    public struct NAV_CLIP
+    internal struct NAV_CLIP
     {
         public string name;
         public UInt32 clip_id;
@@ -89,7 +89,7 @@ namespace libbluray.bdnav
         public NAV_CLIP() { }
     }
 
-    public struct NAV_CLIP_LIST
+    internal struct NAV_CLIP_LIST
     {
         public uint count;
         public Ref<NAV_CLIP> clip = new();
@@ -97,7 +97,7 @@ namespace libbluray.bdnav
         public NAV_CLIP_LIST() { }
     }
 
-    public struct NAV_SUB_PATH
+    internal struct NAV_SUB_PATH
     {
         public byte type;
         public NAV_CLIP_LIST clip_list = new();
@@ -105,7 +105,7 @@ namespace libbluray.bdnav
         public NAV_SUB_PATH() { }
     }
 
-    public struct NAV_TITLE_INFO
+    internal struct NAV_TITLE_INFO
     {
         public string name;
         public UInt32 mpls_id;
@@ -115,7 +115,7 @@ namespace libbluray.bdnav
         public NAV_TITLE_INFO() { }
     }
 
-    public struct NAV_TITLE_LIST
+    internal struct NAV_TITLE_LIST
     {
         public uint count;
         public Ref<NAV_TITLE_INFO> title_info = new();
@@ -125,7 +125,7 @@ namespace libbluray.bdnav
         public NAV_TITLE_LIST() { }
     }
 
-    public static class Navigation
+    internal static class Navigation
     {
         // TODO create enum
         public const int CONNECT_NON_SEAMLESS = 0;
@@ -137,8 +137,7 @@ namespace libbluray.bdnav
         public const int TITLES_FILTER_DUP_CLIP = 0x02;
         public const int TITLES_RELEVANT = (TITLES_FILTER_DUP_TITLE | TITLES_FILTER_DUP_CLIP);
 
-        static UInt32
-_pl_duration(Ref<MPLS_PL> pl)
+        static UInt32 _pl_duration(Ref<MPLS_PL> pl)
         {
             uint ii;
             UInt32 duration = 0;
@@ -152,8 +151,7 @@ _pl_duration(Ref<MPLS_PL> pl)
             return duration;
         }
 
-        static UInt32
-        _pl_chapter_count(Ref<MPLS_PL> pl)
+        static UInt32 _pl_chapter_count(Ref<MPLS_PL> pl)
         {
             uint ii, chapters = 0;
 
@@ -169,8 +167,7 @@ _pl_duration(Ref<MPLS_PL> pl)
             return chapters;
         }
 
-        static UInt32
-        _pl_streams_score(Ref<MPLS_PL> pl)
+        static UInt32 _pl_streams_score(Ref<MPLS_PL> pl)
         {
             Ref<MPLS_PI> pi;
             UInt32 i_num_audio = 0;

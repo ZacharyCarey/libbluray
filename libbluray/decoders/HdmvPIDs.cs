@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public static class HdmvPIDs
+    internal static class HdmvPIDs
     {
         /*
          * HDMV transport stream PIDs

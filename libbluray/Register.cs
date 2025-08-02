@@ -16,7 +16,7 @@ namespace libbluray
     /// <summary>
     /// Player Status Registers
     /// </summary>
-    public enum bd_psr_idx : uint
+    internal enum bd_psr_idx : uint
     {
         PSR_IG_STREAM_ID = 0,
         PSR_PRIMARY_AUDIO_ID = 1,
@@ -100,7 +100,7 @@ namespace libbluray
     /// <summary>
     /// event data
     /// </summary>
-    public struct BD_PSR_EVENT
+    internal struct BD_PSR_EVENT
     {
         /// <summary>
         /// event type
@@ -123,13 +123,13 @@ namespace libbluray
         public UInt32 new_val; 
     }
 
-    public struct PSR_CB_DATA
+    internal struct PSR_CB_DATA
     {
         public object handle;
         public Action<object, Ref<BD_PSR_EVENT>> cb;
     }
 
-    public struct BD_REGISTERS
+    internal struct BD_REGISTERS
     {
         public UInt32[] psr = new uint[Register.BD_PSR_COUNT];
         public UInt32[] gpr = new uint[Register.BD_GPR_COUNT];
@@ -143,7 +143,7 @@ namespace libbluray
         public BD_REGISTERS() { }
     }
 
-    public static class Register
+    internal static class Register
     {
         /// <summary>
         /// backup player state. Single event, psr_idx and values undefined

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace libbluray.decoders
 {
 
-    public struct GRAPHICS_PROCESSOR
+    internal struct GRAPHICS_PROCESSOR
     {
         public UInt16 pid;
         public Ref<M2TS_DEMUX> demux = new();
@@ -18,7 +18,7 @@ namespace libbluray.decoders
         public GRAPHICS_PROCESSOR() { }
     }
 
-    public struct PG_DISPLAY_SET
+    internal struct PG_DISPLAY_SET
     {
         public Int64 valid_pts;
         public byte complete;     /* set complete: last decoded segment was END_OF_DISPLAY */
@@ -48,7 +48,7 @@ namespace libbluray.decoders
     /// <summary>
     /// segment types
     /// </summary>
-    public enum pgs_segment_type_e
+    internal enum pgs_segment_type_e
     {
         PGS_PALETTE = 0x14,
         PGS_OBJECT = 0x15,
@@ -61,7 +61,7 @@ namespace libbluray.decoders
         TGS_DIALOG_PRESENTATION = 0x82,
     }
 
-    public static class GraphicsProcessor
+    internal static class GraphicsProcessor
     {
         static void GP_TRACE(string msg) => throw new Exception(msg);
 

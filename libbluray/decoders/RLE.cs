@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public struct RLE_ENC
+    internal struct RLE_ENC
     {
         /// <summary>
         /// current element
@@ -30,7 +30,7 @@ namespace libbluray.decoders
         public RLE_ENC() { }
     }
 
-    public static class RLE
+    internal static class RLE
     {
         public static int rle_begin(Ref<RLE_ENC> p)
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.bdnav
 {
-    public enum UoMaskIndexType
+    internal enum UoMaskIndexType
     {
         UO_MASK_MENU_CALL_INDEX = 0,
         UO_MASK_TITLE_SEARCH_INDEX = 1

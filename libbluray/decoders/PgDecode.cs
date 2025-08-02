@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public static class PgDecode
+    internal static class PgDecode
     {
         internal static void pg_decode_video_descriptor(Ref<BITBUFFER> bb, Ref<BD_PG_VIDEO_DESCRIPTOR> p)
         {

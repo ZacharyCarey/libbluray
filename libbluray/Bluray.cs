@@ -1104,12 +1104,14 @@ namespace libbluray
         /// <summary>
         /// Event type (\ref bd_event_e)
         /// </summary>
-        public bd_event_e _event;
+        internal bd_event_e _event;
 
         /// <summary>
         /// Event data
         /// </summary>
-        public UInt32 param; 
+        internal UInt32 param;
+
+        public BD_EVENT() { }
     }
 
     internal enum BD_TITLE_TYPE
@@ -2511,7 +2513,7 @@ namespace libbluray
         const int BDJ_MENU_CALL_MASK = 0x01;
         const int BDJ_TITLE_SEARCH_MASK = 0x02;
 
-        public static void bd_set_bdj_uo_mask(Ref<BLURAY> bd, uint mask)
+        internal static void bd_set_bdj_uo_mask(Ref<BLURAY> bd, uint mask)
         {
             bd.Value.title_uo_mask.title_search = (mask & BDJ_TITLE_SEARCH_MASK) != 0;
             bd.Value.title_uo_mask.menu_call = (mask & BDJ_MENU_CALL_MASK) != 0;
@@ -2519,7 +2521,7 @@ namespace libbluray
             _update_uo_mask(bd);
         }
 
-        public static UInt64 bd_get_uo_mask(Ref<BLURAY> bd)
+        internal static UInt64 bd_get_uo_mask(Ref<BLURAY> bd)
         {
             /* internal function. Used by BD-J. */
             BD_UO_MASK mask;
@@ -2531,12 +2533,12 @@ namespace libbluray
             return mask.AsInt;
         }
 
-        public static void bd_set_bdj_kit(Ref<BLURAY> bd, int mask)
+        internal static void bd_set_bdj_kit(Ref<BLURAY> bd, int mask)
         {
             _queue_event(bd, bd_event_e.BD_EVENT_KEY_INTEREST_TABLE, (uint)mask);
         }
 
-        public static int bd_bdj_sound_effect(Ref<BLURAY> bd, int id)
+        internal static int bd_bdj_sound_effect(Ref<BLURAY> bd, int id)
         {
             if (bd.Value.sound_effects && id >= bd.Value.sound_effects.Value.num_sounds)
             {
@@ -2551,14 +2553,14 @@ namespace libbluray
             return 0;
         }
 
-        public enum bd_select_rate_reason
+        internal enum bd_select_rate_reason
         {
             BDJ_RATE_SET = 0,
             BDJ_PLAYBACK_START = 1,
             BDJ_PLAYBACK_STOP = 2,
         }
 
-        public static void bd_select_rate(Ref<BLURAY> bd, float rate, bd_select_rate_reason reason)
+        internal static void bd_select_rate(Ref<BLURAY> bd, float rate, bd_select_rate_reason reason)
         {
             if (reason == bd_select_rate_reason.BDJ_PLAYBACK_STOP)
             {
@@ -2582,7 +2584,7 @@ namespace libbluray
             }
         }
 
-        public static int bd_bdj_seek(Ref<BLURAY> bd, int playitem, int playmark, Int64 time)
+        internal static int bd_bdj_seek(Ref<BLURAY> bd, int playitem, int playmark, Int64 time)
         {
             bd.Value.mutex.bd_mutex_lock();
 
@@ -2629,7 +2631,7 @@ namespace libbluray
             return 0;
         }
 
-        public static int bd_set_virtual_package(Ref<BLURAY> bd, string vp_path, int psr_init_backup)
+        internal static int bd_set_virtual_package(Ref<BLURAY> bd, string vp_path, int psr_init_backup)
         {
             int ret;
             bd.Value.mutex.bd_mutex_lock();
@@ -2638,12 +2640,12 @@ namespace libbluray
             return ret;
         }
 
-        public static BD_DISC? bd_get_disc(Ref<BLURAY> bd)
+        internal static BD_DISC? bd_get_disc(Ref<BLURAY> bd)
         {
             return bd ? bd.Value.disc : null;
         }
 
-        public static UInt32 bd_reg_read(Ref<BLURAY> bd, int psr, bd_psr_idx reg)
+        internal static UInt32 bd_reg_read(Ref<BLURAY> bd, int psr, bd_psr_idx reg)
         {
             if (psr != 0)
             {
@@ -2655,7 +2657,7 @@ namespace libbluray
             }
         }
 
-        public static int bd_reg_write(Ref<BLURAY> bd, int psr, bd_psr_idx reg, UInt32 value, UInt32 psr_value_mask)
+        internal static int bd_reg_write(Ref<BLURAY> bd, int psr, bd_psr_idx reg, UInt32 value, UInt32 psr_value_mask)
         {
             if (psr != 0)
             {
@@ -2677,13 +2679,13 @@ namespace libbluray
             }
         }
 
-        public static Ref<BD_ARGB_BUFFER> bd_lock_osd_buffer(Ref<BLURAY> bd)
+        internal static Ref<BD_ARGB_BUFFER> bd_lock_osd_buffer(Ref<BLURAY> bd)
         {
             bd.Value.argb_buffer_mutex.bd_mutex_lock();
             return bd.Value.argb_buffer;
         }
 
-        public static void bd_unlock_osd_buffer(Ref<BLURAY> bd)
+        internal static void bd_unlock_osd_buffer(Ref<BLURAY> bd)
         {
             bd.Value.argb_buffer_mutex.bd_mutex_unlock();
         }
@@ -2691,7 +2693,7 @@ namespace libbluray
         /*
          * handle graphics updates from BD-J layer
          */
-        public static void bd_bdj_osd_cb(Ref<BLURAY> bd, Ref<uint> img, int w, int h,
+        internal static void bd_bdj_osd_cb(Ref<BLURAY> bd, Ref<uint> img, int w, int h,
                            int x0, int y0, int x1, int y1)
         {
             Variable<BD_ARGB_OVERLAY> aov = new();
@@ -4119,7 +4121,7 @@ namespace libbluray
         }
 
         /* BD-J callback */
-        public static int bd_play_playlist_at(Ref<BLURAY> bd, int playlist, int playitem, int playmark, Int64 time)
+        internal static int bd_play_playlist_at(Ref<BLURAY> bd, int playlist, int playitem, int playmark, Int64 time)
         {
             int result;
 
@@ -4738,7 +4740,7 @@ namespace libbluray
         /// <summary>
         /// Select subtitle stream
         /// </summary>
-        public const uint BLURAY_PG_TEXTST_STREAM = 1;
+        internal const uint BLURAY_PG_TEXTST_STREAM = 1;
 
 
         /// <summary>
@@ -5055,13 +5057,13 @@ namespace libbluray
         }
 
         static bd_psr_idx[] psrs = {
-        bd_psr_idx.PSR_ANGLE_NUMBER,
-        bd_psr_idx.PSR_TITLE_NUMBER,
-        bd_psr_idx.PSR_IG_STREAM_ID,
-        bd_psr_idx.PSR_PRIMARY_AUDIO_ID,
-        bd_psr_idx.PSR_PG_STREAM,
-        bd_psr_idx.PSR_SECONDARY_AUDIO_VIDEO,
-    };
+            bd_psr_idx.PSR_ANGLE_NUMBER,
+            bd_psr_idx.PSR_TITLE_NUMBER,
+            bd_psr_idx.PSR_IG_STREAM_ID,
+            bd_psr_idx.PSR_PRIMARY_AUDIO_ID,
+            bd_psr_idx.PSR_PG_STREAM,
+            bd_psr_idx.PSR_SECONDARY_AUDIO_VIDEO,
+        };
 
         static void _queue_initial_psr_events(Ref<BLURAY> bd)
         {
@@ -5208,7 +5210,7 @@ namespace libbluray
         }
 
         /* BD-J callback */
-        public static bool bd_play_title_internal(Ref<BLURAY> bd, uint title)
+        internal static bool bd_play_title_internal(Ref<BLURAY> bd, uint title)
         {
             /* used by BD-J. Like bd_play_title() but bypasses UO mask checks. */
             bool ret;
@@ -5611,7 +5613,7 @@ namespace libbluray
         /// </summary>
         /// <param name="bd">BLURAY object</param>
         /// <param name="pts">current playback position (1/90000s) or -1</param>
-        void bd_set_scr(Ref<BLURAY> bd, Int64 pts)
+        public static void bd_set_scr(Ref<BLURAY> bd, Int64 pts)
         {
             bd.Value.mutex.bd_mutex_lock();
             bd.Value.app_scr = 1;

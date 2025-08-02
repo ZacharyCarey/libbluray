@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public struct BD_PG_VIDEO_DESCRIPTOR
+    internal struct BD_PG_VIDEO_DESCRIPTOR
     {
         public UInt16 video_width;
         public UInt16 video_height;
@@ -16,7 +16,7 @@ namespace libbluray.decoders
         public BD_PG_VIDEO_DESCRIPTOR() { }
     }
 
-    public struct BD_PG_COMPOSITION_DESCRIPTOR
+    internal struct BD_PG_COMPOSITION_DESCRIPTOR
     {
         public UInt16 number;
         public byte state;
@@ -24,7 +24,7 @@ namespace libbluray.decoders
         public BD_PG_COMPOSITION_DESCRIPTOR() { }
     }
 
-    public struct BD_PG_SEQUENCE_DESCRIPTOR
+    internal struct BD_PG_SEQUENCE_DESCRIPTOR
     {
         public byte first_in_seq;
         public byte last_in_seq;
@@ -32,7 +32,7 @@ namespace libbluray.decoders
         public BD_PG_SEQUENCE_DESCRIPTOR() { }
     }
 
-    public struct BD_PG_WINDOW
+    internal struct BD_PG_WINDOW
     {
         public byte id;
         public UInt16 x;
@@ -43,7 +43,7 @@ namespace libbluray.decoders
         public BD_PG_WINDOW() { }
     }
 
-    public struct BD_PG_COMPOSITION_OBJECT
+    internal struct BD_PG_COMPOSITION_OBJECT
     {
         public UInt16 object_id_ref;
         public byte window_id_ref;
@@ -61,7 +61,7 @@ namespace libbluray.decoders
         public BD_PG_COMPOSITION_OBJECT() { }
     }
 
-    public struct BD_PG_PALETTE
+    internal struct BD_PG_PALETTE
     {
         public Int64 pts;
 
@@ -73,7 +73,7 @@ namespace libbluray.decoders
         public BD_PG_PALETTE() { }
     }
 
-    public struct BD_PG_OBJECT
+    internal struct BD_PG_OBJECT
     {
         public Int64 pts;
 
@@ -88,7 +88,7 @@ namespace libbluray.decoders
         public BD_PG_OBJECT() { }
     }
 
-    public struct BD_PG_COMPOSITION
+    internal struct BD_PG_COMPOSITION
     {
         public Int64 pts;
 
@@ -104,7 +104,7 @@ namespace libbluray.decoders
         public BD_PG_COMPOSITION() { }
     }
 
-    public struct BD_PG_WINDOWS
+    internal struct BD_PG_WINDOWS
     {
         public Int64 pts;
 

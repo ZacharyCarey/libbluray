@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.bdnav
 {
-    public static class BdParse
+    internal static class BdParse
     {
 
         public const uint BD_STREAM_TYPE_VIDEO_MPEG1 = 0x01;

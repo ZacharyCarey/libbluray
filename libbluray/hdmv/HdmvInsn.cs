@@ -9,7 +9,7 @@ namespace libbluray.hdmv
     /// <summary>
     /// instruction groups
     /// </summary>
-    public enum hdmv_insn_grp
+    internal enum hdmv_insn_grp
     {
         INSN_GROUP_BRANCH = 0,
         INSN_GROUP_CMP = 1,
@@ -19,7 +19,7 @@ namespace libbluray.hdmv
     /// <summary>
     /// BRANCH sub-groups
     /// </summary>
-    public enum hdmv_insn_grp_branch
+    internal enum hdmv_insn_grp_branch
     {
         BRANCH_GOTO = 0x00,
         BRANCH_JUMP = 0x01,
@@ -29,7 +29,7 @@ namespace libbluray.hdmv
     /// <summary>
     /// GOTO sub-group
     /// </summary>
-    public enum hdmv_insn_goto
+    internal enum hdmv_insn_goto
     {
         INSN_NOP = 0x00,
         INSN_GOTO = 0x01,
@@ -39,7 +39,7 @@ namespace libbluray.hdmv
     /// <summary>
     /// JUMP sub-group
     /// </summary>
-    public enum hdmv_insn_jump
+    internal enum hdmv_insn_jump
     {
         INSN_JUMP_OBJECT = 0x00,
         INSN_JUMP_TITLE = 0x01,
@@ -51,7 +51,7 @@ namespace libbluray.hdmv
     /// <summary>
     /// PLAY sub-group
     /// </summary>
-    public enum hdmv_insn_play
+    internal enum hdmv_insn_play
     {
         INSN_PLAY_PL = 0x00,
         INSN_PLAY_PL_PI = 0x01,
@@ -64,7 +64,7 @@ namespace libbluray.hdmv
     /// <summary>
     /// COMPARE group
     /// </summary>
-    public enum hdmv_insn_cmp
+    internal enum hdmv_insn_cmp
     {
         INSN_BC = 0x01,
         INSN_EQ = 0x02,
@@ -78,7 +78,7 @@ namespace libbluray.hdmv
     /// <summary>
     /// SET sub-groups
     /// </summary>
-    public enum hdmv_insn_grp_set
+    internal enum hdmv_insn_grp_set
     {
         SET_SET = 0x00,
         SET_SETSYSTEM = 0x01,
@@ -87,7 +87,7 @@ namespace libbluray.hdmv
     /// <summary>
     /// SET sub-group
     /// </summary>
-    public enum hdmv_insn_set
+    internal enum hdmv_insn_set
     {
         INSN_MOVE = 0x01,
         INSN_SWAP = 0x02,
@@ -109,7 +109,7 @@ namespace libbluray.hdmv
     /// <summary>
     /// SETSYSTEM sub-group
     /// </summary>
-    public enum hdmv_insn_setsystem
+    internal enum hdmv_insn_setsystem
     {
         INSN_SET_STREAM = 0x01,
         INSN_SET_NV_TIMER = 0x02,

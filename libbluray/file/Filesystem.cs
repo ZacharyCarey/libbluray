@@ -233,7 +233,7 @@ namespace libbluray.file
         }
     }
 
-    public class DefaultDirectory : BD_DIR_H
+    internal class DefaultDirectory : BD_DIR_H
     {
         private string[] Entries;
         private int Index = 0;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.hdmv
 {
-    public static class MobjParse
+    internal static class MobjParse
     {
         const UInt32 MOBJ_SIG1 = ('M' << 24) | ('O' << 16) | ('B' << 8) | 'J';
 

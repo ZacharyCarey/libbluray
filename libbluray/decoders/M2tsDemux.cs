@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public struct M2TS_DEMUX
+    internal struct M2TS_DEMUX
     {
         public UInt16 pid;
         public UInt32 pes_length;
@@ -19,7 +19,7 @@ namespace libbluray.decoders
     /// <summary>
     /// simple single-pid demuxer for BDAV m2ts.
     /// </summary>
-    public static class M2tsDemux
+    internal static class M2tsDemux
     {
         /*
  *

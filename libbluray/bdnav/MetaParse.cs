@@ -109,7 +109,7 @@ namespace libbluray.bdnav
         public META_DL() { }
     }
 
-    public struct META_TN
+    internal struct META_TN
     {
         /// <summary>
         /// 3 bytes
@@ -124,7 +124,7 @@ namespace libbluray.bdnav
         public META_TN() { }
     }
 
-    public struct META_ROOT
+    internal struct META_ROOT
     {
         public byte dl_count;
         public Ref<META_DL> dl_entries = new();
@@ -136,7 +136,7 @@ namespace libbluray.bdnav
 
     }
 
-    public static class MetaParse
+    internal static class MetaParse
     {
         private const string DEFAULT_LANGUAGE = "eng";
         private const UInt32 MAX_META_FILE_SIZE = 0xfffff;

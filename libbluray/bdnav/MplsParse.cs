@@ -132,7 +132,7 @@ namespace libbluray.bdnav
         public MPLS_SUB_PI() { }
     }
 
-    public enum mpls_sub_path_type
+    internal enum mpls_sub_path_type
     {
         //mpls_sub_path_        = 2,  /* Primary audio of the Browsable slideshow */
         mpls_sub_path_ig_menu = 3,  /* Interactive Graphics presentation menu */
@@ -154,7 +154,7 @@ namespace libbluray.bdnav
         public MPLS_SUB() { }
     }
 
-    public enum mpls_pip_scaling
+    internal enum mpls_pip_scaling
     {
         pip_scaling_none = 1,       /* unscaled */
         pip_scaling_half = 2,       /* 1:2 */
@@ -173,7 +173,7 @@ namespace libbluray.bdnav
         public MPLS_PIP_DATA() { }
     }
 
-    public enum mpls_pip_timeline
+    internal enum mpls_pip_timeline
     {
         pip_timeline_sync_mainpath = 1,  /* timeline refers to main path */
         pip_timeline_async_subpath = 2,  /* timeline refers to sub-path time */
@@ -196,7 +196,7 @@ namespace libbluray.bdnav
     }
 
     // /* They are stored as GBR, we would like to show them as RGB */
-    public enum mpls_static_primaries
+    internal enum mpls_static_primaries
     {
         primary_green,
         primary_blue,
@@ -248,7 +248,7 @@ namespace libbluray.bdnav
         public MPLS_PL() { }
     }
 
-    public static class MplsParse
+    internal static class MplsParse
     {
         internal const UInt32 MPLS_SIG1 = ('M' << 24) | ('P' << 16) | ('L' << 8) | 'S';
         // TODO make enum

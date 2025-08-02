@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace libbluray.util
 {
     [Flags]
-    internal enum DebugMaskEnum : UInt32
+    public enum DebugMaskEnum : UInt32
     {
         DBG_RESERVED = 0x00001, /*   (reserved) */
         DBG_CONFIGFILE = 0x00002, /*   (reserved for libaacs) */
@@ -30,7 +30,7 @@ namespace libbluray.util
         DBG_JNI = 0x20000, /**< JNI calls */
     }
 
-    internal class Logging
+    public class Logging
     {
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace libbluray.util
         private static int debug_init = 0;
         private static int debug_file = 0;
         private static FileStream logfile = null;
-        public static void bd_debug(DebugMaskEnum mask, string msg, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
+        internal static void bd_debug(DebugMaskEnum mask, string msg, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
             if (debug_init == 0)
             {
@@ -86,7 +86,7 @@ namespace libbluray.util
                 Console.WriteLine(msg);
             }
         }
-        public static void bd_debug(string msg, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
+        internal static void bd_debug(string msg, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
             Console.WriteLine(msg);
         }

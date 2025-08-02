@@ -14,7 +14,7 @@ namespace libbluray.disc
     /// <summary>
     /// application provided file system access (optional)
     /// </summary>
-    public class fs_access {
+    internal class fs_access {
         public object fs_handle = default;
 
         // Method 1: block (device) access
@@ -983,7 +983,7 @@ namespace libbluray.disc
         }
     }
 
-    public class BD_DISC
+    internal class BD_DISC
     {
         /// <summary>
         /// protect access to overlay root

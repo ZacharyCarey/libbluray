@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public struct TEXTST_BITMAP
+    internal struct TEXTST_BITMAP
     {
         public Ref<byte> mem = new();
         public UInt16 width;
@@ -25,7 +25,7 @@ namespace libbluray.decoders
         public TEXTST_BITMAP() { }
     }
 
-    public struct FONT_DATA
+    internal struct FONT_DATA
     {
 #if HAVE_FT2
         FT_Face face;
@@ -33,7 +33,7 @@ namespace libbluray.decoders
 #endif
     }
 
-    public struct TEXTST_RENDER
+    internal struct TEXTST_RENDER
     {
 #if HAVE_FT2
         FT_Library ft_lib;
@@ -45,7 +45,7 @@ namespace libbluray.decoders
 #endif
     }
 
-    public static class TextstRender
+    internal static class TextstRender
     {
         static void TEXTST_ERROR(string msg, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0) => Logging.bd_debug(DebugMaskEnum.DBG_GC | DebugMaskEnum.DBG_CRIT, msg, file, line);
         static void TEXTST_TRACE(string msg, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0) => Logging.bd_debug(DebugMaskEnum.DBG_GC, msg, file, line);

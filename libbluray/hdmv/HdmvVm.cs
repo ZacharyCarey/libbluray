@@ -13,7 +13,7 @@ namespace libbluray.hdmv
     /// <summary>
     /// events from hdmv_run()
     /// </summary>
-    public enum hdmv_event_e
+    internal enum hdmv_event_e
     {
         /// <summary>
         /// no events
@@ -80,7 +80,7 @@ namespace libbluray.hdmv
         HDMV_EVENT_POPUP_OFF,
     }
 
-    public struct HDMV_EVENT
+    internal struct HDMV_EVENT
     {
         public hdmv_event_e _event;
         public UInt32 _param;
@@ -89,7 +89,7 @@ namespace libbluray.hdmv
         public HDMV_EVENT() { }
     }
 
-    public struct HDMV_VM
+    internal struct HDMV_VM
     {
         public BD_MUTEX mutex = new();
 
@@ -128,7 +128,7 @@ namespace libbluray.hdmv
         }
     }
 
-    public struct NV_TIMER
+    internal struct NV_TIMER
     {
         public DateTime time = new();
         public UInt32 mobj_id;

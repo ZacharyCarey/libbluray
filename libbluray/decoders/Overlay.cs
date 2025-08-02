@@ -293,12 +293,12 @@ namespace libbluray.decoders
         /// <summary>
         /// Lock (or prepare) buffer for writing
         /// </summary>
-        public Action<Ref<BD_ARGB_BUFFER>> _lock;
+        internal Action<Ref<BD_ARGB_BUFFER>> _lock;
 
         /// <summary>
         /// Unlock buffer (write complete)
         /// </summary>
-        public Action<Ref<BD_ARGB_BUFFER>> unlock;
+        internal Action<Ref<BD_ARGB_BUFFER>> unlock;
 
         /// <summary>
         /// ARGB frame buffers
@@ -308,7 +308,7 @@ namespace libbluray.decoders
         /// 
         /// [0] - PG plane, [1] - IG plane. [2], [3] reserved for stereoscopic overlay.
         /// </summary>
-        public Ref<UInt32>[] buf = new Ref<uint>[4];
+        internal Ref<UInt32>[] buf = new Ref<uint>[4];
 
         /* size of buffers
          * - Set by application

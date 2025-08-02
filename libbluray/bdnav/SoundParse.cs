@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.bdnav
 {
-    public struct SOUND_OBJECT
+    internal struct SOUND_OBJECT
     {
         public UInt32 sample_rate;
         public byte num_channels;
@@ -26,7 +26,7 @@ namespace libbluray.bdnav
         public SOUND_OBJECT() { }
     }
 
-    public struct SOUND_DATA
+    internal struct SOUND_DATA
     {
         public UInt16 num_sounds;
         public Ref<SOUND_OBJECT> sounds = new();
@@ -34,7 +34,7 @@ namespace libbluray.bdnav
         public SOUND_DATA() { }
     }
 
-    public static class SoundParse
+    internal static class SoundParse
     {
         private const UInt32 BCLK_SIG1 = ('B' << 24) | ('C' << 16) | ('L' << 8) | 'K';
         static bool _bclk_parse_header(Ref<BITSTREAM> bs, Ref<UInt32> data_start, Ref<UInt32> extension_data_start)

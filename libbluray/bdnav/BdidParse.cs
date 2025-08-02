@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace libbluray.bdnav
 {
-    public struct BDID_DATA
+    internal struct BDID_DATA
     {
         public string org_id;
         public string disc_id;
     }
 
-    public static class BdidParse
+    internal static class BdidParse
     {
         const UInt32 BDID_SIG1 = ('B' << 24) | ('D' << 16) | ('I' << 8) | 'D';
 

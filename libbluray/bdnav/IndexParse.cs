@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.bdnav
 {
-    public enum indx_video_format
+    internal enum indx_video_format
     {
         indx_video_format_ignored,
         indx_video_480i,
@@ -22,7 +22,7 @@ namespace libbluray.bdnav
         indx_video_576p,
     }
 
-    public enum indx_frame_rate
+    internal enum indx_frame_rate
     {
         indx_fps_reserved1,
         indx_fps_23_976,
@@ -34,25 +34,25 @@ namespace libbluray.bdnav
         indx_fps_59_94,
     }
 
-    public enum indx_object_type
+    internal enum indx_object_type
     {
         indx_object_type_hdmv = 1,
         indx_object_type_bdj = 2,
     }
 
-    public enum indx_hdmv_playback_type
+    internal enum indx_hdmv_playback_type
     {
         indx_hdmv_playback_type_movie = 0,
         indx_hdmv_playback_type_interactive = 1,
     }
 
-    public enum indx_bdj_playback_type
+    internal enum indx_bdj_playback_type
     {
         indx_bdj_playback_type_movie = 2,
         indx_bdj_playback_type_interactive = 3,
     }
 
-    public enum indx_access_type
+    internal enum indx_access_type
     {
         /// <summary>
         /// jump into this title is permitted.  title number may be shown on UI.
@@ -70,7 +70,7 @@ namespace libbluray.bdnav
         indx_access_hidden = 3,  
     }
 
-    public struct INDX_APP_INFO
+    internal struct INDX_APP_INFO
     {
         /// <summary>
         /// 0 = 2D, 1 = 3D
@@ -87,7 +87,7 @@ namespace libbluray.bdnav
         public INDX_APP_INFO() { }
     }
 
-    public struct INDX_BDJ_OBJ
+    internal struct INDX_BDJ_OBJ
     {
         public indx_bdj_playback_type playback_type;
 
@@ -99,7 +99,7 @@ namespace libbluray.bdnav
         public INDX_BDJ_OBJ() { }
     }
 
-    public struct INDX_HDMV_OBJ
+    internal struct INDX_HDMV_OBJ
     {
         public indx_hdmv_playback_type playback_type;
         public ushort id_ref;
@@ -107,7 +107,7 @@ namespace libbluray.bdnav
         public INDX_HDMV_OBJ() { }
     }
 
-    public struct INDX_PLAY_ITEM
+    internal struct INDX_PLAY_ITEM
     {
         public indx_object_type object_type;
         public Variable<INDX_BDJ_OBJ> bdj = new();
@@ -116,7 +116,7 @@ namespace libbluray.bdnav
         public INDX_PLAY_ITEM() { }
     }
 
-    public struct INDX_TITLE
+    internal struct INDX_TITLE
     {
         public indx_object_type object_type;
         public byte access_type;
@@ -126,7 +126,7 @@ namespace libbluray.bdnav
         public INDX_TITLE() { }
     }
 
-    public struct INDX_ROOT
+    internal struct INDX_ROOT
     {
         public Variable<INDX_APP_INFO> app_info = new();
         public Variable<INDX_PLAY_ITEM> first_play = new();

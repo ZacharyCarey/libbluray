@@ -7,7 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace libbluray.util
 {
-    internal class DataRef<T> where T : struct
+    public class DataRef<T> where T : struct
     {
         public T Value;
 

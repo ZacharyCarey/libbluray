@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public struct M2TS_FILTER
+    internal struct M2TS_FILTER
     {
         public Ref<UInt16> wipe_pid = new();
         public Ref<UInt16> pass_pid = new();
@@ -34,7 +34,7 @@ namespace libbluray.decoders
     ///  simple timestamp filter for BDAV m2ts.
     ///  Used to cut stream at specific timestamps.
     /// </summary>
-    public static class M2tsFilter
+    internal static class M2tsFilter
     {
         internal static void M2TS_TRACE(string msg, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {

@@ -13,7 +13,7 @@ using static libbluray.decoders.GraphicsController;
 
 namespace libbluray.decoders
 {
-    public struct GRAPHICS_CONTROLLER
+    internal struct GRAPHICS_CONTROLLER
     {
         public Ref<BD_REGISTERS> regs = new();
 
@@ -86,7 +86,7 @@ namespace libbluray.decoders
         }
     }
 
-    public enum gc_ctrl_e
+    internal enum gc_ctrl_e
     {
         /* */
         GC_CTRL_INIT_MENU,
@@ -154,7 +154,7 @@ namespace libbluray.decoders
         GC_CTRL_STYLE_SELECT,    
     }
 
-    public struct GC_NAV_CMDS
+    internal struct GC_NAV_CMDS
     {
         /* HDMV navigation command sequence */
         public int num_nav_cmds;
@@ -174,7 +174,7 @@ namespace libbluray.decoders
         public GC_NAV_CMDS() { }
     }
 
-    public struct BOG_DATA
+    internal struct BOG_DATA
     {
         /// <summary>
         /// enabled button id
@@ -204,7 +204,7 @@ namespace libbluray.decoders
         public BOG_DATA() { }
     }
 
-    public enum ButtonState
+    internal enum ButtonState
     {
         BTN_NORMAL,
         BTN_SELECTED,
@@ -215,10 +215,10 @@ namespace libbluray.decoders
     {
         public delegate void gc_overlay_proc_f(object? a, Ref<BD_OVERLAY> b);
 
-        public const int GC_STATUS_NONE = 0;
-        public const int GC_STATUS_POPUP = 1;  /* popup menu loaded */
-        public const int GC_STATUS_MENU_OPEN = 2;  /* menu open */
-        public const int GC_STATUS_ANIMATE = 4;  /* animation or effect running */
+        internal const int GC_STATUS_NONE = 0;
+        internal const int GC_STATUS_POPUP = 1;  /* popup menu loaded */
+        internal const int GC_STATUS_MENU_OPEN = 2;  /* menu open */
+        internal const int GC_STATUS_ANIMATE = 4;  /* animation or effect running */
 
         static void GC_ERROR(string msg, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {

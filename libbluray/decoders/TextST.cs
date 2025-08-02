@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public enum BD_TEXTST_DATA_Type
+    internal enum BD_TEXTST_DATA_Type
     {
         BD_TEXTST_DATA_STRING = 1,
         BD_TEXTST_DATA_FONT_ID = 2,
@@ -18,7 +18,7 @@ namespace libbluray.decoders
         BD_TEXTST_DATA_RESET_STYLE = 0x0b
     }
 
-    public struct BD_TEXTST_RECT
+    internal struct BD_TEXTST_RECT
     {
         public UInt16 xpos;
         public UInt16 ypos;
@@ -28,7 +28,7 @@ namespace libbluray.decoders
         public BD_TEXTST_RECT() { }
     }
 
-    public struct BD_TEXTST_REGION_INFO
+    internal struct BD_TEXTST_REGION_INFO
     {
         public Variable<BD_TEXTST_RECT> region = new();
 
@@ -40,7 +40,7 @@ namespace libbluray.decoders
         public BD_TEXTST_REGION_INFO() { }
     }
 
-    public struct BD_TEXTST_FONT_STYLE
+    internal struct BD_TEXTST_FONT_STYLE
     {
         public bool bold;
         public bool italic;
@@ -49,7 +49,7 @@ namespace libbluray.decoders
         public BD_TEXTST_FONT_STYLE() { }
     }
 
-    public struct BD_TEXTST_REGION_STYLE
+    internal struct BD_TEXTST_REGION_STYLE
     {
         public byte region_style_id;
         public Variable<BD_TEXTST_REGION_INFO> region_info = new();
@@ -96,7 +96,7 @@ namespace libbluray.decoders
         public BD_TEXTST_REGION_STYLE() { }
     }
 
-    public struct BD_TEXTST_USER_STYLE
+    internal struct BD_TEXTST_USER_STYLE
     {
         public byte user_style_id;
         public Int16 region_hpos_delta;
@@ -111,7 +111,7 @@ namespace libbluray.decoders
         public BD_TEXTST_USER_STYLE() { }
     }
 
-    public struct BD_TEXTST_DATA
+    internal struct BD_TEXTST_DATA
     {
         public BD_TEXTST_DATA_Type type;  // BD_TEXTST_DATA_
 
@@ -149,7 +149,7 @@ namespace libbluray.decoders
         public BD_TEXTST_DATA() { }
     }
 
-    public struct BD_TEXTST_DIALOG_REGION
+    internal struct BD_TEXTST_DIALOG_REGION
     {
         public byte continous_present_flag;
         public byte forced_on_flag;
@@ -163,7 +163,7 @@ namespace libbluray.decoders
         public BD_TEXTST_DIALOG_REGION() { }
     }
 
-    public struct BD_TEXTST_DIALOG_STYLE
+    internal struct BD_TEXTST_DIALOG_STYLE
     {
         public byte player_style_flag;
         public byte region_style_count;
@@ -180,7 +180,7 @@ namespace libbluray.decoders
         }
     }
 
-    public struct BD_TEXTST_DIALOG_PRESENTATION
+    internal struct BD_TEXTST_DIALOG_PRESENTATION
     {
         public Int64 start_pts;
         public Int64 end_pts;
@@ -193,7 +193,7 @@ namespace libbluray.decoders
         public BD_TEXTST_DIALOG_PRESENTATION() { }
     }
 
-    public static class TextST
+    internal static class TextST
     {
         // TODO enums
         /// <summary>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace libbluray.decoders
 {
-    public struct BD_IG_BUTTON
+    internal struct BD_IG_BUTTON
     {
         public UInt16 id;
 
@@ -48,7 +48,7 @@ namespace libbluray.decoders
         public BD_IG_BUTTON() { }
     }
 
-    public struct BD_IG_BOG
+    internal struct BD_IG_BOG
     {
         public UInt16 default_valid_button_id_ref;
 
@@ -58,7 +58,7 @@ namespace libbluray.decoders
         public BD_IG_BOG() { }
     }
 
-    public struct BD_IG_EFFECT
+    internal struct BD_IG_EFFECT
     {
         public UInt32 duration;        /* 90kHz ticks */
         public byte palette_id_ref;
@@ -69,7 +69,7 @@ namespace libbluray.decoders
         public BD_IG_EFFECT() { }
     }
 
-    public struct BD_IG_EFFECT_SEQUENCE
+    internal struct BD_IG_EFFECT_SEQUENCE
     {
         public byte num_windows;
         public Ref<BD_PG_WINDOW> window = new();
@@ -80,7 +80,7 @@ namespace libbluray.decoders
         public BD_IG_EFFECT_SEQUENCE() { }
     }
 
-    public struct BD_IG_PAGE
+    internal struct BD_IG_PAGE
     {
         public byte id;
         public byte version;
@@ -102,7 +102,7 @@ namespace libbluray.decoders
         public BD_IG_PAGE() { }
     }
 
-    public struct BD_IG_INTERACTIVE_COMPOSITION
+    internal struct BD_IG_INTERACTIVE_COMPOSITION
     {
         public byte stream_model;
 
@@ -121,7 +121,7 @@ namespace libbluray.decoders
         public BD_IG_INTERACTIVE_COMPOSITION() { }
     }
 
-    public struct BD_IG_INTERACTIVE
+    internal struct BD_IG_INTERACTIVE
     {
         public Int64 pts;
 
