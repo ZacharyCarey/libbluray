@@ -117,7 +117,7 @@ namespace libbluray.bdj
             return BDJ_CHECK_OK;*/
         }
 
-        public static Ref<BDJAVA> bdj_open(string path, Ref<BLURAY> bd, string bdj_disc_id, ref BDJ_CONFIG cfg)
+        public static Ref<BDJAVA> bdj_open(string path, BLURAY? bd, string bdj_disc_id, ref BDJ_CONFIG cfg)
         {
             return Ref<BDJAVA>.Null;
         }

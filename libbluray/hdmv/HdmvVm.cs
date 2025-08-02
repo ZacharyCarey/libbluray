@@ -95,7 +95,7 @@ namespace libbluray.hdmv
 
         /* state */
         public UInt32 pc;            /* program counter */
-        public Ref<BD_REGISTERS> regs = new();          /* player registers */
+        public BD_REGISTERS? regs = null;          /* player registers */
         public Ref<MOBJ_OBJECT> _object = new();    /* currently running object code */
 
         public HDMV_EVENT[] _event = new HDMV_EVENT[5];      /* pending events to return */
@@ -454,7 +454,7 @@ namespace libbluray.hdmv
          * vm init
          */
 
-        internal static Ref<HDMV_VM> hdmv_vm_init(BD_DISC disc, Ref<BD_REGISTERS> regs,
+        internal static Ref<HDMV_VM> hdmv_vm_init(BD_DISC disc, BD_REGISTERS? regs,
                               uint num_titles, uint first_play_available, uint top_menu_available)
         {
             Ref<HDMV_VM> p = Ref<HDMV_VM>.Allocate();

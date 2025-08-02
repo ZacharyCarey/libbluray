@@ -118,10 +118,10 @@ namespace libbluray.disc
             return 1;
         }*/
 
-        internal static int _dec_detect(dec_dev dev, Ref<BD_ENC_INFO> i)
+        internal static int _dec_detect(dec_dev dev, BD_ENC_INFO i)
         {
             /* Check for AACS */
-            i.Value.aacs_detected = 0; //libaacs_required((object)dev, _bdrom_have_file);
+            i.aacs_detected = 0; //libaacs_required((object)dev, _bdrom_have_file);
             /*if (!i->aacs_detected)
             {
                 // No AACS (=> no BD+) 
@@ -129,11 +129,11 @@ namespace libbluray.disc
             }*/
 
             /* check for BD+ */
-            i.Value.bdplus_detected = 0; // libbdplus_required((object)dev, _bdrom_have_file);
+            i.bdplus_detected = 0; // libbdplus_required((object)dev, _bdrom_have_file);
             return 1;
         }
 
-        internal static void _dec_load(BD_DEC dec, Ref<BD_ENC_INFO> i)
+        internal static void _dec_load(BD_DEC dec, BD_ENC_INFO i)
         {
             int force_mmbd_aacs = 0;
 
@@ -147,8 +147,8 @@ namespace libbluray.disc
             // load AACS library 
             //dec.aacs = libaacs_load(force_mmbd_aacs);
 
-            i.Value.libaacs_detected = 0; //(dec.aacs != null) ? 1 : 0;
-            i.Value.libbdplus_detected = 0; //(dec.bdplus != null) ? 1 : 0;
+            i.libaacs_detected = 0; //(dec.aacs != null) ? 1 : 0;
+            i.libbdplus_detected = 0; //(dec.bdplus != null) ? 1 : 0;
         }
     }
 
@@ -159,11 +159,11 @@ namespace libbluray.disc
         //internal BD_AACS aacs = null;
         //internal BD_BDPLUS bdplus = null;
 
-        public static BD_DEC dec_init(dec_dev dev, Ref<BD_ENC_INFO> enc_info, string keyfile_path, object regs, object psr_read, object psr_write)
+        public static BD_DEC dec_init(dec_dev dev, out BD_ENC_INFO enc_info, string keyfile_path, object regs, object psr_read, object psr_write)
         {
             BD_DEC dec = null;
 
-            enc_info.Value = new();
+            enc_info = new();
 
             /* detect AACS/BD+ */
             if (dec_dev._dec_detect(dev, enc_info) == 0)
@@ -187,7 +187,7 @@ namespace libbluray.disc
                 // _libbdplus_init(dec, dev, enc_info, regs, psr_read, psr_write);
             }*/
 
-            if (enc_info.Value.aacs_handled == 0)
+            if (enc_info.aacs_handled == 0)
             {
                 /* AACS failed, clean up */
                 dec.dec_close();

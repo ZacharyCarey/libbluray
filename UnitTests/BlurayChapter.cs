@@ -12,7 +12,7 @@ namespace UnitTests.BlurayInfo
 {
 	public partial class BlurayInfo
 	{
-		public static UInt64 bluray_chapter_first_position(Ref<BLURAY> bd, UInt32 title_ix, UInt32 chapter_ix)
+		public static UInt64 bluray_chapter_first_position(BLURAY bd, UInt32 title_ix, UInt32 chapter_ix)
 		{
 
 
@@ -46,7 +46,7 @@ namespace UnitTests.BlurayInfo
 			return position;
 		}
 
-		public static UInt64 bluray_chapter_last_position(Ref<BLURAY> bd, UInt32 title_ix, UInt32 chapter_ix)
+		public static UInt64 bluray_chapter_last_position(BLURAY bd, UInt32 title_ix, UInt32 chapter_ix)
 		{
 
 			// Start with the first position. It's not safe to assume that it's
@@ -104,7 +104,7 @@ namespace UnitTests.BlurayInfo
 		 * Each title has a padding of 768 bytes at its front, add it to the first chapter.
 		 */
 
-		public static UInt64 bluray_chapter_size(Ref<BLURAY> bd, UInt32 title_ix, UInt32 chapter_ix)
+		public static UInt64 bluray_chapter_size(BLURAY bd, UInt32 title_ix, UInt32 chapter_ix)
 		{
 
 			UInt64 size;

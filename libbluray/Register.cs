@@ -129,18 +129,18 @@ namespace libbluray
         public Action<object, Ref<BD_PSR_EVENT>> cb;
     }
 
-    internal struct BD_REGISTERS
+    internal class BD_REGISTERS
     {
         public UInt32[] psr = new uint[Register.BD_PSR_COUNT];
         public UInt32[] gpr = new uint[Register.BD_GPR_COUNT];
 
         /* callbacks */
         public uint num_cb;
-        public Ref<PSR_CB_DATA> cb;
+        public Ref<PSR_CB_DATA> cb = new();
 
         public BD_MUTEX mutex = new();
 
-        public BD_REGISTERS() { }
+        internal BD_REGISTERS() { }
     }
 
     internal static class Register
@@ -304,16 +304,12 @@ namespace libbluray
         /// Initialize registers
         /// </summary>
         /// <returns>allocated BD_REGISTERS object with default values</returns>
-        internal static Ref<BD_REGISTERS> bd_registers_init()
+        internal static BD_REGISTERS bd_registers_init()
         {
-            Ref<BD_REGISTERS> p = Ref<BD_REGISTERS>.Allocate();
+            BD_REGISTERS p = new();
 
-            if (p)
-            {
-                bd_psr_init.AsSpan().CopyTo(p.Value.psr);
-
-                p.Value.mutex = new(); //.bd_mutex_init();
-            }
+            bd_psr_init.AsSpan().CopyTo(p.psr);
+            p.mutex = new(); //.bd_mutex_init();
 
             return p;
         }
@@ -322,16 +318,16 @@ namespace libbluray
         /// Free BD_REGISTERS object
         /// </summary>
         /// <param name="p">BD_REGISTERS object</param>
-        internal static void bd_registers_free(Ref<BD_REGISTERS> p)
+        internal static void bd_registers_free(ref BD_REGISTERS? p)
         {
-            if (p)
+            if (p != null)
             {
-                p.Value.mutex.bd_mutex_destroy();
+                p.mutex.bd_mutex_destroy();
 
-                p.Value.cb.Free();
+                p.cb.Free();
             }
 
-            p.Free();
+            p = null;
         }
 
         /*
@@ -341,18 +337,18 @@ namespace libbluray
         /// Lock PSRs for atomic read-modify-write operation
         /// </summary>
         /// <param name="p">BD_REGISTERS object</param>
-        internal static void bd_psr_lock(Ref<BD_REGISTERS> p)
+        internal static void bd_psr_lock(BD_REGISTERS p)
         {
-            p.Value.mutex.bd_mutex_lock();
+            p.mutex.bd_mutex_lock();
         }
 
         /// <summary>
         /// Unlock PSRs
         /// </summary>
         /// <param name="p">BD_REGISTERS object</param>
-        internal static void bd_psr_unlock(Ref<BD_REGISTERS> p)
+        internal static void bd_psr_unlock(BD_REGISTERS p)
         {
-            p.Value.mutex.bd_mutex_unlock();
+            p.mutex.bd_mutex_unlock();
         }
 
         /*
@@ -366,7 +362,7 @@ namespace libbluray
         /// <param name="p">BD_REGISTERS object</param>
         /// <param name="callback">callback function pointer</param>
         /// <param name="cb_handle">application-specific handle that is provided to callback function as first parameter</param>
-        internal static void bd_psr_register_cb(Ref<BD_REGISTERS> p, Action<object, Ref<BD_PSR_EVENT>> callback, object cb_handle)
+        internal static void bd_psr_register_cb(BD_REGISTERS p, Action<object, Ref<BD_PSR_EVENT>> callback, object cb_handle)
         {
             /* no duplicates ! */
             Ref<PSR_CB_DATA> cb;
@@ -374,9 +370,9 @@ namespace libbluray
 
             bd_psr_lock(p);
 
-            for (i = 0; i < p.Value.num_cb; i++)
+            for (i = 0; i < p.num_cb; i++)
             {
-                if (p.Value.cb[i].handle == cb_handle && p.Value.cb[i].cb == callback)
+                if (p.cb[i].handle == cb_handle && p.cb[i].cb == callback)
                 {
 
                     bd_psr_unlock(p);
@@ -384,13 +380,13 @@ namespace libbluray
                 }
             }
 
-            cb = p.Value.cb.Reallocate(p.Value.num_cb + 1);
+            cb = p.cb.Reallocate(p.num_cb + 1);
             if (cb)
             {
-                p.Value.cb = cb;
-                p.Value.cb[p.Value.num_cb].cb = callback;
-                p.Value.cb[p.Value.num_cb].handle = cb_handle;
-                p.Value.num_cb++;
+                p.cb = cb;
+                p.cb[p.num_cb].cb = callback;
+                p.cb[p.num_cb].handle = cb_handle;
+                p.num_cb++;
             }
             else
             {
@@ -406,19 +402,19 @@ namespace libbluray
         /// <param name="p">BD_REGISTERS object</param>
         /// <param name="callback">callback function to unregister</param>
         /// <param name="cb_handle">application-specific handle that was used when callback was registered</param>
-        internal static void bd_psr_unregister_cb(Ref<BD_REGISTERS> p, Action<object, Ref<BD_PSR_EVENT>> callback, object cb_handle)
+        internal static void bd_psr_unregister_cb(BD_REGISTERS p, Action<object, Ref<BD_PSR_EVENT>> callback, object cb_handle)
         {
             uint i = 0;
 
             bd_psr_lock(p);
 
-            while (i < p.Value.num_cb)
+            while (i < p.num_cb)
             {
-                if (p.Value.cb[i].handle == cb_handle && p.Value.cb[i].cb == callback)
+                if (p.cb[i].handle == cb_handle && p.cb[i].cb == callback)
                 {
-                    if ((--p.Value.num_cb) != 0 && i < p.Value.num_cb)
+                    if ((--p.num_cb) != 0 && i < p.num_cb)
                     {
-                        (p.Value.cb + i + 1).AsSpan().Slice(0, (int)(p.Value.num_cb - i)).CopyTo((p.Value.cb + i).AsSpan());
+                        (p.cb + i + 1).AsSpan().Slice(0, (int)(p.num_cb - i)).CopyTo((p.cb + i).AsSpan());
                         continue;
                     }
                 }
@@ -436,19 +432,19 @@ namespace libbluray
         /// Copy values of registers 4-8 and 10-12 to backup registers 36-40 and 42-44.
         /// </summary>
         /// <param name="p">BD_REGISTERS object</param>
-        internal static void bd_psr_save_state(Ref<BD_REGISTERS> p)
+        internal static void bd_psr_save_state(BD_REGISTERS p)
         {
             /* store registers 4-8 and 10-12 to backup registers */
 
             bd_psr_lock(p);
 
-            Ref<uint> ptr = new Ref<uint>(p.Value.psr);
+            Ref<uint> ptr = new Ref<uint>(p.psr);
             (ptr + 4).AsSpan().Slice(0, 5).CopyTo((ptr + 36).AsSpan());
             (ptr + 10).AsSpan().Slice(0, 3).CopyTo((ptr + 42).AsSpan());
 
             /* generate save event */
 
-            if (p.Value.num_cb != 0)
+            if (p.num_cb != 0)
             {
                 Variable<BD_PSR_EVENT> ev = new();
                 ev.Value.ev_type = BD_PSR_SAVE;
@@ -457,9 +453,9 @@ namespace libbluray
                 ev.Value.new_val = 0;
 
                 uint j;
-                for (j = 0; j < p.Value.num_cb; j++)
+                for (j = 0; j < p.num_cb; j++)
                 {
-                    p.Value.cb[j].cb(p.Value.cb[j].handle, ev.Ref);
+                    p.cb[j].cb(p.cb[j].handle, ev.Ref);
                 }
             }
 
@@ -472,13 +468,13 @@ namespace libbluray
         /// Initialize backup registers 36-40 and 42-44 to default values.
         /// </summary>
         /// <param name="p">BD_REGISTERS object</param>
-        internal static void bd_psr_reset_backup_registers(Ref<BD_REGISTERS> p)
+        internal static void bd_psr_reset_backup_registers(BD_REGISTERS p)
         {
             bd_psr_lock(p);
 
             /* init backup registers to default */
             Ref<uint> src = new Ref<uint>(bd_psr_init);
-            Ref<uint> dst = new Ref<uint>(p.Value.psr);
+            Ref<uint> dst = new Ref<uint>(p.psr);
             (src + 36).AsSpan().Slice(0, 5).CopyTo((dst + 36).AsSpan());
             (src + 42).AsSpan().Slice(0, 3).CopyTo((dst + 42).AsSpan());
 
@@ -492,26 +488,26 @@ namespace libbluray
         /// Initialize backup registers to default values.
         /// </summary>
         /// <param name="p"></param>
-        internal static void bd_psr_restore_state(Ref<BD_REGISTERS> p)
+        internal static void bd_psr_restore_state(BD_REGISTERS p)
         {
             UInt32[] old_psr = new UInt32[13];
             UInt32[] new_psr = new UInt32[13];
 
             bd_psr_lock(p);
 
-            if (p.Value.num_cb != 0)
+            if (p.num_cb != 0)
             {
-                Array.Copy(p.Value.psr, old_psr, 13);
+                Array.Copy(p.psr, old_psr, 13);
             }
 
             /* restore backup registers */
-            Ref<uint> ptr = new Ref<uint>(p.Value.psr);
+            Ref<uint> ptr = new Ref<uint>(p.psr);
             (ptr + 36).AsSpan().Slice(0, 5).CopyTo((ptr + 4).AsSpan());
             (ptr + 42).AsSpan().Slice(0, 3).CopyTo((ptr + 10).AsSpan());
 
-            if (p.Value.num_cb != 0)
+            if (p.num_cb != 0)
             {
-                Array.Copy(p.Value.psr, new_psr, 13);
+                Array.Copy(p.psr, new_psr, 13);
             }
 
             /* init backup registers to default */
@@ -520,7 +516,7 @@ namespace libbluray
             (src + 42).AsSpan().Slice(0, 3).CopyTo((ptr + 42).AsSpan());
 
             /* generate restore events */
-            if (p.Value.num_cb != 0)
+            if (p.num_cb != 0)
             {
                 Variable<BD_PSR_EVENT> ev = new();
                 uint i, j;
@@ -536,9 +532,9 @@ namespace libbluray
                         ev.Value.old_val = old_psr[i];
                         ev.Value.new_val = new_psr[i];
 
-                        for (j = 0; j < p.Value.num_cb; j++)
+                        for (j = 0; j < p.num_cb; j++)
                         {
-                            p.Value.cb[j].cb(p.Value.cb[j].handle, ev.Ref);
+                            p.cb[j].cb(p.cb[j].handle, ev.Ref);
                         }
                     }
                 }
@@ -557,7 +553,7 @@ namespace libbluray
         /// <param name="reg">register number</param>
         /// <param name="val">new value for register</param>
         /// <returns>0 on success, -1 on error (invalid register number)</returns>
-        internal static int bd_gpr_write(Ref<BD_REGISTERS> p, bd_psr_idx reg, UInt32 val)
+        internal static int bd_gpr_write(BD_REGISTERS p, bd_psr_idx reg, UInt32 val)
         {
             if ((uint)reg >= BD_GPR_COUNT)
             {
@@ -565,7 +561,7 @@ namespace libbluray
                 return -1;
             }
 
-            p.Value.gpr[(uint)reg] = val;
+            p.gpr[(uint)reg] = val;
             return 0;
         }
 
@@ -575,7 +571,7 @@ namespace libbluray
         /// <param name="p">BD_REGISTERS object</param>
         /// <param name="reg">register number</param>
         /// <returns>value stored in register, -1 on error (invalid register number)</returns>
-        internal static UInt32 bd_gpr_read(Ref<BD_REGISTERS> p, bd_psr_idx reg)
+        internal static UInt32 bd_gpr_read(BD_REGISTERS p, bd_psr_idx reg)
         {
             if ((uint)reg >= BD_GPR_COUNT)
             {
@@ -583,7 +579,7 @@ namespace libbluray
                 return 0;
             }
 
-            return p.Value.gpr[(uint)reg];
+            return p.gpr[(uint)reg];
         }
 
         /*
@@ -595,7 +591,7 @@ namespace libbluray
         /// <param name="p">BD_REGISTERS object</param>
         /// <param name="reg">register number</param>
         /// <returns>value stored in register, -1 on error (invalid register number)</returns>
-        internal static UInt32 bd_psr_read(Ref<BD_REGISTERS> p, bd_psr_idx reg)
+        internal static UInt32 bd_psr_read(BD_REGISTERS p, bd_psr_idx reg)
         {
             UInt32 val;
 
@@ -607,7 +603,7 @@ namespace libbluray
 
             bd_psr_lock(p);
 
-            val = p.Value.psr[(int)reg];
+            val = p.psr[(int)reg];
 
             bd_psr_unlock(p);
 
@@ -622,7 +618,7 @@ namespace libbluray
         /// <param name="reg">register number</param>
         /// <param name="val">new value for register</param>
         /// <returns>0 on success, -1 on error (invalid register number)</returns>
-        internal static int bd_psr_setting_write(Ref<BD_REGISTERS> p, bd_psr_idx reg, UInt32 val)
+        internal static int bd_psr_setting_write(BD_REGISTERS p, bd_psr_idx reg, UInt32 val)
         {
             if ((int)reg >= BD_PSR_COUNT)
             {
@@ -632,41 +628,41 @@ namespace libbluray
 
             bd_psr_lock(p);
 
-            if (p.Value.psr[(int)reg] == val)
+            if (p.psr[(int)reg] == val)
             {
                 Logging.bd_debug(DebugMaskEnum.DBG_BLURAY, $"bd_psr_write({reg}, {val}): no change in value");
             }
             else if (bd_psr_name[(int)reg] != null)
             {
-                Logging.bd_debug(DebugMaskEnum.DBG_BLURAY, $"bd_psr_write(): PSR{reg} ({bd_psr_name[(int)reg]}) 0x{p.Value.psr[(int)reg]:x} .Value. 0x{val:x}");
+                Logging.bd_debug(DebugMaskEnum.DBG_BLURAY, $"bd_psr_write(): PSR{reg} ({bd_psr_name[(int)reg]}) 0x{p.psr[(int)reg]:x} .Value. 0x{val:x}");
             }
             else
             {
-                Logging.bd_debug(DebugMaskEnum.DBG_BLURAY, $"bd_psr_write(): PSR{reg} 0x{p.Value.psr[(int)reg]:x} .Value. 0x{val:x}");
+                Logging.bd_debug(DebugMaskEnum.DBG_BLURAY, $"bd_psr_write(): PSR{reg} 0x{p.psr[(int)reg]:x} .Value. 0x{val:x}");
             }
 
-            if (p.Value.num_cb != 0)
+            if (p.num_cb != 0)
             {
                 Variable<BD_PSR_EVENT> ev = new();
                 uint i;
 
-                ev.Value.ev_type = (uint)((p.Value.psr[(int)reg] == val) ? BD_PSR_WRITE : BD_PSR_CHANGE);
+                ev.Value.ev_type = (uint)((p.psr[(int)reg] == val) ? BD_PSR_WRITE : BD_PSR_CHANGE);
                 ev.Value.psr_idx = (bd_psr_idx)reg;
-                ev.Value.old_val = p.Value.psr[(int)reg];
+                ev.Value.old_val = p.psr[(int)reg];
                 ev.Value.new_val = val;
 
-                p.Value.psr[(int)reg] = val;
+                p.psr[(int)reg] = val;
 
-                for (i = 0; i < p.Value.num_cb; i++)
+                for (i = 0; i < p.num_cb; i++)
                 {
-                    p.Value.cb[i].cb(p.Value.cb[i].handle, ev.Ref);
+                    p.cb[i].cb(p.cb[i].handle, ev.Ref);
                 }
 
             }
             else
             {
 
-                p.Value.psr[(int)reg] = val;
+                p.psr[(int)reg] = val;
             }
 
             bd_psr_unlock(p);
@@ -682,7 +678,7 @@ namespace libbluray
         /// <param name="reg">register number</param>
         /// <param name="val">new value for register</param>
         /// <returns>0 on success, -1 on error (invalid register number)</returns>
-        internal static int bd_psr_write(Ref<BD_REGISTERS> p, bd_psr_idx reg, UInt32 val)
+        internal static int bd_psr_write(BD_REGISTERS p, bd_psr_idx reg, UInt32 val)
         {
             uint r = (uint)reg;
             if ((r == 13) ||
@@ -709,7 +705,7 @@ namespace libbluray
         /// <param name="val">new value for register</param>
         /// <param name="mask">bit mask. bits to be written are set to 1.</param>
         /// <returns>0 on success, -1 on error (invalid register number)</returns>
-        internal static int bd_psr_write_bits(Ref<BD_REGISTERS> p, bd_psr_idx reg, UInt32 val, UInt32 mask)
+        internal static int bd_psr_write_bits(BD_REGISTERS p, bd_psr_idx reg, UInt32 val, UInt32 mask)
         {
             int result;
 
@@ -740,29 +736,29 @@ namespace libbluray
         /// <param name="p"></param>
         /// <param name="psr"></param>
         /// <param name="gpr"></param>
-        internal static void registers_save(Ref<BD_REGISTERS> p, Ref<UInt32> psr, Ref<UInt32> gpr)
+        internal static void registers_save(BD_REGISTERS p, Ref<UInt32> psr, Ref<UInt32> gpr)
         {
             bd_psr_lock(p);
 
-            p.Value.gpr.AsSpan().CopyTo(gpr.AsSpan());
-            p.Value.psr.AsSpan().CopyTo(psr.AsSpan());
+            p.gpr.AsSpan().CopyTo(gpr.AsSpan());
+            p.psr.AsSpan().CopyTo(psr.AsSpan());
 
             bd_psr_unlock(p);
         }
 
-        internal static void registers_restore(Ref<BD_REGISTERS> p, Ref<UInt32> psr, Ref<UInt32> gpr)
+        internal static void registers_restore(BD_REGISTERS p, Ref<UInt32> psr, Ref<UInt32> gpr)
         {
             UInt32[] new_psr = new uint[13];
 
             bd_psr_lock(p);
 
-            gpr.AsSpan().Slice(0, p.Value.gpr.Length).CopyTo(p.Value.gpr);
-            psr.AsSpan().Slice(0, p.Value.psr.Length).CopyTo(p.Value.psr);
+            gpr.AsSpan().Slice(0, p.gpr.Length).CopyTo(p.gpr);
+            psr.AsSpan().Slice(0, p.psr.Length).CopyTo(p.psr);
 
-            Array.Copy(p.Value.psr, new_psr, 13);
+            Array.Copy(p.psr, new_psr, 13);
 
             /* generate restore events */
-            if (p.Value.num_cb != 0)
+            if (p.num_cb != 0)
             {
                 Variable<BD_PSR_EVENT> ev = new();
                 uint i, j;
@@ -775,14 +771,14 @@ namespace libbluray
                     if (i != (int)bd_psr_idx.PSR_NAV_TIMER)
                     {
 
-                        p.Value.psr[i] = new_psr[i];
+                        p.psr[i] = new_psr[i];
 
                         ev.Value.psr_idx = (bd_psr_idx)i;
                         ev.Value.new_val = new_psr[i];
 
-                        for (j = 0; j < p.Value.num_cb; j++)
+                        for (j = 0; j < p.num_cb; j++)
                         {
-                            p.Value.cb[j].cb(p.Value.cb[j].handle, ev.Ref);
+                            p.cb[j].cb(p.cb[j].handle, ev.Ref);
                         }
                     }
                 }
@@ -795,7 +791,7 @@ namespace libbluray
          *
          */
 
-        internal static int psr_init_3D(Ref<BD_REGISTERS> p, int initial_mode, int force)
+        internal static int psr_init_3D(BD_REGISTERS p, int initial_mode, int force)
         {
             bd_psr_lock(p);
 
@@ -848,7 +844,7 @@ namespace libbluray
         /// <param name="p">BD_REGISTERS object</param>
         /// <param name="force">0 on success, -1 on error (invalid state)</param>
         /// <returns></returns>
-        internal static int psr_init_UHD(Ref<BD_REGISTERS> p, int force)
+        internal static int psr_init_UHD(BD_REGISTERS p, int force)
         {
             bd_psr_lock(p);
 

@@ -43,7 +43,7 @@ namespace libbluray.util
             str = $"{d_hours:00}:{d_mins:00}:{d_secs:00}.{d_msecs:000.}";
         }
 
-        public static UInt64 bluray_chapter_duration(Ref<BLURAY> bd, UInt32 title_ix, UInt32 chapter_ix, byte angle_ix)
+        public static UInt64 bluray_chapter_duration(BLURAY bd, UInt32 title_ix, UInt32 chapter_ix, byte angle_ix)
         {
             bool retval = false;
             retval = BLURAY.bd_select_title(bd, title_ix);
@@ -74,7 +74,7 @@ namespace libbluray.util
             return bd_chapter.Value.duration;
         }
 
-        public static void bluray_chapter_length(string dest_str, Ref<BLURAY> bd, UInt32 title_ix, UInt32 chapter_ix, byte angle_ix)
+        public static void bluray_chapter_length(string dest_str, BLURAY bd, UInt32 title_ix, UInt32 chapter_ix, byte angle_ix)
         {
             UInt64 duration = 0;
             duration = bluray_chapter_duration(bd, title_ix, chapter_ix, angle_ix);

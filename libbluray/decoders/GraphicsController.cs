@@ -9,13 +9,14 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static libbluray.BLURAY;
 using static libbluray.decoders.GraphicsController;
 
 namespace libbluray.decoders
 {
     internal struct GRAPHICS_CONTROLLER
     {
-        public Ref<BD_REGISTERS> regs = new();
+        public BD_REGISTERS? regs = null;
 
         public BD_MUTEX mutex = new();
 
@@ -211,10 +212,8 @@ namespace libbluray.decoders
         BTN_ACTIVATED
     }
 
-    public static class GraphicsController
+    internal static class GraphicsController
     {
-        public delegate void gc_overlay_proc_f(object? a, Ref<BD_OVERLAY> b);
-
         internal const int GC_STATUS_NONE = 0;
         internal const int GC_STATUS_POPUP = 1;  /* popup menu loaded */
         internal const int GC_STATUS_MENU_OPEN = 2;  /* menu open */
@@ -962,7 +961,7 @@ namespace libbluray.decoders
          * init / free
          */
 
-        internal static Ref<GRAPHICS_CONTROLLER> gc_init(Ref<BD_REGISTERS> regs, object? handle, gc_overlay_proc_f func)
+        internal static Ref<GRAPHICS_CONTROLLER> gc_init(BD_REGISTERS regs, object? handle, gc_overlay_proc_f func)
         {
             Ref<GRAPHICS_CONTROLLER> p = Ref<GRAPHICS_CONTROLLER>.Allocate();
 

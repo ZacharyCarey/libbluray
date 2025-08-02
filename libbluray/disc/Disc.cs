@@ -38,8 +38,10 @@ namespace libbluray.disc
          *
          * Map file access to BD-ROM file system or binding unit data area
          */
-        internal static BD_DISC disc_open(string device_path, fs_access? p_fs, Ref<BD_ENC_INFO> enc_info, string keyfile_path, Ref<BD_REGISTERS> regs, Func<Ref<BD_REGISTERS>, bd_psr_idx, uint> psr_read, Func<Ref<BD_REGISTERS>, bd_psr_idx, uint, int> psr_write)
+        internal static BD_DISC? disc_open(string device_path, fs_access? p_fs, out BD_ENC_INFO enc_info, string keyfile_path, BD_REGISTERS regs, Func<BD_REGISTERS?, bd_psr_idx, uint> psr_read, Func<BD_REGISTERS?, bd_psr_idx, uint, int> psr_write)
         {
+            enc_info = new();
+
             BD_DISC p = _disc_init();
 
             if (p == null)
@@ -92,7 +94,7 @@ namespace libbluray.disc
             dev.root = p.disc_root;
             dev.device = device_path;
 
-            p.dec = BD_DEC.dec_init(dev, enc_info, keyfile_path, regs, psr_read, psr_write);
+            p.dec = BD_DEC.dec_init(dev, out enc_info, keyfile_path, regs, psr_read, psr_write);
 
             return p;
         }

@@ -90,7 +90,7 @@ namespace UnitTests.BlurayInfo
         /**
         * Get main Blu-ray metadata from disc
         */
-        public static int bluray_info_init(Ref<BLURAY> bd, out bluray_info bluray_info, bool display_duplicates)
+        public static int bluray_info_init(BLURAY bd, out bluray_info bluray_info, bool display_duplicates)
         {
             bluray_info = new();
 
@@ -184,7 +184,7 @@ namespace UnitTests.BlurayInfo
         /**
          * Initialize and populate a bluray_title struct
          */
-        public static int bluray_title_init(Ref<BLURAY> bd, out bluray_title bluray_title, UInt32 title_ix, byte angle_ix, bool playlist)
+        public static int bluray_title_init(BLURAY bd, out bluray_title bluray_title, UInt32 title_ix, byte angle_ix, bool playlist)
         {
             bluray_title = new();
             // Initialize to safe values

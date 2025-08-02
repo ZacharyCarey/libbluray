@@ -63,9 +63,9 @@ namespace UnitTests.BlurayInfo
 
             // initialize
             device_filename = root;
-            Ref<BLURAY> bd = Ref<BLURAY>.Null;
+            BLURAY? bd = null;
             bd = BLURAY.bd_open(device_filename, null);
-            Assert.IsTrue(bd, "Failed to open Bluray library.");
+            Assert.IsNotNull(bd, "Failed to open Bluray library.");
 
             // Blu-ray
             bluray_info bluray_info;
@@ -586,8 +586,7 @@ namespace UnitTests.BlurayInfo
             //    printf("}\n");
             //}
 
-            BLURAY.bd_close(bd);
-            bd = Ref<BLURAY>.Null;
+            BLURAY.bd_close(ref bd);
 
             //return 0;
         }
