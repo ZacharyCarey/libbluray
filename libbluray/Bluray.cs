@@ -5,22 +5,8 @@ using libbluray.disc;
 using libbluray.file;
 using libbluray.hdmv;
 using libbluray.util;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Reflection;
-using System.Runtime;
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics.X86;
+using System.Collections.ObjectModel;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace libbluray
 {
@@ -38,25 +24,25 @@ namespace libbluray
         /// <summary>
         /// 1 if title is interactive (title length and playback position should not be shown in UI)
         /// </summary>
-        public byte Interactive => interactive;
+        public bool Interactive => interactive != 0;
         internal byte interactive;
 
         /// <summary>
         /// 1 if it is allowed to jump into this title
         /// </summary>
-        public byte Accessible => accessible;
+        public bool Accessible => accessible != 0;
         internal byte accessible;
 
         /// <summary>
         /// 1 if title number should not be shown during playback
         /// </summary>
-        public byte Hidden => hidden;
+        public bool Hidden => hidden != 0;
         internal byte hidden;
 
         /// <summary>
         /// 0 - HDMV title. 1 - BD-J title
         /// </summary>
-        public byte BDJ => bdj;
+        public bool BDJ => bdj != 0;
         internal byte bdj;
 
         /// <summary>
@@ -76,7 +62,7 @@ namespace libbluray
         /// <summary>
         /// 1 if BluRay disc was detected
         /// </summary>
-        public byte BlurayDetected => bluray_detected;
+        public bool BlurayDetected => bluray_detected != 0;
         internal byte bluray_detected;
 
         /* Disc ID */
@@ -102,19 +88,19 @@ namespace libbluray
         /// <summary>
         /// 1 if this disc can't be played using on-disc menus
         /// </summary>
-        public byte NoMenuSupport => no_menu_support;
+        public bool NoMenuSupport => no_menu_support != 0;
         internal byte no_menu_support;
 
         /// <summary>
         /// 1 if First Play title is present on the disc and can be played
         /// </summary>
-        public byte FirsPlaySupported => first_play_supported;
+        public bool FirsPlaySupported => first_play_supported != 0;
         internal byte first_play_supported;
 
         /// <summary>
         /// 1 if Top Menu title is present on the disc and can be played 
         /// </summary>
-        public byte TopMenuSupported => top_menu_supported;
+        public bool TopMenuSupported => top_menu_supported != 0;
         internal byte top_menu_supported;
 
         /// <summary>
@@ -126,7 +112,7 @@ namespace libbluray
         /// <summary>
         /// index is title number 1 ... N
         /// </summary>
-        public BLURAY_TITLE[]? Titles => titles;
+        public ReadOnlyCollection<BLURAY_TITLE> Titles => titles.AsReadOnly();
         internal BLURAY_TITLE[]? titles;
 
         /// <summary>
@@ -163,7 +149,7 @@ namespace libbluray
         /// <summary>
         /// 1 if disc uses BD-J
         /// </summary>
-        public byte BdjDetected => bdj_detected;
+        public bool BdjDetected => bdj_detected != 0;
         internal byte bdj_detected;
 
         /// <summary>
@@ -175,13 +161,13 @@ namespace libbluray
         /// <summary>
         /// 1 if usable Java VM was found
         /// </summary>
-        public byte LibJvmDetected => libjvm_detected;
+        public bool LibJvmDetected => libjvm_detected != 0;
         internal byte libjvm_detected;
 
         /// <summary>
         /// 1 if usable Java VM + libbluray.jar was found 
         /// </summary>
-        public byte BdjHandles => bdj_handled;
+        public bool BdjHandles => bdj_handled != 0;
         internal byte bdj_handled;
 
         /// <summary>
@@ -197,28 +183,22 @@ namespace libbluray
         internal string bdj_disc_id = "";
 
         /* disc application info */
-        /// <summary>
-        /// bd_video_format_e
-        /// </summary>
-        public byte VideoFormat => video_format;
-        internal byte video_format;
+        public bd_video_format_e VideoFormat => video_format;
+        internal bd_video_format_e video_format;
 
-        /// <summary>
-        /// bd_video_rate_e
-        /// </summary>
-        public byte FrameRate => frame_rate;
-        internal byte frame_rate;
+        public bd_video_rate_e FrameRate => frame_rate;
+        internal bd_video_rate_e frame_rate;
 
         /// <summary>
         /// 1 if 3D content exists on the disc
         /// </summary>
-        public byte ContentExist3D => content_exist_3D;
+        public bool ContentExist3D => content_exist_3D != 0;
         internal byte content_exist_3D;
 
         /// <summary>
         /// 0 - 2D, 1 - 3D
         /// </summary>
-        public byte InitialOutputModePreference => initial_output_mode_preference;
+        public bool InitialOutputModePreference => initial_output_mode_preference != 0;
         internal byte initial_output_mode_preference;
 
         /// <summary>
@@ -231,19 +211,19 @@ namespace libbluray
         /// <summary>
         /// 1 if disc is using AACS encoding
         /// </summary>
-        public byte AacsDetected => aacs_detected;
+        public bool AacsDetected => aacs_detected != 0;
         internal byte aacs_detected;
 
         /// <summary>
         /// 1 if usable AACS decoding library was found
         /// </summary>
-        public byte LibAacsDetected => libaacs_detected;
+        public bool LibAacsDetected => libaacs_detected != 0;
         internal byte libaacs_detected;
 
         /// <summary>
         /// 1 if disc is using supported AACS encoding
         /// </summary>
-        public byte AacsHandles => aacs_handled;
+        public bool AacsHandles => aacs_handled != 0;
         internal byte aacs_handled;
 
         /// <summary>
@@ -262,19 +242,19 @@ namespace libbluray
         /// <summary>
         /// 1 if disc is using BD+ encoding
         /// </summary>
-        public byte BdPlusDetected => bdplus_detected;
+        public bool BdPlusDetected => bdplus_detected != 0;
         internal byte bdplus_detected;
 
         /// <summary>
         /// 1 if usable BD+ decoding library was found 
         /// </summary>
-        public byte LibBdPlusDetected => libbdplus_detected;
+        public bool LibBdPlusDetected => libbdplus_detected != 0;
         internal byte libbdplus_detected;
 
         /// <summary>
         /// 1 if disc is using supporred BD+ encoding
         /// </summary>
-        public byte BdPlusHandles => bdplus_handled;
+        public bool BdPlusHandles => bdplus_handled != 0;
         internal byte bdplus_handled;
 
         /// <summary>
@@ -290,11 +270,8 @@ namespace libbluray
         internal UInt32 bdplus_date;
 
         /* disc application info (libbluray > 1.2.0) */
-        /// <summary>
-        /// bd_dynamic_range_type_e
-        /// </summary>
-        public byte InitialDynamicRangeType => initial_dynamic_range_type;
-        internal byte initial_dynamic_range_type;
+        public bd_dynamic_range_type_e InitialDynamicRangeType => initial_dynamic_range_type;
+        internal bd_dynamic_range_type_e initial_dynamic_range_type;
 
         internal BLURAY_DISC_INFO() { }
     }
@@ -518,45 +495,37 @@ namespace libbluray
     /// </summary>
     public struct BLURAY_STREAM_INFO
     {
-        /// <summary>
-        /// Stream coding (\ref bd_stream_type_e)
-        /// </summary>
-        public byte coding_type;
+        public bd_stream_type_e CodingType => coding_type;
+        internal bd_stream_type_e coding_type;
 
-        /// <summary>
-        /// Stream format (\ref bd_video_format_e or \ref bd_audio_format_e) 
-        /// </summary>
-        public byte format;
+        public bd_video_format_e VideoFormat => (bd_video_format_e)format;
+        public bd_audio_format_e AudioFormat => (bd_audio_format_e)format;
+        internal byte format;
 
-        /// <summary>
-        /// Stream frame rate (\ref bd_audio_rate_e or \ref bd_video_rate_e)
-        /// </summary>
-        public byte rate;
+        public bd_video_rate_e VideoRate => (bd_video_rate_e)rate;
+        public bd_audio_rate_e AudioRate => (bd_audio_rate_e)rate;
+        internal byte rate;
 
-        /// <summary>
-        /// Text subtitle charachter code (\ref bd_char_code_e)
-        /// </summary>
-        public byte char_code;
+        public bd_char_code_e CharCode => char_code;
+        internal bd_char_code_e char_code;
 
-        /// <summary>
-        /// Language code
-        /// </summary>
-        public string lang = "";
+        public Iso639.Language Language => Iso639.Language.FromPart3(string.IsNullOrWhiteSpace(lang) ? "und" : lang);
+        internal string lang = "";
 
         /// <summary>
         /// mpeg-ts PID
         /// </summary>
-        public UInt16 pid;
+        public UInt16 PID => pid;
+        internal UInt16 pid;
 
-        /// <summary>
-        /// Stream video aspect ratio (\ref bd_video_aspect_e)
-        /// </summary>
-        public byte aspect;
+        public bd_video_aspect_e Aspect => aspect;
+        internal bd_video_aspect_e aspect;
 
         /// <summary>
         /// Sub path identifier (= separate mpeg-ts mux / .m2ts file)
         /// </summary>
-        public byte subpath_id;   
+        public byte SubpathID => subpath_id;
+        internal byte subpath_id;   
 
         public BLURAY_STREAM_INFO() { }
     }
@@ -569,77 +538,92 @@ namespace libbluray
         /// <summary>
         /// Number of mpeg-ts packets
         /// </summary>
-        public UInt32 pkt_count;
+        public uint PacketCount => pkt_count;
+        internal UInt32 pkt_count;
 
         /// <summary>
-        /// Clip still mode (\ref bd_still_mode_e)
+        /// Clip still mode
         /// </summary>
-        public byte still_mode;
+        public bd_still_mode_e StillMode => still_mode;
+        internal bd_still_mode_e still_mode;
 
         /// <summary>
         /// Still time (seconds) if still_mode == BD_STILL_TIME
         /// </summary>
-        public UInt16 still_time;
+        public TimeSpan StillTime => TimeSpan.FromSeconds(still_time);
+        internal UInt16 still_time;
 
         /// <summary>
         /// Number of video streams
         /// </summary>
-        public byte video_stream_count;
+        public byte VideoStreamCount => video_stream_count;
+        internal byte video_stream_count;
 
         /// <summary>
         /// Number of audio streams
         /// </summary>
-        public byte audio_stream_count;
+        public byte AudioStreamCount => audio_stream_count;
+        internal byte audio_stream_count;
 
         /// <summary>
         /// Number of PG (Presentation Graphics) streams
         /// </summary>
-        public byte pg_stream_count;
+        public byte PresentationStreamCount => pg_stream_count;
+        internal byte pg_stream_count;
 
         /// <summary>
         /// Number of IG (Interactive Graphics) streams
         /// </summary>
-        public byte ig_stream_count;
+        public byte InteractiveStreamCount => ig_stream_count;
+        internal byte ig_stream_count;
 
         /// <summary>
         /// Number of secondary audio streams
         /// </summary>
-        public byte sec_audio_stream_count;
+        public byte SecondaryAudioStreamCount => sec_audio_stream_count;
+        internal byte sec_audio_stream_count;
 
         /// <summary>
         /// Number of secondary video streams
         /// </summary>
-        public byte sec_video_stream_count;
+        public byte SecondaryVideoStreamCount => sec_video_stream_count;
+        internal byte sec_video_stream_count;
 
         /// <summary>
         /// Video streams information
         /// </summary>
-        public Ref<BLURAY_STREAM_INFO> video_streams;
+        public ReadOnlyCollection<BLURAY_STREAM_INFO> VideoStreams => video_streams.AsReadOnly();
+        internal Ref<BLURAY_STREAM_INFO> video_streams;
 
         /// <summary>
         /// Audio streams information
         /// </summary>
-        public Ref<BLURAY_STREAM_INFO> audio_streams;
+        public ReadOnlyCollection<BLURAY_STREAM_INFO> AudioStreams => audio_streams.AsReadOnly();
+        internal Ref<BLURAY_STREAM_INFO> audio_streams;
 
         /// <summary>
         /// PG (Presentation Graphics) streams information
         /// </summary>
-        public Ref<BLURAY_STREAM_INFO> pg_streams;
+        public ReadOnlyCollection<BLURAY_STREAM_INFO> PresentationStreams => pg_streams.AsReadOnly();
+        internal Ref<BLURAY_STREAM_INFO> pg_streams;
 
         /// <summary>
         /// IG (Interactive Graphics) streams information
         /// </summary>
-        public Ref<BLURAY_STREAM_INFO> ig_streams;
+        public ReadOnlyCollection<BLURAY_STREAM_INFO> InteractiveStreams => ig_streams.AsReadOnly();
+        internal Ref<BLURAY_STREAM_INFO> ig_streams;
 
         /// <summary>
         /// Secondary audio streams information
         /// </summary>
-        public Ref<BLURAY_STREAM_INFO> sec_audio_streams;
+        public ReadOnlyCollection<BLURAY_STREAM_INFO> SecondaryAudioStreams => sec_audio_streams.AsReadOnly();
+        internal Ref<BLURAY_STREAM_INFO> sec_audio_streams;
 
         /// <summary>
         /// Secondary video streams information
         /// </summary>
-        public Ref<BLURAY_STREAM_INFO> sec_video_streams;
+        public ReadOnlyCollection<BLURAY_STREAM_INFO> SecondaryVideoStreams => sec_video_streams.AsReadOnly();
+        internal Ref<BLURAY_STREAM_INFO> sec_video_streams;
 
         /// <summary>
         /// start media time, 90kHz, ("playlist time")
@@ -659,7 +643,8 @@ namespace libbluray
         /// <summary>
         /// Clip identifier (.m2ts file name)
         /// </summary>
-        public string clip_id = "";  
+        public string ClipID => clip_id;
+        internal string clip_id = "";  
 
         public BLURAY_CLIP_INFO() { }
     }
@@ -672,7 +657,8 @@ namespace libbluray
         /// <summary>
         /// Chapter index (number - 1)
         /// </summary>
-        public UInt32 idx;
+        public uint Index => idx;
+        internal UInt32 idx;
 
         /// <summary>
         /// start media time, 90kHz, ("playlist time")
@@ -692,7 +678,8 @@ namespace libbluray
         /// <summary>
         ///  Clip reference (index to playlist clips list)
         /// </summary>
-        public uint clip_ref;  
+        public uint ClipReference => clip_ref;
+        internal uint clip_ref;  
     }
 
     /// <summary>
@@ -703,12 +690,14 @@ namespace libbluray
         /// <summary>
         /// Mark index (number - 1)
         /// </summary>
-        public UInt32 idx;
+        public uint Index => idx;
+        internal UInt32 idx;
 
         /// <summary>
         ///  bd_mark_type_e 
         /// </summary>
-        public int type;
+        public bd_mark_type_e Type => type;
+        internal bd_mark_type_e type;
 
         /// <summary>
         /// mark media time, 90kHz, ("playlist time") 
@@ -728,7 +717,8 @@ namespace libbluray
         /// <summary>
         /// Clip reference (index to playlist clips list)
         /// </summary>
-        public uint clip_ref;  
+        public uint ClipReference => clip_ref;
+        internal uint clip_ref;  
     }
 
     /// <summary>
@@ -781,19 +771,19 @@ namespace libbluray
         /// <summary>
         /// Clip information
         /// </summary>
-        public Ref<BLURAY_CLIP_INFO> Clips => clips;
+        public ReadOnlyCollection<BLURAY_CLIP_INFO> Clips => clips.AsReadOnly();
         internal Ref<BLURAY_CLIP_INFO> clips;
 
         /// <summary>
         /// Chapter information
         /// </summary>
-        public Ref<BLURAY_TITLE_CHAPTER> Chapters => chapters;
+        public ReadOnlyCollection<BLURAY_TITLE_CHAPTER> Chapters => chapters.AsReadOnly();
         internal Ref<BLURAY_TITLE_CHAPTER> chapters;
 
         /// <summary>
         /// Playmark information 
         /// </summary>
-        public Ref<BLURAY_TITLE_MARK> Marks => marks;
+        public ReadOnlyCollection<BLURAY_TITLE_MARK> Marks => marks.AsReadOnly();
         internal Ref<BLURAY_TITLE_MARK> marks;
 
         /// <summary>
@@ -811,17 +801,20 @@ namespace libbluray
         /// <summary>
         /// 1 - mono, 2 - stereo
         /// </summary>
-        public byte num_channels;
+        public byte NumberOfChannels => num_channels;
+        internal byte num_channels;
 
         /// <summary>
         /// Number of audio frames
         /// </summary>
-        public UInt32 num_frames;
+        public uint NumberOfFrames => num_frames;
+        internal UInt32 num_frames;
 
         /// <summary>
         /// 48000 Hz, 16 bit LPCM. Interleaved if stereo
         /// </summary>
-        public Ref<UInt16> samples;      
+        public ReadOnlyCollection<ushort> Samples => samples.AsReadOnly();
+        internal Ref<UInt16> samples;      
     }
 
     /// <summary>
@@ -2394,9 +2387,9 @@ namespace libbluray
                 bd.disc_info.bluray_detected = 1;
 
                 /* application info */
-                bd.disc_info.video_format = (byte)index.Value.app_info.Value.video_format;
-                bd.disc_info.frame_rate = (byte)index.Value.app_info.Value.frame_rate;
-                bd.disc_info.initial_dynamic_range_type = (byte)index.Value.app_info.Value.initial_dynamic_range_type;
+                bd.disc_info.video_format = (bd_video_format_e)index.Value.app_info.Value.video_format;
+                bd.disc_info.frame_rate = (bd_video_rate_e)index.Value.app_info.Value.frame_rate;
+                bd.disc_info.initial_dynamic_range_type = (bd_dynamic_range_type_e)index.Value.app_info.Value.initial_dynamic_range_type;
                 bd.disc_info.content_exist_3D = (byte)index.Value.app_info.Value.content_exist_flag;
                 bd.disc_info.initial_output_mode_preference = (byte)index.Value.app_info.Value.initial_output_mode_preference;
                 bd.disc_info.provider_data = index.Value.app_info.Value.user_data;
@@ -4421,13 +4414,13 @@ namespace libbluray
 
             for (ii = 0; ii < count; ii++)
             {
-                streams[ii].coding_type = si[ii].coding_type;
+                streams[ii].coding_type = (bd_stream_type_e)si[ii].coding_type;
                 streams[ii].format = si[ii].format;
                 streams[ii].rate = si[ii].rate;
-                streams[ii].char_code = si[ii].char_code;
+                streams[ii].char_code = (bd_char_code_e)si[ii].char_code;
                 streams[ii].lang = si[ii].lang;
                 streams[ii].pid = si[ii].pid;
-                streams[ii].aspect = Navigation.nav_clip_lookup_aspect(clip, si[ii].pid);
+                streams[ii].aspect = (bd_video_aspect_e)Navigation.nav_clip_lookup_aspect(clip, si[ii].pid);
                 if ((si.Value.stream_type == 2) || (si.Value.stream_type == 3))
                     streams[ii].subpath_id = si.Value.subpath_id;
                 else
@@ -4479,7 +4472,7 @@ namespace libbluray
                 for (ii = 0; ii < title_info.mark_count; ii++)
                 {
                     title_info.marks[ii].idx = ii;
-                    title_info.marks[ii].type = title.mark_list.mark[ii].mark_type;
+                    title_info.marks[ii].type = (bd_mark_type_e)title.mark_list.mark[ii].mark_type;
                     title_info.marks[ii].start = (UInt64)title.mark_list.mark[ii].title_time * 2;
                     title_info.marks[ii].duration = (UInt64)title.mark_list.mark[ii].duration * 2;
                     title_info.marks[ii].offset = (UInt64)title.mark_list.mark[ii].title_pkt * 192L;
@@ -4505,7 +4498,7 @@ namespace libbluray
                     ci.Value.start_time = (UInt64)nc.Value.title_time * 2;
                     ci.Value.in_time = (UInt64)pi.Value.in_time * 2;
                     ci.Value.out_time = (UInt64)pi.Value.out_time * 2;
-                    ci.Value.still_mode = pi.Value.still_mode;
+                    ci.Value.still_mode = (bd_still_mode_e)pi.Value.still_mode;
                     ci.Value.still_time = pi.Value.still_time;
                     ci.Value.video_stream_count = pi.Value.stn.Value.num_video;
                     ci.Value.audio_stream_count = pi.Value.stn.Value.num_audio;

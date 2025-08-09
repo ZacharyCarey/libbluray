@@ -43,6 +43,18 @@ namespace libbluray.util
             str = $"{d_hours:00}:{d_mins:00}:{d_secs:00}.{d_msecs:000.}";
         }
 
+        public static void bluray_duration_length(out string str, TimeSpan duration)
+        {
+            // TotalSeconds % 1 returns the fractional component of seconds 
+            double d_msecs = Math.Floor((duration.TotalSeconds % 1) * 1000 + 0.5);
+            str = $"{duration.Hours:00}:{duration.Minutes:00}:{duration.Seconds:00}.{d_msecs:000.}";
+        }
+
+        public static TimeSpan ConvertRaw(UInt64 raw)
+        {
+            return TimeSpan.FromSeconds(raw / 90000.0);
+        } 
+
         public static UInt64 bluray_chapter_duration(BLURAY bd, UInt32 title_ix, UInt32 chapter_ix, byte angle_ix)
         {
             bool retval = false;

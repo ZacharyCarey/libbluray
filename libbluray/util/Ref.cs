@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -278,6 +279,13 @@ namespace libbluray.util
         {
             if (left.Handle == null || right.Handle == null || left.Handle != right.Handle) throw new Exception("Can't compare pointers of different variables.");
             return (left.Index - right.Index);
+        }
+
+        public ReadOnlyCollection<T> AsReadOnly()
+        {
+            T[] array = (T[])this.Handle;
+            if (this.Index != 0) throw new IndexOutOfRangeException("Index was not zero.");
+            return array.AsReadOnly();
         }
     }
 }

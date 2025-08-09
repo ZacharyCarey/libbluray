@@ -1,4 +1,5 @@
-﻿using libbluray;
+﻿using Iso639;
+using libbluray;
 using libbluray.bdnav;
 using libbluray.util;
 using System;
@@ -27,8 +28,8 @@ namespace UnitTests.BlurayInfo
         bool d_duplicates = false;
         bool d_has_alang = false;
         bool d_has_slang = false;
-        string d_alang = "";
-        string d_slang = "";
+        Language d_alang;
+        Language d_slang;
         ulong arg_number = 0;
         UInt32 d_min_seconds = 0;
         UInt32 d_min_minutes = 0;
@@ -190,8 +191,8 @@ namespace UnitTests.BlurayInfo
 
             }
 
-            Ref<BLURAY_STREAM_INFO> bd_stream = Ref<BLURAY_STREAM_INFO>.Null;
-            Ref<BLURAY_TITLE_CHAPTER> bd_chapter = Ref<BLURAY_TITLE_CHAPTER>.Null;
+            BLURAY_STREAM_INFO bd_stream;
+            BLURAY_TITLE_CHAPTER bd_chapter;
 
 
             //if (p_bluray_json)
@@ -343,17 +344,17 @@ namespace UnitTests.BlurayInfo
                     {
 
                         video_stream_number = (byte)(video_stream_ix + 1);
-                        bd_stream = bluray_title.clip_info[0].video_streams.AtIndex(video_stream_ix);
+                        bd_stream = bluray_title.clip_info[0].VideoStreams[video_stream_ix];
 
-                        if (bd_stream == null)
-                            continue;
+                        //if (bd_stream == null)
+                        //    continue;
 
                         bluray_video bluray_video = new();
-                        bluray_video_codec(out bluray_video.codec, (bd_stream_type_e)bd_stream.Value.coding_type);
-                        bluray_video_codec_name(out bluray_video.codec_name, (bd_stream_type_e)bd_stream.Value.coding_type);
-                        bluray_video_format(out bluray_video.format, (bd_video_format_e)bd_stream.Value.format);
-                        bluray_video.framerate = bluray_video_framerate((bd_video_rate_e)bd_stream.Value.rate);
-                        bluray_video_aspect_ratio(out bluray_video.aspect_ratio, (bd_video_aspect_e)bd_stream.Value.aspect);
+                        bluray_video_codec(out bluray_video.codec, bd_stream.CodingType);
+                        bluray_video_codec_name(out bluray_video.codec_name, bd_stream.CodingType);
+                        bluray_video_format(out bluray_video.format, bd_stream.VideoFormat);
+                        bluray_video.framerate = bluray_video_framerate(bd_stream.VideoRate);
+                        bluray_video_aspect_ratio(out bluray_video.aspect_ratio, bd_stream.Aspect);
 
                         if (p_bluray_info && d_video)
                         {
@@ -364,7 +365,7 @@ namespace UnitTests.BlurayInfo
                         {
                             bluray_title.VideoStreams.Add(bluray_video);
                             bluray_video.video_stream_number = video_stream_number;
-                            bluray_video.pid = bd_stream.Value.pid;
+                            bluray_video.pid = bd_stream.PID;
 
                             //printf("    {\n");
                             //printf("     \"track\": %" PRIu8 ",\n", video_stream_number);
@@ -382,7 +383,7 @@ namespace UnitTests.BlurayInfo
 
                     }
 
-                    bd_stream = Ref<BLURAY_STREAM_INFO>.Null;
+                    bd_stream = new BLURAY_STREAM_INFO();
 
                     //if (p_bluray_json)
                     //    printf("   ],\n");
@@ -400,17 +401,17 @@ namespace UnitTests.BlurayInfo
                     {
 
                         audio_stream_number = (byte)(audio_stream_ix + 1);
-                        bd_stream = bluray_title.clip_info[0].audio_streams.AtIndex(audio_stream_ix);
+                        bd_stream = bluray_title.clip_info[0].AudioStreams[audio_stream_ix];
 
-                        if (bd_stream == null)
-                            continue;
+                        //if (bd_stream == null)
+                        //    continue;
 
                         bluray_audio bluray_audio = new();
-                        bluray_audio_lang(out bluray_audio.lang, bd_stream.Value.lang);
-                        bluray_audio_codec(out bluray_audio.codec, (bd_stream_type_e)bd_stream.Value.coding_type);
-                        bluray_audio_codec_name(out bluray_audio.codec_name, (bd_stream_type_e)bd_stream.Value.coding_type);
-                        bluray_audio_format(out bluray_audio.format, (bd_audio_format_e)bd_stream.Value.format);
-                        bluray_audio_rate(out bluray_audio.rate, (bd_audio_rate_e)bd_stream.Value.rate);
+                        bluray_audio_lang(out bluray_audio.lang, bd_stream.Language.Part3);
+                        bluray_audio_codec(out bluray_audio.codec, bd_stream.CodingType);
+                        bluray_audio_codec_name(out bluray_audio.codec_name, bd_stream.CodingType);
+                        bluray_audio_format(out bluray_audio.format, bd_stream.AudioFormat);
+                        bluray_audio_rate(out bluray_audio.rate, bd_stream.AudioRate);
 
                         //if (p_bluray_info && d_audio)
                         //{
@@ -421,7 +422,7 @@ namespace UnitTests.BlurayInfo
                         {
                             bluray_title.AudioStreams.Add(bluray_audio);
                             bluray_audio.audio_stream_number = audio_stream_number;
-                            bluray_audio.pid = bd_stream.Value.pid;
+                            bluray_audio.pid = bd_stream.PID;
 
                             //printf("    {\n");
                             //printf("     \"track\": %" PRIu8 ",\n", audio_stream_number);
@@ -439,7 +440,7 @@ namespace UnitTests.BlurayInfo
 
                     }
 
-                    bd_stream = Ref<BLURAY_STREAM_INFO>.Null;
+                    bd_stream = new BLURAY_STREAM_INFO();
 
                     //if (p_bluray_json)
                     //    printf("   ],\n");
@@ -457,13 +458,13 @@ namespace UnitTests.BlurayInfo
                     {
 
                         pg_stream_number = (byte)(pg_stream_ix + 1);
-                        bd_stream = bluray_title.clip_info[0].pg_streams.AtIndex(pg_stream_ix);
+                        bd_stream = bluray_title.clip_info[0].PresentationStreams[pg_stream_ix];
 
-                        if (bd_stream == null)
-                            continue;
+                        //if (bd_stream == null)
+                        //    continue;
 
                         bluray_pgs bluray_pgs = new();
-                        bluray_pgs_lang(out bluray_pgs.lang, bd_stream.Value.lang);
+                        bluray_pgs_lang(out bluray_pgs.lang, bd_stream.Language.Part3);
 
                         //if (p_bluray_info && d_subtitles)
                         //{
@@ -474,7 +475,7 @@ namespace UnitTests.BlurayInfo
                         {
                             bluray_title.SubtitleStreams.Add(bluray_pgs);
                             bluray_pgs.pg_stream_number = pg_stream_number;
-                            bluray_pgs.pid = bd_stream.Value.pid;
+                            bluray_pgs.pid = bd_stream.PID;
 
                             //printf("    {\n");
                             //printf("     \"track\": %" PRIu8 ",\n", pg_stream_number);
@@ -486,7 +487,7 @@ namespace UnitTests.BlurayInfo
                             //    printf("    }\n");
                         }
 
-                        bd_stream = Ref<BLURAY_STREAM_INFO>.Null;
+                        bd_stream = new BLURAY_STREAM_INFO();
 
                     }
 
@@ -506,10 +507,10 @@ namespace UnitTests.BlurayInfo
                     {
 
                         chapter_number = chapter_ix + 1;
-                        bd_chapter = bluray_title.title_chapters.AtIndex(chapter_ix);
+                        bd_chapter = bluray_title.title_chapters[(int)chapter_ix];
 
-                        if (bd_chapter == null)
-                            continue;
+                        //if (bd_chapter == null)
+                        //    continue;
 
                         bluray_chapter bluray_chapter = new();
                         bluray_chapter.duration = 0;
@@ -519,7 +520,7 @@ namespace UnitTests.BlurayInfo
                         bluray_chapter.blocks = 0;
 
                         bluray_chapter.start = chapter_start;
-                        bluray_chapter.duration = bd_chapter.Value.duration;
+                        bluray_chapter.duration = bd_chapter.duration;
                         BlurayTime.bluray_duration_length(out bluray_chapter.length, bluray_chapter.duration);
                         BlurayTime.bluray_duration_length(out bluray_chapter.start_time, bluray_chapter.start);
                         bluray_chapter.size = bluray_chapter_size(bd, bluray_title.number - 1, chapter_ix);
@@ -557,7 +558,7 @@ namespace UnitTests.BlurayInfo
 
                         chapter_start += bluray_chapter.duration;
 
-                        bd_chapter = Ref<BLURAY_TITLE_CHAPTER>.Null;
+                        bd_chapter = new BLURAY_TITLE_CHAPTER();
 
                     }
 

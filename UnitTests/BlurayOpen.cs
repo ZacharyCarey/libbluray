@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using UnitTests;
 using libbluray.bdnav;
 using System.Numerics;
 using libbluray.util;
+using System.Collections.ObjectModel;
+using Iso639;
 
 namespace UnitTests.BlurayInfo
 {
@@ -55,8 +56,8 @@ namespace UnitTests.BlurayInfo
         public byte audio_streams;
         public byte pg_streams;
         public string length;
-        public Ref<BLURAY_CLIP_INFO> clip_info = Ref<BLURAY_CLIP_INFO>.Null;
-        public Ref<BLURAY_TITLE_CHAPTER> title_chapters = Ref<BLURAY_TITLE_CHAPTER>.Null;
+        public ReadOnlyCollection<BLURAY_CLIP_INFO> clip_info;
+        public ReadOnlyCollection<BLURAY_TITLE_CHAPTER> title_chapters;
 
         public List<bluray_video> VideoStreams = new();
         public List<bluray_audio> AudioStreams = new();
@@ -118,7 +119,7 @@ namespace UnitTests.BlurayInfo
             // Set the disc ID if AACS is present
             bluray_info.disc_id = "";
             UInt32 ix = 0;
-            if (bd_disc_info.LibAacsDetected != 0)
+            if (bd_disc_info.LibAacsDetected == true)
             {
                 //for (ix = 0; ix < 20; ix++)
                 //{
@@ -164,18 +165,18 @@ namespace UnitTests.BlurayInfo
             bluray_info.main_title = (UInt32)bd_main_title;
 
             // These are going to change depending on if you have the JVM installed or not
-            bluray_info.first_play_supported = ((bd_disc_info.FirsPlaySupported != 0) ? true : false);
-            bluray_info.top_menu_supported = ((bd_disc_info.TopMenuSupported != 0) ? true : false);
+            bluray_info.first_play_supported = bd_disc_info.FirsPlaySupported;
+            bluray_info.top_menu_supported = bd_disc_info.TopMenuSupported;
             bluray_info.disc_num_titles = bd_disc_info.NumberOfTitles;
             bluray_info.hdmv_titles = bd_disc_info.NumberHdmvTitles;
             bluray_info.bdj_titles = bd_disc_info.NumberBdjTitles;
             bluray_info.unsupported_titles = bd_disc_info.NumberUnsupportedTitles;
-            bluray_info.aacs = ((bd_disc_info.AacsDetected != 0) ? true : false);
-            bluray_info.bdplus = ((bd_disc_info.BdPlusDetected != 0) ? true : false);
-            bluray_info.bdj = ((bd_disc_info.BdjDetected != 0) ? true : false);
-            bluray_info.content_exist_3D = ((bd_disc_info.ContentExist3D != 0) ? true : false);
+            bluray_info.aacs = bd_disc_info.AacsDetected;
+            bluray_info.bdplus = bd_disc_info.BdPlusDetected;
+            bluray_info.bdj = bd_disc_info.BdjDetected;
+            bluray_info.content_exist_3D = bd_disc_info.ContentExist3D;
             bluray_info.provider_data = bd_disc_info.ProviderData;
-            bluray_info.initial_output_mode_preference = ((bd_disc_info.InitialOutputModePreference != 0) ? "3D" : "2D");
+            bluray_info.initial_output_mode_preference = (bd_disc_info.InitialOutputModePreference ? "3D" : "2D");
 
             return 0;
 
@@ -244,9 +245,9 @@ namespace UnitTests.BlurayInfo
             bluray_title.angles = bd_title.AngleCount;
             if (bluray_title.clips != 0)
             {
-                bluray_title.video_streams = bd_title.Clips[0].video_stream_count;
-                bluray_title.audio_streams = bd_title.Clips[0].audio_stream_count;
-                bluray_title.pg_streams = bd_title.Clips[0].pg_stream_count;
+                bluray_title.video_streams = bd_title.Clips[0].VideoStreamCount;
+                bluray_title.audio_streams = bd_title.Clips[0].AudioStreamCount;
+                bluray_title.pg_streams = bd_title.Clips[0].PresentationStreamCount;
             }
 
             bluray_title.clip_info = bd_title.Clips;
@@ -256,21 +257,21 @@ namespace UnitTests.BlurayInfo
 
         }
 
-        public static bool bluray_title_has_alang(bluray_title bluray_title, string lang)
+        public static bool bluray_title_has_alang(bluray_title bluray_title, Language lang)
         {
 
-            Ref<BLURAY_STREAM_INFO> bd_stream = Ref<BLURAY_STREAM_INFO>.Null;
+            BLURAY_STREAM_INFO bd_stream;
             byte ix = 0;
 
             for (ix = 0; ix < bluray_title.audio_streams; ix++)
             {
 
-                bd_stream = bluray_title.clip_info[0].audio_streams.AtIndex(ix);
+                bd_stream = bluray_title.clip_info[0].AudioStreams[ix];
 
-                if (bd_stream == null)
-                    continue;
+                //if (bd_stream == null)
+                //    continue;
 
-                if (bd_stream.Value.lang == lang)
+                if (bd_stream.Language == lang)
                     return true;
 
             }
@@ -279,21 +280,21 @@ namespace UnitTests.BlurayInfo
 
         }
 
-        public static bool bluray_title_has_slang(bluray_title bluray_title, string lang)
+        public static bool bluray_title_has_slang(bluray_title bluray_title, Language lang)
         {
 
-            Ref<BLURAY_STREAM_INFO> bd_stream = Ref<BLURAY_STREAM_INFO>.Null;
+            BLURAY_STREAM_INFO bd_stream;
             byte ix = 0;
 
             for (ix = 0; ix < bluray_title.pg_streams; ix++)
             {
 
-                bd_stream = bluray_title.clip_info[0].pg_streams.AtIndex(ix);
+                bd_stream = bluray_title.clip_info[0].PresentationStreams[ix];
 
-                if (bd_stream == null)
-                    continue;
+                //if (bd_stream == null)
+                //    continue;
 
-                if (bd_stream.Value.lang == lang)
+                if (bd_stream.Language == lang)
                     return true;
 
             }
