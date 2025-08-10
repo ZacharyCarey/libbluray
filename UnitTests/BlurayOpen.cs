@@ -43,7 +43,7 @@ namespace UnitTests.BlurayInfo
         public UInt32 ix;
         public UInt32 number;
         public UInt32 playlist;
-        public UInt64 duration;
+        public Time duration;
         public UInt64 seconds;
         public UInt64 minutes;
         public UInt64 size;
@@ -67,8 +67,8 @@ namespace UnitTests.BlurayInfo
 
     public class bluray_chapter
     {
-        public UInt64 duration;
-        public UInt64 start;
+        public Time duration;
+        public Time start;
         public string start_time;
         public string length;
         public Int64[] range = new Int64[2];
@@ -192,7 +192,7 @@ namespace UnitTests.BlurayInfo
             bluray_title.ix = title_ix;
             bluray_title.number = title_ix + 1;
             bluray_title.playlist = 0;
-            bluray_title.duration = 0;
+            bluray_title.duration = Time.Zero;
             bluray_title.seconds = 0;
             bluray_title.minutes = 0;
             bluray_title.size = 0;
@@ -234,9 +234,9 @@ namespace UnitTests.BlurayInfo
             // Populate data
             bluray_title.playlist = bd_title.PlaylistID;
             bluray_title.duration = bd_title.Duration;
-            bluray_title.seconds = BlurayTime.bluray_duration_seconds(bluray_title.duration);
-            bluray_title.minutes = BlurayTime.bluray_duration_minutes(bluray_title.duration);
-            BlurayTime.bluray_duration_length(out bluray_title.length, bluray_title.duration);
+            bluray_title.seconds = bluray_title.duration.Seconds;
+            bluray_title.minutes = bluray_title.duration.Minutes;
+            bluray_title.length = bluray_title.duration.ToString();
             bluray_title.size = BLURAY.bd_get_title_size(bd);
             bluray_title.size_mbs = (bluray_title.size / 1048576) + 1;
             bluray_title.blocks = bluray_title.size / BLURAY_BLOCK_SIZE;

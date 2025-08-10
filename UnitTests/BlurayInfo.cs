@@ -128,7 +128,7 @@ namespace UnitTests.BlurayInfo
             {
 
                 // Find the longest title
-                UInt64 max_duration = 0;
+                Time max_duration = Time.Zero;
                 UInt32 longest_playlist = 0;
                 for (ix = 0; ix < bluray_info.titles; ix++)
                 {
@@ -206,7 +206,7 @@ namespace UnitTests.BlurayInfo
             byte pg_stream_number = 1;
             UInt32 chapter_ix = 0;
             UInt32 chapter_number = 1;
-            UInt64 chapter_start = 0;
+            Time chapter_start = Time.Zero;
             UInt32 d_num_json_titles = 0;
             UInt32 d_num_json_displayed = 0;
             angle_ix = 0;
@@ -513,16 +513,16 @@ namespace UnitTests.BlurayInfo
                         //    continue;
 
                         bluray_chapter bluray_chapter = new();
-                        bluray_chapter.duration = 0;
+                        bluray_chapter.duration = Time.Zero;
                         bluray_chapter.length = "00:00:00.000";
                         bluray_chapter.size = 0;
                         bluray_chapter.size_mbs = 0;
                         bluray_chapter.blocks = 0;
 
                         bluray_chapter.start = chapter_start;
-                        bluray_chapter.duration = bd_chapter.duration;
-                        BlurayTime.bluray_duration_length(out bluray_chapter.length, bluray_chapter.duration);
-                        BlurayTime.bluray_duration_length(out bluray_chapter.start_time, bluray_chapter.start);
+                        bluray_chapter.duration = bd_chapter.Duration;
+                        bluray_chapter.length = bluray_chapter.duration.ToString();
+                        bluray_chapter.start_time = bluray_chapter.start.ToString();
                         bluray_chapter.size = bluray_chapter_size(bd, bluray_title.number - 1, chapter_ix);
                         bluray_chapter.blocks = bluray_chapter.size / BLURAY_BLOCK_SIZE;
 
@@ -556,7 +556,7 @@ namespace UnitTests.BlurayInfo
                         //    printf("CHAPTER%03" PRIu32 "NAME=Chapter %03" PRIu32 "\n", chapter_number, chapter_number);
                         //}
 
-                        chapter_start += bluray_chapter.duration;
+                        chapter_start += bluray_chapter.duration.Ticks;
 
                         bd_chapter = new BLURAY_TITLE_CHAPTER();
 

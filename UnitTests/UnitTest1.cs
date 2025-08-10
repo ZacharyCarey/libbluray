@@ -52,7 +52,7 @@ namespace UnitTests
                 Assert.AreEqual(titleTuple.First.Title, (int)titleTuple.Second.json_ix);
                 Assert.AreEqual(titleTuple.First.Playlist, (int)titleTuple.Second.playlist);
                 Assert.AreEqual(titleTuple.First.Length, titleTuple.Second.length);
-                Assert.AreEqual(titleTuple.First.Msecs, titleTuple.Second.duration / 900);
+                Assert.AreEqual(titleTuple.First.Msecs, titleTuple.Second.duration.Milliseconds / 10);
                 Assert.AreEqual(titleTuple.First.Angles, titleTuple.Second.angles);
                 Assert.AreEqual(titleTuple.First.Blocks, titleTuple.Second.blocks);
                 Assert.AreEqual(titleTuple.First.FileSize, titleTuple.Second.size);
@@ -99,8 +99,8 @@ namespace UnitTests
                     Assert.AreEqual(chapTuple.First.Chapter, (int)chapTuple.Second.chapter_number);
                     Assert.AreEqual(chapTuple.First.StartTime, chapTuple.Second.start_time);
                     Assert.AreEqual(chapTuple.First.Length, chapTuple.Second.length);
-                    Assert.AreEqual(chapTuple.First.Start, chapTuple.Second.start / 900);
-                    Assert.AreEqual(chapTuple.First.Duration, chapTuple.Second.duration / 900);
+                    Assert.AreEqual(chapTuple.First.Start, chapTuple.Second.start.Milliseconds / 10);
+                    Assert.AreEqual(chapTuple.First.Duration, chapTuple.Second.duration.Milliseconds / 10);
                     Assert.AreEqual(chapTuple.First.Blocks, chapTuple.Second.blocks);
                     Assert.AreEqual(chapTuple.First.FileSize, chapTuple.Second.size);
                 }

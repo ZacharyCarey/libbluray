@@ -628,17 +628,20 @@ namespace libbluray
         /// <summary>
         /// start media time, 90kHz, ("playlist time")
         /// </summary>
-        public UInt64 start_time;
+        public Time StartTime => start_time;
+        internal Time start_time;
 
         /// <summary>
         /// start timestamp, 90kHz
         /// </summary>
-        public UInt64 in_time;
+        public Time InTime => in_time;
+        internal Time in_time;
 
         /// <summary>
         /// end timestamp, 90kHz
         /// </summary>
-        public UInt64 out_time;
+        public Time OutTime => out_time;
+        internal Time out_time;
 
         /// <summary>
         /// Clip identifier (.m2ts file name)
@@ -663,17 +666,20 @@ namespace libbluray
         /// <summary>
         /// start media time, 90kHz, ("playlist time")
         /// </summary>
-        public UInt64 start;
+        public Time Start => start;
+        internal Time start;
 
         /// <summary>
         /// duration
         /// </summary>
-        public UInt64 duration;
+        public Time Duration => duration;
+        internal Time duration;
 
         /// <summary>
         /// distance from title start, bytes
         /// </summary>
-        public UInt64 offset;
+        public UInt64 Offset => offset;
+        internal UInt64 offset;
 
         /// <summary>
         ///  Clip reference (index to playlist clips list)
@@ -702,17 +708,20 @@ namespace libbluray
         /// <summary>
         /// mark media time, 90kHz, ("playlist time") 
         /// </summary>
-        public UInt64 start;
+        public Time Start => start;
+        internal Time start;
 
         /// <summary>
         /// time to next mark
         /// </summary>
-        public UInt64 duration;
+        public Time Duration => duration;
+        internal Time duration;
 
         /// <summary>
         /// mark distance from title start, bytes
         /// </summary>
-        public UInt64 offset;
+        public UInt64 Offset => offset;
+        internal UInt64 offset;
 
         /// <summary>
         /// Clip reference (index to playlist clips list)
@@ -741,8 +750,8 @@ namespace libbluray
         /// <summary>
         /// Playlist duration, 90 kHz
         /// </summary>
-        public ulong Duration => duration;
-        internal UInt64 duration;
+        public Time Duration => duration;
+        internal Time duration;
 
         /// <summary>
         /// Number of clips
@@ -4442,7 +4451,7 @@ namespace libbluray
             }
             title_info.idx = title_idx;
             title_info.playlist = playlist;
-            title_info.duration = (UInt64)title.duration * 2;
+            title_info.duration = new Time((UInt64)title.duration * 2);
             title_info.angle_count = title.angle_count;
             title_info.chapter_count = title.chap_list.count;
             if (title_info.chapter_count != 0)
@@ -4455,8 +4464,8 @@ namespace libbluray
                 for (ii = 0; ii < title_info.chapter_count; ii++)
                 {
                     title_info.chapters[ii].idx = ii;
-                    title_info.chapters[ii].start = (UInt64)title.chap_list.mark[ii].title_time * 2;
-                    title_info.chapters[ii].duration = (UInt64)title.chap_list.mark[ii].duration * 2;
+                    title_info.chapters[ii].start = new Time((UInt64)title.chap_list.mark[ii].title_time * 2);
+                    title_info.chapters[ii].duration = new Time((UInt64)title.chap_list.mark[ii].duration * 2);
                     title_info.chapters[ii].offset = (UInt64)title.chap_list.mark[ii].title_pkt * 192L;
                     title_info.chapters[ii].clip_ref = title.chap_list.mark[ii].clip_ref;
                 }
@@ -4473,8 +4482,8 @@ namespace libbluray
                 {
                     title_info.marks[ii].idx = ii;
                     title_info.marks[ii].type = (bd_mark_type_e)title.mark_list.mark[ii].mark_type;
-                    title_info.marks[ii].start = (UInt64)title.mark_list.mark[ii].title_time * 2;
-                    title_info.marks[ii].duration = (UInt64)title.mark_list.mark[ii].duration * 2;
+                    title_info.marks[ii].start = new Time((UInt64)title.mark_list.mark[ii].title_time * 2);
+                    title_info.marks[ii].duration = new Time((UInt64)title.mark_list.mark[ii].duration * 2);
                     title_info.marks[ii].offset = (UInt64)title.mark_list.mark[ii].title_pkt * 192L;
                     title_info.marks[ii].clip_ref = title.mark_list.mark[ii].clip_ref;
                 }
@@ -4495,9 +4504,9 @@ namespace libbluray
 
                     ci.Value.clip_id = pi.Value.clip.Value.clip_id;
                     ci.Value.pkt_count = nc.Value.end_pkt - nc.Value.start_pkt;
-                    ci.Value.start_time = (UInt64)nc.Value.title_time * 2;
-                    ci.Value.in_time = (UInt64)pi.Value.in_time * 2;
-                    ci.Value.out_time = (UInt64)pi.Value.out_time * 2;
+                    ci.Value.start_time = new Time((UInt64)nc.Value.title_time * 2);
+                    ci.Value.in_time = new Time((UInt64)pi.Value.in_time * 2);
+                    ci.Value.out_time = new Time((UInt64)pi.Value.out_time * 2);
                     ci.Value.still_mode = (bd_still_mode_e)pi.Value.still_mode;
                     ci.Value.still_time = pi.Value.still_time;
                     ci.Value.video_stream_count = pi.Value.stn.Value.num_video;
