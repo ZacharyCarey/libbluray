@@ -82,9 +82,9 @@ namespace libbluray.file
 
     internal class DefaultFile : BD_FILE_H
     {
-        private FileStream Handle;
+        private Stream Handle;
 
-        private DefaultFile(FileStream handle)
+        internal DefaultFile(Stream handle)
         {
             this.Handle = handle;
         }
@@ -237,7 +237,7 @@ namespace libbluray.file
     {
         private string[] Entries;
         private int Index = 0;
-        private DefaultDirectory(string[] entries)
+        internal DefaultDirectory(string[] entries)
         {
             this.Entries = entries;
         }

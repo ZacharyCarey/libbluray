@@ -283,9 +283,12 @@ namespace libbluray.util
 
         public ReadOnlyCollection<T> AsReadOnly()
         {
-            T[] array = (T[])this.Handle;
-            if (this.Index != 0) throw new IndexOutOfRangeException("Index was not zero.");
-            return array.AsReadOnly();
+            if (this.Handle != null && this.Handle is T[] array && this.Index == 0)
+            {
+                return array.AsReadOnly();
+            }
+
+            return new List<T>().AsReadOnly();
         }
     }
 }

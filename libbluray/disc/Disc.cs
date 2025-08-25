@@ -62,22 +62,22 @@ namespace libbluray.disc
             BD_DIR_H dp_img = (device_path != null) ? BD_DIR_H.dir_open(device_path) : null;
             if (dp_img == null)
             {
-                object udf = null;// udf_image_open(device_path, (p_fs != null) ? p_fs.fs_handle : null, (p_fs != null) ? p_fs.read_blocks : null);
+                UDF? udf = UDF.udf_image_open(device_path, (p_fs != null) ? p_fs.fs_handle : null, (p_fs != null) ? p_fs.read_blocks : null);
                 if (udf == null)
                 {
                     Logging.bd_debug(DebugMaskEnum.DBG_FILE | DebugMaskEnum.DBG_CRIT, $"failed opening UDF image {device_path}");
                 }
                 else
                 {
-                    /*p.fs_handle = udf;
-                    p.pf_fs_close = udf_image_close;
-                    p.pf_file_open_bdrom = udf_file_open;
-                    p.pf_dir_open_bdrom = udf_dir_open;
+                    p.fs_handle = udf;
+                    p.pf_fs_close = UDF.udf_image_close;
+                    p.pf_file_open_bdrom = UDF.udf_file_open;
+                    p.pf_dir_open_bdrom = UDF.udf_dir_open;
 
-                    p.udf_volid = udf_volume_id(udf);*/
-                    throw new NotImplementedException();
+                    p.udf_volid = UDF.udf_volume_id(udf);
 
                     /* root not accessible with stdio */
+                    p.disc_root = "";
                 }
             }
             else
